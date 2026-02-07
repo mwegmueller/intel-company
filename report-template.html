@@ -1,0 +1,2389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intel Company - {{COMPANY_NAME}} - AI Strategy Dashboard</title>
+    <style>
+        :root {
+            --color-navy: #0f172a;
+            --color-slate: #64748b;
+            --color-green: #22c55e;
+            --color-red: #ef4444;
+            --color-blue: #3b82f6;
+            --color-purple: #8b5cf6;
+            --color-gray-50: #f8fafc;
+            --color-gray-100: #f1f5f9;
+            --color-gray-200: #e2e8f0;
+            --color-gray-300: #cbd5e1;
+            --color-gray-700: #334155;
+            --color-gray-900: #0f172a;
+            --color-white: #ffffff;
+            --color-yellow: #eab308;
+            --color-orange: #f97316;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--color-gray-50);
+            color: var(--color-gray-700);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* HEADER STYLES */
+        .header {
+            background: linear-gradient(135deg, var(--color-navy) 0%, #1e293b 100%);
+            color: var(--color-white);
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: 'CONFIDENTIAL';
+            position: absolute;
+            top: 8px;
+            right: 40px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.4);
+            opacity: 0.6;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-logo {
+            height: 32px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header-divider {
+            color: rgba(255,255,255,0.3);
+            font-weight: 300;
+        }
+
+        .header-product {
+            color: var(--color-blue);
+        }
+
+        .header-main {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex: 1;
+            margin-left: 40px;
+        }
+
+        .company-logo {
+            height: 64px;
+            width: 64px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: rgba(255,255,255,0.1);
+            padding: 8px;
+        }
+
+        .company-initials {
+            height: 64px;
+            width: 64px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-white);
+        }
+
+        .header-main h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--color-white);
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 6px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* TAB NAVIGATION */
+        .tab-nav {
+            background: var(--color-white);
+            border-bottom: 2px solid var(--color-gray-200);
+            display: flex;
+            overflow-x: auto;
+            padding: 0 40px;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 16px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-slate);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            color: var(--color-navy);
+            background-color: var(--color-gray-50);
+        }
+
+        .tab-btn.active {
+            color: var(--color-blue);
+            border-bottom-color: var(--color-blue);
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CARD STYLES */
+        .card {
+            background: var(--color-white);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: var(--color-slate);
+            margin-top: 8px;
+        }
+
+        /* METHODOLOGY CALLOUT */
+        .methodology-callout {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--color-blue);
+            color: var(--color-white);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: help;
+        }
+
+        .methodology-callout:hover .methodology-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .methodology-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-navy);
+            color: var(--color-white);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .methodology-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--color-navy);
+        }
+
+        /* BADGE & TAGS */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: var(--color-gray-200);
+            color: var(--color-navy);
+        }
+
+        .badge.primary {
+            background-color: var(--color-blue);
+            color: var(--color-white);
+        }
+
+        .badge.success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge.warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 4px 4px 4px 0;
+            background-color: var(--color-gray-100);
+            color: var(--color-gray-700);
+            border-radius: 4px;
+            font-size: 13px;
+            border: 1px solid var(--color-gray-200);
+        }
+
+        .tag.primary {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border-color: #93c5fd;
+        }
+
+        .tag.success {
+            background-color: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .tag.purple {
+            background-color: #ede9fe;
+            color: #581c87;
+            border-color: #ddd6fe;
+        }
+
+        /* INSIGHT BOX */
+        .insight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-left: 4px solid var(--color-blue);
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin: 16px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .insight-box.success {
+            border-left-color: var(--color-green);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.03) 100%);
+        }
+
+        .insight-box.warning {
+            border-left-color: var(--color-orange);
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(249, 115, 22, 0.03) 100%);
+        }
+
+        .insight-box.danger {
+            border-left-color: var(--color-red);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.03) 100%);
+        }
+
+        /* GRID LAYOUTS */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            border-left: 3px solid var(--color-blue);
+            background-color: var(--color-gray-50);
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .timeline-item .timeline-marker {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-blue);
+            border-radius: 50%;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .timeline-item .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-item .timeline-date {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-item .timeline-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-top: 4px;
+        }
+
+        .timeline-item .timeline-desc {
+            font-size: 13px;
+            color: var(--color-slate);
+            margin-top: 6px;
+        }
+
+        /* PERSON CARD */
+        .person-card {
+            text-align: center;
+            padding: 20px;
+            background: var(--color-gray-50);
+            border-radius: 8px;
+            border: 1px solid var(--color-gray-200);
+        }
+
+        .person-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-white);
+        }
+
+        .person-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        .person-title {
+            font-size: 12px;
+            color: var(--color-slate);
+            margin-top: 4px;
+        }
+
+        /* CONVERSATION CARD */
+        .conversation-card {
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .conversation-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .conversation-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 12px;
+        }
+
+        .conversation-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--color-slate);
+        }
+
+        /* AI READINESS GAUGE */
+        .ai-readiness-gauge {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .gauge-circle {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--color-blue) 0deg {{GAUGE_PERCENTAGE}}%,
+                var(--color-gray-200) {{GAUGE_PERCENTAGE}}% 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 0 12px var(--color-white);
+        }
+
+        .gauge-value {
+            text-align: center;
+        }
+
+        .gauge-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-blue);
+        }
+
+        .gauge-max {
+            font-size: 16px;
+            color: var(--color-slate);
+        }
+
+        .gauge-description {
+            flex: 1;
+        }
+
+        .gauge-description h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 8px;
+        }
+
+        .gauge-description p {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.6;
+        }
+
+        /* VALUE CHAIN FLOW */
+        .value-chain-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 20px 0;
+            margin: 20px 0;
+        }
+
+        .value-chain-box {
+            background: var(--color-blue);
+            color: var(--color-white);
+            padding: 16px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+
+        .value-chain-arrow {
+            color: var(--color-slate);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        /* PRIORITY MATRIX */
+        .priority-matrix {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .matrix-axes {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+            height: calc(100% - 40px);
+            border-left: 2px solid var(--color-slate);
+            border-bottom: 2px solid var(--color-slate);
+        }
+
+        .matrix-quadrant-labels {
+            position: absolute;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-slate);
+        }
+
+        .matrix-x-label {
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .matrix-y-label {
+            top: 50%;
+            left: -40px;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        .scatter-dot {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .scatter-dot:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .scatter-dot.impact-high {
+            background-color: var(--color-green);
+        }
+
+        .scatter-dot.impact-medium {
+            background-color: var(--color-blue);
+        }
+
+        .scatter-dot.impact-low {
+            background-color: var(--color-slate);
+        }
+
+        /* HORIZONTAL BAR CHART */
+        .bar-group {
+            margin: 16px 0;
+        }
+
+        .bar-item {
+            margin-bottom: 16px;
+        }
+
+        .bar-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bar-label-value {
+            color: var(--color-slate);
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 24px;
+            background-color: var(--color-gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-blue), var(--color-purple));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* REVENUE BAR CHART */
+        .revenue-bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 16px;
+            height: 200px;
+            margin: 20px 0;
+        }
+
+        .revenue-bar {
+            flex: 1;
+            background: linear-gradient(180deg, var(--color-blue), #60a5fa);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            min-height: 40px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .revenue-bar:hover {
+            filter: brightness(1.1);
+        }
+
+        .revenue-bar-label {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-slate);
+        }
+
+        .revenue-bar-value {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        /* USE CASE CARD */
+        .use-case-card {
+            background: var(--color-white);
+            border: 2px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .use-case-card:hover {
+            border-color: var(--color-blue);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1);
+        }
+
+        .use-case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .use-case-number {
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            color: var(--color-white);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .use-case-horizon {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .use-case-horizon.horizon-1 {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .use-case-horizon.horizon-2 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .use-case-horizon.horizon-3 {
+            background-color: #ede9fe;
+            color: #581c87;
+        }
+
+        .use-case-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 8px;
+        }
+
+        .use-case-description {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .use-case-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .meta-label {
+            color: var(--color-slate);
+            font-weight: 600;
+        }
+
+        .meta-value {
+            color: var(--color-navy);
+            font-weight: 700;
+        }
+
+        .meta-value.impact-high {
+            color: var(--color-green);
+        }
+
+        .meta-value.impact-medium {
+            color: var(--color-blue);
+        }
+
+        .meta-value.impact-low {
+            color: var(--color-slate);
+        }
+
+        .meta-value.complexity-high {
+            color: var(--color-red);
+        }
+
+        .meta-value.complexity-medium {
+            color: var(--color-orange);
+        }
+
+        .meta-value.complexity-low {
+            color: var(--color-green);
+        }
+
+        /* MATURITY STAGE */
+        .maturity-stage {
+            margin-bottom: 12px;
+        }
+
+        .stage-bar {
+            display: flex;
+            gap: 4px;
+        }
+
+        .stage {
+            flex: 1;
+            height: 24px;
+            border-radius: 4px;
+            background-color: var(--color-gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--color-gray-700);
+            transition: all 0.3s ease;
+        }
+
+        .stage.active {
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            color: var(--color-white);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+        }
+
+        .stage.pending {
+            background-color: var(--color-gray-100);
+            color: var(--color-slate);
+        }
+
+        .stage.strategy {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.assessment {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.pilot {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.scale {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.operate {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.strategy.active {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+
+        .stage.assessment.active {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        }
+
+        .stage.pilot.active {
+            background: linear-gradient(135deg, #34d399, #10b981);
+        }
+
+        .stage.scale.active {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+
+        .stage.operate.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        /* USE CASE REASONING */
+        .use-case-reasoning {
+            background: var(--color-gray-50);
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            border-left: 3px solid var(--color-blue);
+        }
+
+        .reasoning-label {
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+        }
+
+        .use-case-reasoning p {
+            color: var(--color-slate);
+            line-height: 1.5;
+        }
+
+        /* MATURITY RADAR */
+        .maturity-radar {
+            margin: 20px 0;
+        }
+
+        .radar-svg {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        /* OBJECTION CARD */
+        .objection-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .objection-column {
+            padding-right: 20px;
+            border-right: 2px solid var(--color-gray-200);
+        }
+
+        .objection-column:last-child {
+            border-right: none;
+            padding-right: 0;
+        }
+
+        .objection-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .objection-label.objection-text {
+            color: var(--color-red);
+        }
+
+        .objection-label.response-text {
+            color: var(--color-green);
+        }
+
+        .objection-content {
+            font-size: 14px;
+            color: var(--color-navy);
+            line-height: 1.6;
+        }
+
+        /* SOURCE ITEM */
+        .source-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--color-gray-200);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            background: var(--color-gray-50);
+            transition: all 0.3s ease;
+        }
+
+        .source-item:hover {
+            background: var(--color-white);
+            border-color: var(--color-blue);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        }
+
+        .source-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .source-name {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-navy);
+        }
+
+        .source-meta {
+            font-size: 12px;
+            color: var(--color-slate);
+        }
+
+        .source-item a {
+            color: var(--color-blue);
+            text-decoration: none;
+        }
+
+        .source-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* COMPETITOR CARD */
+        .competitor-card {
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .competitor-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+        }
+
+        .competitor-description {
+            font-size: 13px;
+            color: var(--color-slate);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .competitor-threat {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .competitor-threat.high {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .competitor-threat.medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .competitor-threat.low {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        /* TREND CARD */
+        .trend-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .trend-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trend-description {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.5;
+        }
+
+        .impact-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .impact-badge.high {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .impact-badge.medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .impact-badge.low {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        /* COMPANY INFO CARD */
+        .company-info-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .info-item {
+            padding: 12px 0;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        /* PIE CHART */
+        .pie-chart {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .pie-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .pie-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pie-legend {
+            flex: 1;
+        }
+
+        .pie-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .pie-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .pie-label {
+            flex: 1;
+            color: var(--color-slate);
+        }
+
+        .pie-percentage {
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--color-navy);
+            color: var(--color-white);
+            padding: 24px 40px;
+            margin-top: 60px;
+            border-top: 1px solid var(--color-gray-200);
+            font-size: 12px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .footer-column p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+
+        .footer-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .footer-meta-item {
+            color: rgba(255,255,255,0.7);
+            word-break: break-all;
+        }
+
+        .footer-disclaimer {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin-top: 20px;
+            padding-top: 20px;
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            font-style: italic;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .objection-card {
+                grid-template-columns: 1fr;
+            }
+            .objection-column {
+                border-right: none;
+                border-bottom: 2px solid var(--color-gray-200);
+                padding-right: 0;
+                padding-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            .header-main {
+                margin-left: 0;
+            }
+            .header::before {
+                right: 20px;
+            }
+            .container {
+                padding: 20px;
+            }
+            .tab-nav {
+                padding: 0 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .pie-chart {
+                flex-direction: column;
+            }
+            .pie-container {
+                width: 150px;
+                height: 150px;
+            }
+            .company-info-card {
+                grid-template-columns: 1fr;
+            }
+            .header-meta {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .tab-btn {
+                font-size: 12px;
+                padding: 12px 16px;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background: var(--color-white);
+            }
+            .header {
+                break-after: avoid;
+            }
+            .tab-nav {
+                display: none;
+            }
+            .card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            .use-case-card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            .tab-content {
+                display: block !important;
+            }
+            .container {
+                padding: 20px 0;
+            }
+            .methodology-callout {
+                display: none;
+            }
+            a {
+                color: var(--color-blue);
+            }
+            @page {
+                margin: 0.5in;
+            }
+        }
+
+        /* UTILITY CLASSES */
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .mt-24 {
+            margin-top: 24px;
+        }
+
+        .mb-24 {
+            margin-bottom: 24px;
+        }
+
+        .gap-24 {
+            gap: 24px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-intro {
+            font-size: 14px;
+            color: var(--color-slate);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: var(--color-gray-50);
+            border-radius: 6px;
+            border-left: 4px solid var(--color-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-brand">
+            <img src="assets/artifact-logo-horizontal.png" alt="artifact" class="header-logo">
+            <span class="header-divider">|</span>
+            <span class="header-product">Intel Company</span>
+        </div>
+        <div class="header-main">
+            <img src="{{COMPANY_LOGO_URL}}" alt="{{COMPANY_NAME}}" class="company-logo"
+                 onerror="this.style.display='none'; document.querySelector('.company-initials').style.display='flex';">
+            <div class="company-initials" style="display: none;">{{COMPANY_INITIALS}}</div>
+            <div>
+                <h1>{{COMPANY_NAME}}</h1>
+                <div class="header-subtitle">{{INDUSTRY}} | {{HQ_LOCATION}}</div>
+                <div class="header-meta">
+                    <span>Revenue: {{ANNUAL_REVENUE}}</span>
+                    <span>Employees: {{COMPANY_SIZE}}</span>
+                    <span>Founded: {{FOUNDED_YEAR}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB NAVIGATION -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="executive-summary">Executive Summary</button>
+        <button class="tab-btn" data-tab="company-deep-dive">Company Deep Dive</button>
+        <button class="tab-btn" data-tab="competitive-landscape">Competitive Landscape</button>
+        <button class="tab-btn" data-tab="market-industry">Market & Industry</button>
+        <button class="tab-btn" data-tab="ai-maturity">AI Maturity</button>
+        <button class="tab-btn" data-tab="ai-use-cases">AI Use Cases</button>
+        <button class="tab-btn" data-tab="engagement-strategy">Engagement Strategy</button>
+        <button class="tab-btn" data-tab="sources">Sources & Methodology</button>
+    </nav>
+
+    <div class="container">
+        <!-- TAB 1: EXECUTIVE SUMMARY -->
+        <div id="executive-summary" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Company Overview</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Based on public filings, news, and market databases</div>
+                    </div>
+                </div>
+                <div class="company-info-card">
+                    <div class="info-item">
+                        <div class="info-label">Company Name</div>
+                        <div class="info-value">{{COMPANY_NAME}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Industry</div>
+                        <div class="info-value">{{INDUSTRY}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Headquarters</div>
+                        <div class="info-value">{{HQ_LOCATION}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Company Size</div>
+                        <div class="info-value">{{COMPANY_SIZE}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Annual Revenue</div>
+                        <div class="info-value">{{ANNUAL_REVENUE}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">CEO</div>
+                        <div class="info-value">{{CEO_NAME}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Founded</div>
+                        <div class="info-value">{{FOUNDED_YEAR}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Digital Maturity</div>
+                        <div class="info-value">{{DIGITAL_MATURITY_LEVEL}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Readiness & Digital Maturity</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Proprietary assessment framework</div>
+                    </div>
+                </div>
+                <div class="ai-readiness-gauge">
+                    <div class="gauge-circle" style="--gauge-percentage: {{AI_READINESS_PERCENTAGE}}">
+                        <div class="gauge-value">
+                            <div class="gauge-score">{{AI_READINESS_SCORE}}</div>
+                            <div class="gauge-max">/10</div>
+                        </div>
+                    </div>
+                    <div class="gauge-description">
+                        <h4>AI Readiness Assessment</h4>
+                        <p>{{COMPANY_NAME}} demonstrates a {{DIGITAL_MATURITY_LEVEL}} level of digital maturity. The company's AI readiness score reflects its current technological infrastructure, talent availability, and strategic commitment to artificial intelligence.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Findings</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Synthesized from research and analysis</div>
+                    </div>
+                </div>
+                {{KEY_FINDINGS}}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Top 3 AI Opportunities Preview</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">See AI Use Cases tab for full analysis</div>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    {{TOP_AI_PREVIEW}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Meeting Context & Fit</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Based on engagement parameters</div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <div class="info-label">Meeting Context</div>
+                        <div class="info-value" style="margin-top: 8px;">{{MEETING_CONTEXT}}</div>
+                        <div class="info-label" style="margin-top: 16px;">Your Role</div>
+                        <div class="info-value" style="margin-top: 8px;">{{MEETING_ROLE}}</div>
+                        <div class="info-label" style="margin-top: 16px;">Meeting Purpose</div>
+                        <div class="info-value" style="margin-top: 8px;">{{MEETING_PURPOSE}}</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Meeting Fit Score</div>
+                        <div style="margin-top: 8px;">
+                            <div class="gauge-circle" style="width: 120px; height: 120px; --gauge-percentage: {{MEETING_FIT_PERCENTAGE}}">
+                                <div class="gauge-value">
+                                    <div class="gauge-score" style="font-size: 36px;">{{MEETING_FIT_SCORE}}</div>
+                                    <div class="gauge-max">/10</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 16px; font-size: 13px; color: var(--color-slate);">{{MEETING_FIT_RATIONALE}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: COMPANY DEEP DIVE -->
+        <div id="company-deep-dive" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Business Model Canvas</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Osterwalder Business Model Canvas</div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <div class="info-label">Value Proposition</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">{{VALUE_PROPOSITION}}</p>
+                    </div>
+                    <div>
+                        <div class="info-label">Customer Segments</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">{{CUSTOMER_SEGMENTS}}</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <div class="info-label">Revenue Streams</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">{{REVENUE_STREAMS}}</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <div class="info-label">Key Partners</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">{{KEY_PARTNERS}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Financial Performance ({{REVENUE_PERIOD}})</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From SEC filings and investor reports</div>
+                    </div>
+                </div>
+                <div style="padding: 20px 0;">
+                    <div class="revenue-bar-chart">
+                        {{REVENUE_BARS}}
+                    </div>
+                </div>
+                <div class="insight-box success">
+                    <strong>Financial Trajectory:</strong> {{FINANCIAL_METRICS}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Technology Stack</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From job postings, tech blogs, and company publications</div>
+                    </div>
+                </div>
+                <div style="padding: 12px 0;">
+                    {{TECH_STACK_TAGS}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Strategic Priorities</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From earnings calls, investor presentations, and public statements</div>
+                    </div>
+                </div>
+                {{STRATEGIC_PRIORITIES}}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Announcements & News</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Last 12 months of major announcements</div>
+                    </div>
+                </div>
+                <div class="timeline">
+                    {{RECENT_ANNOUNCEMENTS}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Leadership Team</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From company website and LinkedIn</div>
+                    </div>
+                </div>
+                <div class="grid-4">
+                    {{LEADERSHIP_TEAM}}
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: COMPETITIVE LANDSCAPE -->
+        <div id="competitive-landscape" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitive Positioning</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Market research and competitive analysis</div>
+                    </div>
+                </div>
+                <p class="section-intro">{{INDUSTRY}} competitive landscape analysis showing {{COMPANY_NAME}}'s position relative to key market competitors across innovation and market presence dimensions.</p>
+                <div class="priority-matrix">
+                    <div class="matrix-axes"></div>
+                    {{SCATTER_DOTS}}
+                    <div class="matrix-quadrant-labels matrix-x-label">Market Share / Market Presence →</div>
+                    <div class="matrix-quadrant-labels matrix-y-label">Innovation →</div>
+                </div>
+                <div style="margin-top: 20px;">
+                    {{COMPETITOR_LEGEND}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitive Advantages</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Comparative analysis</div>
+                    </div>
+                </div>
+                {{COMPETITIVE_ADVANTAGES}}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Maturity Comparison</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Based on public AI initiatives and investment levels</div>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--color-gray-200);">
+                                <th style="padding: 12px; text-align: left; font-weight: 700; color: var(--color-navy);">Company</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">AI Investment</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">AI Teams</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">Public Initiatives</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">Maturity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{COMPETITOR_AI_TABLE}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Market Share</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Market sizing from industry reports</div>
+                    </div>
+                </div>
+                <div class="bar-group">
+                    {{MARKET_SHARE_BARS}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Differentiators</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Competitive differentiation analysis</div>
+                    </div>
+                </div>
+                <div style="padding: 12px 0;">
+                    {{DIFFERENTIATORS}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitor Profiles</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Key competitors in {{INDUSTRY}}</div>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    {{COMPETITORS_LIST}}
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: MARKET & INDUSTRY ANALYSIS -->
+        <div id="market-industry" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Industry Overview</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From analyst reports and market research</div>
+                    </div>
+                </div>
+                <p style="font-size: 14px; color: var(--color-slate); line-height: 1.6;">{{INDUSTRY_OVERVIEW}}</p>
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div class="insight-box success">
+                        <strong>Market Size:</strong> {{MARKET_SIZE}}
+                    </div>
+                    <div class="insight-box">
+                        <strong>Market Growth:</strong> {{MARKET_GROWTH}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Industry Trends</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Trend analysis from industry sources</div>
+                    </div>
+                </div>
+                {{INDUSTRY_TRENDS}}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Disruption Forces</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Based on technology and market changes</div>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    {{DISRUPTION_FORCES}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Value Chain</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Industry structure analysis</div>
+                    </div>
+                </div>
+                <div class="value-chain-flow">
+                    {{VALUE_CHAIN}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Adoption in {{INDUSTRY}}</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Industry-wide AI adoption assessment</div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    {{INDUSTRY_AI_ADOPTION}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Regulatory & Compliance Landscape</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Relevant regulations and compliance requirements</div>
+                    </div>
+                </div>
+                {{REGULATORY_ITEMS}}
+            </div>
+        </div>
+
+        <!-- TAB 5: AI MATURITY ASSESSMENT -->
+        <div id="ai-maturity" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Maturity Radar Assessment</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">6-dimension maturity model (1-5 scale)</div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <svg class="radar-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Grid circles -->
+                        <circle cx="200" cy="200" r="150" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="120" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="90" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="60" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="30" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+
+                        <!-- Axis lines -->
+                        <line x1="200" y1="50" x2="200" y2="350" stroke="#cbd5e1" stroke-width="1"/>
+                        <line x1="50" y1="200" x2="350" y2="200" stroke="#cbd5e1" stroke-width="1"/>
+                        <line x1="113.4" y1="86.6" x2="286.6" y2="313.4" stroke="#cbd5e1" stroke-width="1"/>
+                        <line x1="286.6" y1="86.6" x2="113.4" y2="313.4" stroke="#cbd5e1" stroke-width="1"/>
+
+                        <!-- Data polygon -->
+                        <polygon points="200,{{MATURITY_STRATEGY_Y}} 286.6,{{MATURITY_DATA_Y}} 286.6,{{MATURITY_TECHNOLOGY_Y}} 200,{{MATURITY_TALENT_Y}} 113.4,{{MATURITY_CULTURE_Y}} 113.4,{{MATURITY_GOVERNANCE_Y}}"
+                                 fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="2"/>
+
+                        <!-- Data points -->
+                        <circle cx="200" cy="{{MATURITY_STRATEGY_Y}}" r="5" fill="#3b82f6"/>
+                        <circle cx="286.6" cy="{{MATURITY_DATA_Y}}" r="5" fill="#3b82f6"/>
+                        <circle cx="286.6" cy="{{MATURITY_TECHNOLOGY_Y}}" r="5" fill="#3b82f6"/>
+                        <circle cx="200" cy="{{MATURITY_TALENT_Y}}" r="5" fill="#3b82f6"/>
+                        <circle cx="113.4" cy="{{MATURITY_CULTURE_Y}}" r="5" fill="#3b82f6"/>
+                        <circle cx="113.4" cy="{{MATURITY_GOVERNANCE_Y}}" r="5" fill="#3b82f6"/>
+
+                        <!-- Labels -->
+                        <text x="200" y="35" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Strategy</text>
+                        <text x="305" y="125" text-anchor="start" font-size="12" font-weight="700" fill="#334155">Data</text>
+                        <text x="305" y="300" text-anchor="start" font-size="12" font-weight="700" fill="#334155">Technology</text>
+                        <text x="200" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Talent</text>
+                        <text x="75" y="300" text-anchor="end" font-size="12" font-weight="700" fill="#334155">Culture</text>
+                        <text x="75" y="125" text-anchor="end" font-size="12" font-weight="700" fill="#334155">Governance</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Maturity Score Breakdown</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Assessment across 6 key dimensions</div>
+                    </div>
+                </div>
+                {{MATURITY_BREAKDOWN}}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Technology Readiness</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Current technology infrastructure assessment</div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    {{TECH_READINESS}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Data Infrastructure & Governance</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Data maturity and governance assessment</div>
+                    </div>
+                </div>
+                <div class="insight-box success">
+                    {{DATA_INFRASTRUCTURE}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Talent Signals</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From job postings and LinkedIn data</div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    {{AI_TALENT_SIGNALS}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Innovation Signals</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Patents, research, and open source contributions</div>
+                    </div>
+                </div>
+                <div class="insight-box success">
+                    {{INNOVATION_SIGNALS}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Peer Benchmarking</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Comparison to industry peers</div>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    {{PEER_BENCHMARK}}
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: AI USE CASES -->
+        <div id="ai-use-cases" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Use Cases Strategy</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Proprietary use case identification framework</div>
+                    </div>
+                </div>
+                <p class="section-intro">{{AI_INTRO}}</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Prioritization Matrix</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">X: Implementation Effort | Y: Business Impact</div>
+                    </div>
+                </div>
+                <div class="priority-matrix">
+                    <div class="matrix-axes"></div>
+                    {{PRIORITY_MATRIX_DOTS}}
+                    <div class="matrix-quadrant-labels matrix-x-label">Implementation Effort →</div>
+                    <div class="matrix-quadrant-labels matrix-y-label">Business Impact →</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Horizon Legend</h2>
+                </div>
+                <div style="display: flex; gap: 20px; padding: 12px 0;">
+                    <div>
+                        <span class="use-case-horizon horizon-1">H1: Quick Wins</span>
+                        <p style="font-size: 13px; color: var(--color-slate); margin-top: 8px;">6-12 months to implementation</p>
+                    </div>
+                    <div>
+                        <span class="use-case-horizon horizon-2">H2: Growth</span>
+                        <p style="font-size: 13px; color: var(--color-slate); margin-top: 8px;">12-24 months to implementation</p>
+                    </div>
+                    <div>
+                        <span class="use-case-horizon horizon-3">H3: Transformational</span>
+                        <p style="font-size: 13px; color: var(--color-slate); margin-top: 8px;">24+ months to implementation</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-4">
+                {{AI_USE_CASES}}
+            </div>
+
+            <div style="margin-top: 40px;">
+                <input type="text" id="use-case-search" placeholder="Search use cases..."
+                       style="width: 100%; padding: 12px 16px; border: 1px solid var(--color-gray-200); border-radius: 6px; font-size: 14px;">
+                <p style="font-size: 12px; color: var(--color-slate); margin-top: 8px;">Type to filter use cases by title or business area</p>
+            </div>
+        </div>
+
+        <!-- TAB 7: ENGAGEMENT STRATEGY -->
+        <div id="engagement-strategy" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Engagement Strategy</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Customized engagement approach</div>
+                    </div>
+                </div>
+                <div class="insight-box success" style="margin-bottom: 20px;">
+                    {{ENGAGEMENT_STRATEGY}}
+                </div>
+                <p style="font-size: 14px; color: var(--color-slate); line-height: 1.6;">{{MEETING_BRIEF}}</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Value Proposition</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Tailored to company context</div>
+                    </div>
+                </div>
+                <div class="insight-box success">
+                    {{VALUE_PROPOSITION_FRAMING}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Talking Points</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Primary conversation topics</div>
+                    </div>
+                </div>
+                {{TALKING_POINTS}}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Anticipated Objections & Responses</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Prepared responses to common concerns</div>
+                    </div>
+                </div>
+                {{OBJECTIONS_RESPONSES}}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recommended Approach</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Engagement methodology</div>
+                    </div>
+                </div>
+                {{RECOMMENDED_APPROACH}}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Next Steps & Timeline</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Proposed engagement timeline</div>
+                    </div>
+                </div>
+                <div class="timeline">
+                    {{NEXT_STEPS}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Topics to Approach Carefully</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Areas requiring sensitivity</div>
+                    </div>
+                </div>
+                {{TOPICS_TO_AVOID}}
+            </div>
+        </div>
+
+        <!-- TAB 8: SOURCES & METHODOLOGY -->
+        <div id="sources" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Report Metadata</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Report generation details</div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <div class="info-label">Generated Date</div>
+                        <div class="info-value">{{GENERATION_DATE}}</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Report Token</div>
+                        <div class="info-value" style="word-break: break-all; font-size: 12px;">{{REPORT_TOKEN}}</div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <div class="info-label">Requested By</div>
+                        <div class="info-value">{{REQUESTOR_NAME}}</div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <div class="info-label">Analysis Sources</div>
+                        <div class="info-value">{{SOURCE_COUNT}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Source Confidence Distribution</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Source quality assessment</div>
+                    </div>
+                </div>
+                <div class="pie-chart">
+                    <div class="pie-container">
+                        <svg class="pie-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Primary sources (green) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#22c55e" stroke-width="30"
+                                    stroke-dasharray="{{PRIMARY_ARC}} 565.48" stroke-dashoffset="0"/>
+                            <!-- Secondary sources (blue) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#3b82f6" stroke-width="30"
+                                    stroke-dasharray="{{SECONDARY_ARC}} 565.48" stroke-dashoffset="-{{PRIMARY_ARC}}"/>
+                            <!-- Inferred sources (purple) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#8b5cf6" stroke-width="30"
+                                    stroke-dasharray="{{INFERRED_ARC}} 565.48" stroke-dashoffset="-{{PRIMARY_SECONDARY_COMBINED}}"/>
+                            <!-- Speculative sources (gray) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#cbd5e1" stroke-width="30"
+                                    stroke-dasharray="{{SPECULATIVE_ARC}} 565.48" stroke-dashoffset="-{{PRIMARY_SECONDARY_INFERRED_COMBINED}}"/>
+                        </svg>
+                    </div>
+                    <div class="pie-legend">
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #22c55e;"></div>
+                            <div class="pie-label">Primary</div>
+                            <div class="pie-percentage">{{PRIMARY_PCT}}%</div>
+                        </div>
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #3b82f6;"></div>
+                            <div class="pie-label">Secondary</div>
+                            <div class="pie-percentage">{{SECONDARY_PCT}}%</div>
+                        </div>
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #8b5cf6;"></div>
+                            <div class="pie-label">Inferred</div>
+                            <div class="pie-percentage">{{INFERRED_PCT}}%</div>
+                        </div>
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #cbd5e1;"></div>
+                            <div class="pie-label">Speculative</div>
+                            <div class="pie-percentage">{{SPECULATIVE_PCT}}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Primary Sources ({{SOURCE_COUNT}} total)</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Authoritative company and market sources</div>
+                    </div>
+                </div>
+                {{SOURCES_LIST}}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Methodology & Framework</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Analysis approach and limitations</div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    {{METHODOLOGY_NOTES}}
+                </div>
+                <div style="margin-top: 20px;">
+                    <div class="info-label">Data Freshness</div>
+                    <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate);">{{DATA_FRESHNESS}}</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Original Prompt</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Request parameters</div>
+                    </div>
+                </div>
+                <div style="background: var(--color-gray-50); padding: 16px; border-radius: 6px; border-left: 3px solid var(--color-slate); font-family: 'Courier New', monospace; font-size: 12px; color: var(--color-slate); line-height: 1.6; word-break: break-word;">
+                    {{ORIGINAL_PROMPT}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Report Information</h3>
+                <p>AI Strategy Dashboard providing comprehensive analysis of {{COMPANY_NAME}}'s artificial intelligence readiness, competitive positioning, market opportunities, and recommended engagement strategy.</p>
+            </div>
+            <div class="footer-column">
+                <div class="footer-meta">
+                    <div class="footer-meta-item">
+                        <strong>Generated:</strong> {{GENERATION_DATE}}
+                    </div>
+                    <div class="footer-meta-item">
+                        <strong>Token:</strong> {{REPORT_TOKEN}}
+                    </div>
+                    <div class="footer-meta-item">
+                        <strong>Requestor:</strong> {{REQUESTOR_NAME}}
+                    </div>
+                    <div class="footer-meta-item">
+                        <strong>Sources:</strong> {{SOURCE_COUNT}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-disclaimer">
+            AI-Generated Analysis - Verify all findings independently. This analysis is based on publicly available information and proprietary research methods. All data should be independently verified before use in business decisions.
+        </div>
+    </div>
+
+    <script>
+        // TAB SWITCHING
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+
+                // Remove active class from all tabs and buttons
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Add active class to current tab and button
+                document.getElementById(tabName).classList.add('active');
+                button.classList.add('active');
+
+                // Smooth scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // USE CASE SEARCH/FILTER
+        const searchInput = document.getElementById('use-case-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const useCaseCards = document.querySelectorAll('.use-case-card');
+
+                useCaseCards.forEach(card => {
+                    const title = card.querySelector('.use-case-title')?.textContent.toLowerCase() || '';
+                    const businessArea = card.querySelector('.meta-value')?.textContent.toLowerCase() || '';
+                    const description = card.querySelector('.use-case-description')?.textContent.toLowerCase() || '';
+
+                    if (title.includes(searchTerm) || businessArea.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // PRINT FUNCTIONALITY
+        window.printReport = function() {
+            window.print();
+        };
+
+        // SMOOTH SCROLL
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Initialize tooltips
+        document.querySelectorAll('.methodology-callout').forEach(callout => {
+            callout.addEventListener('mouseover', function() {
+                const tooltip = this.querySelector('.methodology-tooltip');
+                if (tooltip) {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.visibility = 'visible';
+                }
+            });
+
+            callout.addEventListener('mouseout', function() {
+                const tooltip = this.querySelector('.methodology-tooltip');
+                if (tooltip) {
+                    tooltip.style.opacity = '0';
+                    tooltip.style.visibility = 'hidden';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
