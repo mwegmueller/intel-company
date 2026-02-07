@@ -560,10 +560,16 @@ Example: `novartis-8cea1670.html`
 Write to: `{OUTPUT_DIR}/{filename}.html`
 **IMPORTANT**: Must be in same directory as `assets/` folder for logos to display.
 
-### Step 6: Deploy to GitHub Pages (use Bash tool)
+### Step 6: Deploy to GitHub Pages (use Bash tool - MANDATORY)
+
+**This step is NOT optional. Every generated dashboard MUST be automatically committed and pushed to GitHub Pages.**
+
+Run these commands sequentially in a single Bash call:
 ```bash
-cd {OUTPUT_DIR} && git add . && git commit -m "Add AI strategy dashboard: {COMPANY_NAME}" && git push
+cd {OUTPUT_DIR} && git add -A && git commit -m "Add AI strategy dashboard: {COMPANY_NAME}" && git push origin main
 ```
+
+If git push fails due to authentication, inform the user but still proceed with opening locally.
 
 ### Step 7: Open Locally (use Bash tool)
 ```bash
@@ -571,7 +577,12 @@ open {OUTPUT_DIR}/{filename}.html
 ```
 
 ### Step 8: Return the Shareable URL
+
+**Always display the GitHub Pages URL to the user after deployment:**
+
 `https://mwegmueller.github.io/intel-company/{filename}.html`
+
+Note: GitHub Pages may take 1-2 minutes to deploy after the push. The local file opens immediately.
 
 ---
 
