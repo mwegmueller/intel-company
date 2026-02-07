@@ -35,6 +35,38 @@ description: >
 
 **The HTML template uses relative paths to assets (`assets/artifact-logo-horizontal.png`), so the generated report MUST be saved in the same directory as the `assets/` folder.**
 
+## CRITICAL: COMPANY LOGO
+
+The template supports dynamic company logos in the header. When generating a report:
+
+1. **Search for the company logo** using WebSearch: `{{COMPANY_NAME}} logo png transparent`
+2. **Use the logo URL** as `{{COMPANY_LOGO_URL}}` in the header `<img>` tag
+3. The template includes a fallback: if the logo fails to load (`onerror`), it displays the company initials (`{{COMPANY_INITIALS}}`) in a styled circle instead
+4. **Prefer official/high-quality logos** from company websites, Wikipedia, or brand asset pages
+5. Use `clearbit.com/logo/{{company-domain}}` as a reliable fallback source (e.g., `https://logo.clearbit.com/novartis.com`)
+
+## CRITICAL: AI READINESS GAUGE CHART
+
+The gauge chart uses CSS `conic-gradient` via a CSS custom property `--gauge-percentage`. When rendering:
+- Set the percentage as a CSS variable: `style="--gauge-percentage: 72"` (for 72%)
+- The value is 0-100 representing the AI readiness score as a percentage (score * 10)
+- Example: AI readiness score of 6.5 → `--gauge-percentage: 65`
+
+## CRITICAL: METHODOLOGY INFO BOXES
+
+**Every single card on every tab** must have a methodology callout (inline info badge). The format is:
+```html
+<span class="methodology-callout">
+    <span class="methodology-icon">ℹ️</span> How calculated
+    <div class="methodology-tooltip">DETAILED explanation of data sources, methodology, confidence level, and any caveats for this specific section.</div>
+</span>
+```
+The tooltip text must be **specific to each section** - never use generic text. Explain:
+- What data sources were used (e.g., "SEC 10-K filings", "LinkedIn job postings", "Gartner Magic Quadrant 2024")
+- How the analysis was derived (e.g., "Scored based on 6-dimension maturity model")
+- Confidence level (e.g., "VERIFIED from public filings" vs "INFERRED from job postings")
+- Any limitations (e.g., "Private company - limited financial data available")
+
 ## CRITICAL: SOURCE LINKS MUST BE CLICKABLE
 
 **Every source in the Sources section MUST be a clickable link with an actual URL.**
@@ -218,6 +250,9 @@ Transform synthesized analysis into interactive 8-tab dashboard using report-tem
 - Market Share Estimates (with confidence levels)
 - Differentiation Analysis (vs 2-3 key competitors)
 - Disruption Risk from Non-Traditional Players
+- **NEW: Competitive AI Comparison Summary** - Overall assessment of how {{COMPANY_NAME}} compares to competitors in AI. Are they ahead, behind, or on par? Be specific and cite evidence.
+- **NEW: Competitor AI Initiatives Detail** - For each major competitor, list their specific AI initiatives, products, and investments. Use `competitor-ai-detail` cards. The more concrete the better (product names, investment amounts, partnerships).
+- **NEW: AI Maturity vs AI Ambition Chart** - Scatter plot with all competitors AND the subject company. X-axis = current AI maturity (what they've done). Y-axis = AI ambition (what they've announced/planned). Subject company uses `subject-company` class. Include tooltip text explaining positioning rationale for each company.
 
 #### Tab 4: Market & Industry Analysis
 - Industry Overview & Market Size (with growth rate, TAM)
@@ -229,8 +264,11 @@ Transform synthesized analysis into interactive 8-tab dashboard using report-tem
 - Consolidation & M&A Activity (if relevant)
 
 #### Tab 5: Digital & AI Maturity Assessment
+- **NEW: AI Journey Summary** (FIRST card in this tab) - Two-column layout:
+  - Left: "Confirmed AI Implementations" (insight-box success) - What the company has ACTUALLY done in AI (deployed products, tools, teams). Use {{AI_CONFIRMED_IMPLEMENTATIONS}}.
+  - Right: "Announced AI Plans & Ambitions" (insight-box warning) - What they've publicly announced or signaled for the future. Use {{AI_ANNOUNCED_PLANS}}.
+- AI Maturity Scorecard (6-dimension radar chart - ensure it renders centered with max-width 450px)
 - Current Digital Capabilities (cloud migration %, digital customer %, omnichannel presence)
-- AI Maturity Scorecard (6-dimension breakdown with spider chart)
 - Technology Readiness Indicators (infrastructure quality, data governance, API maturity)
 - Data Infrastructure Signals (data lake/warehouse presence, data science team size)
 - AI Talent Indicators (identified ML engineers, data scientists from job postings)
@@ -251,9 +289,10 @@ For each of 8 prioritized use cases:
 - **Risk Factors:** Key implementation risks and mitigation approaches
 
 Additional visualization:
+- **NEW: Impact vs Feasibility Matrix (2x2):** All 8 use cases plotted as numbered dots on a centered chart. X-axis = Feasibility (Low→High). Y-axis = Business Impact (Low→High). Quadrants: "Strategic Bets" (top-left), "Quick Wins" (top-right), "Deprioritize" (bottom-left), "Low-Hanging Fruit" (bottom-right). Use `ifm-dot` CSS class with `ifm-dot-tooltip` for hover labels. Use {{IFM_DOTS}} and {{IFM_LEGEND}} placeholders.
 - Maturity Curve Chart: All 8 use cases plotted on horizontal strategy → operate axis
-- Impact vs Effort Matrix: All 8 use cases on 2x2 quadrant chart
 - Value Realization Timeline: Gantt-style view of implementation phases across all use cases
+- **NEW: Competitor Benchmarks section** - After the 8 use case cards, add a card titled "Competitor Benchmarks: Who Has Done What?" with {{USE_CASE_COMPETITOR_BENCHMARKS}}. For each use case, describe what competitors have already implemented in similar areas. Be as concrete as possible (product names, results achieved, timelines).
 
 #### Tab 7: Engagement Strategy
 - Meeting Preparation Brief (key talking points, agenda sequencing)
@@ -408,6 +447,19 @@ All {{PLACEHOLDERS}} used throughout execution:
 | `{{AI_MATURITY_[DIM]}}` | Dimension score (Strategy/Data/etc) | 3.5, 4.0, 2.5, etc | Model scoring |
 | `{{USE_CASE_[N]_TITLE}}` | AI use case title | Predictive Maintenance | Analysis output |
 | `{{USE_CASE_[N]_IMPACT}}` | Use case business impact | High / Medium / Low | Framework assessment |
+| `{{COMPANY_LOGO_URL}}` | URL to company logo PNG | https://logo.clearbit.com/apple.com | Web search / Clearbit |
+| `{{COMPANY_INITIALS}}` | Company initials fallback | AP, NV, JP | Derived from name |
+| `{{AI_CONFIRMED_IMPLEMENTATIONS}}` | Confirmed AI deployments | HTML list of confirmed AI projects | Web research |
+| `{{AI_ANNOUNCED_PLANS}}` | Announced AI plans | HTML list of announced AI intentions | Web research |
+| `{{COMPETITIVE_AI_SUMMARY}}` | Overall competitive AI assessment | Narrative comparing company vs peers | Analysis |
+| `{{COMPETITOR_AI_DETAILS}}` | Detailed competitor AI initiatives | HTML cards per competitor with AI details | Web research |
+| `{{AI_MATURITY_AMBITION_DOTS}}` | Scatter dots for AI maturity vs ambition chart | ai-scatter-dot elements | Analysis |
+| `{{AI_MATURITY_AMBITION_LEGEND}}` | Legend for AI maturity vs ambition chart | Legend items with colors | Analysis |
+| `{{IFM_DOTS}}` | Impact vs Feasibility matrix dots | ifm-dot elements with tooltips | Analysis |
+| `{{IFM_LEGEND}}` | Legend for Impact vs Feasibility matrix | Numbered legend items | Analysis |
+| `{{USE_CASE_COMPETITOR_BENCHMARKS}}` | What competitors have done for each use case | HTML sections per use case | Web research |
+| `{{ORIGINAL_PROMPT}}` | User's original input prompt | "Prepare AI strategy for Novartis..." | User input |
+| `{{REQUESTOR_NAME}}` | Name of person who requested the report | Marcel Wegmueller | User input / default |
 
 ---
 

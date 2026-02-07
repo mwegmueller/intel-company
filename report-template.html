@@ -139,25 +139,34 @@
         /* TAB NAVIGATION */
         .tab-nav {
             background: var(--color-white);
-            border-bottom: 2px solid var(--color-gray-200);
+            border-bottom: 1px solid var(--color-gray-200);
             display: flex;
             overflow-x: auto;
             padding: 0 40px;
-            gap: 8px;
+            gap: 4px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            scrollbar-width: none;
+        }
+
+        .tab-nav::-webkit-scrollbar {
+            display: none;
         }
 
         .tab-btn {
             background: none;
             border: none;
-            padding: 16px 20px;
-            font-size: 14px;
+            padding: 14px 18px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--color-slate);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             position: relative;
             white-space: nowrap;
             border-bottom: 3px solid transparent;
+            border-radius: 6px 6px 0 0;
         }
 
         .tab-btn:hover {
@@ -168,6 +177,7 @@
         .tab-btn.active {
             color: var(--color-blue);
             border-bottom-color: var(--color-blue);
+            background-color: var(--color-gray-50);
         }
 
         /* MAIN CONTENT */
@@ -233,54 +243,53 @@
             margin-top: 8px;
         }
 
-        /* METHODOLOGY CALLOUT */
+        /* METHODOLOGY CALLOUT - inline info badge like intel-dashboard */
         .methodology-callout {
-            position: relative;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: var(--color-blue);
-            color: var(--color-white);
-            font-size: 12px;
-            font-weight: 700;
+            gap: 6px;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 11px;
+            color: var(--color-navy);
             cursor: help;
+            position: relative;
+            font-weight: 600;
         }
 
         .methodology-callout:hover .methodology-tooltip {
-            opacity: 1;
-            visibility: visible;
+            display: block;
         }
 
         .methodology-tooltip {
+            display: none;
             position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
             background: var(--color-navy);
             color: var(--color-white);
             padding: 12px 16px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 12px;
-            white-space: nowrap;
+            font-weight: 400;
+            width: 320px;
+            white-space: normal;
             z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            margin-bottom: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            line-height: 1.5;
         }
 
-        .methodology-tooltip::after {
+        .methodology-tooltip::before {
             content: '';
             position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 6px solid transparent;
-            border-top-color: var(--color-navy);
+            top: -8px;
+            left: 20px;
+            border: 8px solid transparent;
+            border-bottom-color: var(--color-navy);
+            border-top: none;
         }
 
         /* BADGE & TAGS */
@@ -515,19 +524,39 @@
             position: relative;
             width: 160px;
             height: 160px;
+            min-width: 160px;
             border-radius: 50%;
-            background: conic-gradient(
-                var(--color-blue) 0deg {{GAUGE_PERCENTAGE}}%,
-                var(--color-gray-200) {{GAUGE_PERCENTAGE}}% 360deg
-            );
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: inset 0 0 0 12px var(--color-white);
+        }
+
+        .gauge-circle::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--color-blue) 0deg,
+                var(--color-blue) calc(var(--gauge-percentage, 0) * 3.6deg),
+                var(--color-gray-200) calc(var(--gauge-percentage, 0) * 3.6deg),
+                var(--color-gray-200) 360deg
+            );
+            z-index: 0;
+        }
+
+        .gauge-circle::after {
+            content: '';
+            position: absolute;
+            inset: 14px;
+            border-radius: 50%;
+            background: var(--color-white);
+            z-index: 1;
         }
 
         .gauge-value {
-            text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
         .gauge-score {
@@ -967,9 +996,242 @@
 
         .radar-svg {
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             height: auto;
             margin: 0 auto;
+            display: block;
+        }
+
+        /* IMPACT-FEASIBILITY 2x2 MATRIX */
+        .impact-feasibility-matrix {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 500px;
+            margin: 20px auto;
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 60px 60px 60px 80px;
+        }
+
+        .ifm-grid {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-left: 2px solid var(--color-slate);
+            border-bottom: 2px solid var(--color-slate);
+        }
+
+        .ifm-quadrant-label {
+            position: absolute;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-slate);
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ifm-quadrant-label.top-left { top: 10px; left: 10px; }
+        .ifm-quadrant-label.top-right { top: 10px; right: 10px; }
+        .ifm-quadrant-label.bottom-left { bottom: 10px; left: 10px; }
+        .ifm-quadrant-label.bottom-right { bottom: 10px; right: 10px; }
+
+        .ifm-midline-h {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            border-top: 1px dashed var(--color-gray-300);
+        }
+
+        .ifm-midline-v {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            height: 100%;
+            border-left: 1px dashed var(--color-gray-300);
+        }
+
+        .ifm-x-label {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        .ifm-y-label {
+            position: absolute;
+            top: 50%;
+            left: -55px;
+            transform: translateY(-50%) rotate(-90deg);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        .ifm-dot {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transform: translate(-50%, -50%);
+        }
+
+        .ifm-dot:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+        }
+
+        .ifm-dot:hover .ifm-dot-tooltip {
+            display: block;
+        }
+
+        .ifm-dot-tooltip {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-navy);
+            color: var(--color-white);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        /* AI MATURITY vs AMBITION SCATTER */
+        .ai-scatter-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 500px;
+            margin: 20px auto;
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 60px 60px 60px 80px;
+        }
+
+        .ai-scatter-grid {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-left: 2px solid var(--color-slate);
+            border-bottom: 2px solid var(--color-slate);
+        }
+
+        .ai-scatter-dot {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--color-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transform: translate(-50%, -50%);
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        .ai-scatter-dot.subject-company {
+            width: 56px;
+            height: 56px;
+            border: 3px solid var(--color-white);
+            box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+            background: var(--color-blue);
+        }
+
+        .ai-scatter-dot:hover {
+            transform: translate(-50%, -50%) scale(1.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+
+        .ai-scatter-dot:hover .scatter-tip {
+            display: block;
+        }
+
+        .scatter-tip {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-navy);
+            color: var(--color-white);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 400;
+            white-space: nowrap;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10;
+            max-width: 280px;
+            white-space: normal;
+            text-align: left;
+        }
+
+        /* COMPETITOR AI DETAIL CARD */
+        .competitor-ai-detail {
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .competitor-ai-detail h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .competitor-ai-detail p {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.6;
+        }
+
+        .competitor-ai-detail .ai-initiatives {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--color-gray-200);
+        }
+
+        .competitor-ai-detail .ai-initiatives li {
+            font-size: 13px;
+            color: var(--color-slate);
+            margin-bottom: 4px;
+            list-style: disc inside;
         }
 
         /* OBJECTION CARD */
@@ -1478,10 +1740,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Company Overview</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Based on public filings, news, and market databases</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="company-info-card">
                     <div class="info-item">
@@ -1522,10 +1784,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">AI Readiness & Digital Maturity</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Proprietary assessment framework</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="ai-readiness-gauge">
                     <div class="gauge-circle" style="--gauge-percentage: {{AI_READINESS_PERCENTAGE}}">
@@ -1544,10 +1806,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Key Findings</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Synthesized from research and analysis</div>
-                    </div>
+                    </span>
                 </div>
                 {{KEY_FINDINGS}}
             </div>
@@ -1555,10 +1817,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Top 3 AI Opportunities Preview</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">See AI Use Cases tab for full analysis</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="grid-3">
                     {{TOP_AI_PREVIEW}}
@@ -1568,10 +1830,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Meeting Context & Fit</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Based on engagement parameters</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="grid-2">
                     <div>
@@ -1603,10 +1865,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Business Model Canvas</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Osterwalder Business Model Canvas</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="grid-2">
                     <div>
@@ -1631,10 +1893,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Financial Performance ({{REVENUE_PERIOD}})</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">From SEC filings and investor reports</div>
-                    </div>
+                    </span>
                 </div>
                 <div style="padding: 20px 0;">
                     <div class="revenue-bar-chart">
@@ -1649,10 +1911,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Technology Stack</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">From job postings, tech blogs, and company publications</div>
-                    </div>
+                    </span>
                 </div>
                 <div style="padding: 12px 0;">
                     {{TECH_STACK_TAGS}}
@@ -1662,10 +1924,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Strategic Priorities</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">From earnings calls, investor presentations, and public statements</div>
-                    </div>
+                    </span>
                 </div>
                 {{STRATEGIC_PRIORITIES}}
             </div>
@@ -1673,10 +1935,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Recent Announcements & News</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Last 12 months of major announcements</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="timeline">
                     {{RECENT_ANNOUNCEMENTS}}
@@ -1686,10 +1948,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Leadership Team</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">From company website and LinkedIn</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="grid-4">
                     {{LEADERSHIP_TEAM}}
@@ -1702,10 +1964,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Competitive Positioning</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Market research and competitive analysis</div>
-                    </div>
+                    </span>
                 </div>
                 <p class="section-intro">{{INDUSTRY}} competitive landscape analysis showing {{COMPANY_NAME}}'s position relative to key market competitors across innovation and market presence dimensions.</p>
                 <div class="priority-matrix">
@@ -1722,10 +1984,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Competitive Advantages</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Comparative analysis</div>
-                    </div>
+                    </span>
                 </div>
                 {{COMPETITIVE_ADVANTAGES}}
             </div>
@@ -1733,10 +1995,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">AI Maturity Comparison</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Based on public AI initiatives and investment levels</div>
-                    </div>
+                    </span>
                 </div>
                 <div style="overflow-x: auto;">
                     <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
@@ -1759,10 +2021,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Market Share</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Market sizing from industry reports</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="bar-group">
                     {{MARKET_SHARE_BARS}}
@@ -1772,10 +2034,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Key Differentiators</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Competitive differentiation analysis</div>
-                    </div>
+                    </span>
                 </div>
                 <div style="padding: 12px 0;">
                     {{DIFFERENTIATORS}}
@@ -1785,13 +2047,63 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Competitor Profiles</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Key competitors in {{INDUSTRY}}</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="grid-3">
                     {{COMPETITORS_LIST}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitive AI Comparison Summary</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Synthesized from public AI announcements, job postings, patent filings, and technology partnerships across all identified competitors. Assessment compares {{COMPANY_NAME}}'s AI position relative to peers.</div>
+                    </span>
+                </div>
+                <div class="insight-box">
+                    {{COMPETITIVE_AI_SUMMARY}}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitor AI Initiatives in Detail</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Detailed competitor AI analysis from press releases, product announcements, conference presentations, and technology blogs. Each initiative verified against multiple sources where possible.</div>
+                    </span>
+                </div>
+                {{COMPETITOR_AI_DETAILS}}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Maturity vs AI Ambition</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">X-axis: Current AI Maturity based on implemented solutions, team size, and infrastructure. Y-axis: AI Ambition based on announced plans, investment levels, and strategic priority. {{COMPANY_NAME}} highlighted in blue. Positioning rationale provided in tooltips.</div>
+                    </span>
+                </div>
+                <div class="ai-scatter-container">
+                    <div class="ai-scatter-grid">
+                        <div class="ifm-midline-h"></div>
+                        <div class="ifm-midline-v"></div>
+                        <span class="ifm-quadrant-label top-left">High Ambition, Low Maturity</span>
+                        <span class="ifm-quadrant-label top-right">Leaders</span>
+                        <span class="ifm-quadrant-label bottom-left">Laggards</span>
+                        <span class="ifm-quadrant-label bottom-right">Mature, Low Ambition</span>
+                        {{AI_MATURITY_AMBITION_DOTS}}
+                    </div>
+                    <span class="ifm-x-label">AI Maturity (Current) →</span>
+                    <span class="ifm-y-label">AI Ambition (Future) →</span>
+                </div>
+                <div style="margin-top: 16px;">
+                    {{AI_MATURITY_AMBITION_LEGEND}}
                 </div>
             </div>
         </div>
@@ -1801,10 +2113,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Industry Overview</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">From analyst reports and market research</div>
-                    </div>
+                    </span>
                 </div>
                 <p style="font-size: 14px; color: var(--color-slate); line-height: 1.6;">{{INDUSTRY_OVERVIEW}}</p>
                 <div class="grid-2" style="margin-top: 20px;">
@@ -1820,10 +2132,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Key Industry Trends</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Trend analysis from industry sources</div>
-                    </div>
+                    </span>
                 </div>
                 {{INDUSTRY_TRENDS}}
             </div>
@@ -1831,10 +2143,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Disruption Forces</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Based on technology and market changes</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="grid-3">
                     {{DISRUPTION_FORCES}}
@@ -1844,10 +2156,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Value Chain</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Industry structure analysis</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="value-chain-flow">
                     {{VALUE_CHAIN}}
@@ -1857,10 +2169,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">AI Adoption in {{INDUSTRY}}</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Industry-wide AI adoption assessment</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="insight-box">
                     {{INDUSTRY_AI_ADOPTION}}
@@ -1870,10 +2182,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Regulatory & Compliance Landscape</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Relevant regulations and compliance requirements</div>
-                    </div>
+                    </span>
                 </div>
                 {{REGULATORY_ITEMS}}
             </div>
@@ -1881,13 +2193,38 @@
 
         <!-- TAB 5: AI MATURITY ASSESSMENT -->
         <div id="ai-maturity" class="tab-content">
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Journey: What {{COMPANY_NAME}} Has Done & Announced</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Compiled from press releases, annual reports, earnings calls, job postings, and news articles. Separated into confirmed implementations vs announced plans.</div>
+                    </span>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--color-navy); margin-bottom: 12px;">Confirmed AI Implementations</h3>
+                        <div class="insight-box success">
+                            {{AI_CONFIRMED_IMPLEMENTATIONS}}
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--color-navy); margin-bottom: 12px;">Announced AI Plans & Ambitions</h3>
+                        <div class="insight-box warning">
+                            {{AI_ANNOUNCED_PLANS}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">AI Maturity Radar Assessment</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">6-dimension maturity model (1-5 scale)</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="text-center">
                     <svg class="radar-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
@@ -1930,10 +2267,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Maturity Score Breakdown</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Assessment across 6 key dimensions</div>
-                    </div>
+                    </span>
                 </div>
                 {{MATURITY_BREAKDOWN}}
             </div>
@@ -1941,10 +2278,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Technology Readiness</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Current technology infrastructure assessment</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="insight-box">
                     {{TECH_READINESS}}
@@ -1954,10 +2291,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Data Infrastructure & Governance</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Data maturity and governance assessment</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="insight-box success">
                     {{DATA_INFRASTRUCTURE}}
@@ -1967,10 +2304,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">AI Talent Signals</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">From job postings and LinkedIn data</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="insight-box">
                     {{AI_TALENT_SIGNALS}}
@@ -1980,10 +2317,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Innovation Signals</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Patents, research, and open source contributions</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="insight-box success">
                     {{INNOVATION_SIGNALS}}
@@ -1993,10 +2330,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Peer Benchmarking</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Comparison to industry peers</div>
-                    </div>
+                    </span>
                 </div>
                 <div style="overflow-x: auto;">
                     {{PEER_BENCHMARK}}
@@ -2009,27 +2346,37 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">AI Use Cases Strategy</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Proprietary use case identification framework</div>
-                    </div>
+                    </span>
                 </div>
                 <p class="section-intro">{{AI_INTRO}}</p>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Prioritization Matrix</h2>
-                    <div class="methodology-callout">
-                        ℹ️
-                        <div class="methodology-tooltip">X: Implementation Effort | Y: Business Impact</div>
-                    </div>
+                    <h2 class="card-title">Impact vs Feasibility Matrix</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Each use case plotted on a 2x2 matrix. X-axis: Feasibility (data readiness, technical complexity, organizational readiness). Y-axis: Business Impact (revenue potential, cost savings, strategic value). Numbered dots correspond to the 8 use cases below.</div>
+                    </span>
                 </div>
-                <div class="priority-matrix">
-                    <div class="matrix-axes"></div>
-                    {{PRIORITY_MATRIX_DOTS}}
-                    <div class="matrix-quadrant-labels matrix-x-label">Implementation Effort →</div>
-                    <div class="matrix-quadrant-labels matrix-y-label">Business Impact →</div>
+                <div class="impact-feasibility-matrix">
+                    <div class="ifm-grid">
+                        <div class="ifm-midline-h"></div>
+                        <div class="ifm-midline-v"></div>
+                        <span class="ifm-quadrant-label top-left">Strategic Bets</span>
+                        <span class="ifm-quadrant-label top-right">Quick Wins</span>
+                        <span class="ifm-quadrant-label bottom-left">Deprioritize</span>
+                        <span class="ifm-quadrant-label bottom-right">Low-Hanging Fruit</span>
+                        {{IFM_DOTS}}
+                    </div>
+                    <span class="ifm-x-label">Feasibility →</span>
+                    <span class="ifm-y-label">Business Impact →</span>
+                </div>
+                <div style="margin-top: 16px;">
+                    {{IFM_LEGEND}}
                 </div>
             </div>
 
@@ -2057,6 +2404,17 @@
                 {{AI_USE_CASES}}
             </div>
 
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header">
+                    <h2 class="card-title">Competitor Benchmarks: Who Has Done What?</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">For each recommended use case, we researched whether competitors have already implemented similar solutions. Sources include press releases, case studies, product announcements, and industry reports.</div>
+                    </span>
+                </div>
+                {{USE_CASE_COMPETITOR_BENCHMARKS}}
+            </div>
+
             <div style="margin-top: 40px;">
                 <input type="text" id="use-case-search" placeholder="Search use cases..."
                        style="width: 100%; padding: 12px 16px; border: 1px solid var(--color-gray-200); border-radius: 6px; font-size: 14px;">
@@ -2069,10 +2427,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Engagement Strategy</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Customized engagement approach</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="insight-box success" style="margin-bottom: 20px;">
                     {{ENGAGEMENT_STRATEGY}}
@@ -2083,10 +2441,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Value Proposition</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Tailored to company context</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="insight-box success">
                     {{VALUE_PROPOSITION_FRAMING}}
@@ -2096,10 +2454,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Key Talking Points</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Primary conversation topics</div>
-                    </div>
+                    </span>
                 </div>
                 {{TALKING_POINTS}}
             </div>
@@ -2107,10 +2465,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Anticipated Objections & Responses</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Prepared responses to common concerns</div>
-                    </div>
+                    </span>
                 </div>
                 {{OBJECTIONS_RESPONSES}}
             </div>
@@ -2118,10 +2476,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Recommended Approach</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Engagement methodology</div>
-                    </div>
+                    </span>
                 </div>
                 {{RECOMMENDED_APPROACH}}
             </div>
@@ -2129,10 +2487,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Next Steps & Timeline</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Proposed engagement timeline</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="timeline">
                     {{NEXT_STEPS}}
@@ -2142,10 +2500,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Topics to Approach Carefully</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Areas requiring sensitivity</div>
-                    </div>
+                    </span>
                 </div>
                 {{TOPICS_TO_AVOID}}
             </div>
@@ -2156,10 +2514,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Report Metadata</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Report generation details</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="grid-2">
                     <div>
@@ -2184,10 +2542,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Source Confidence Distribution</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Source quality assessment</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="pie-chart">
                     <div class="pie-container">
@@ -2234,10 +2592,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Primary Sources ({{SOURCE_COUNT}} total)</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Authoritative company and market sources</div>
-                    </div>
+                    </span>
                 </div>
                 {{SOURCES_LIST}}
             </div>
@@ -2245,10 +2603,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Methodology & Framework</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Analysis approach and limitations</div>
-                    </div>
+                    </span>
                 </div>
                 <div class="insight-box">
                     {{METHODOLOGY_NOTES}}
@@ -2262,10 +2620,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Original Prompt</h2>
-                    <div class="methodology-callout">
-                        ℹ️
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
                         <div class="methodology-tooltip">Request parameters</div>
-                    </div>
+                    </span>
                 </div>
                 <div style="background: var(--color-gray-50); padding: 16px; border-radius: 6px; border-left: 3px solid var(--color-slate); font-family: 'Courier New', monospace; font-size: 12px; color: var(--color-slate); line-height: 1.6; word-break: break-word;">
                     {{ORIGINAL_PROMPT}}
@@ -2278,7 +2636,10 @@
     <div class="footer">
         <div class="footer-content">
             <div class="footer-column">
-                <h3>Report Information</h3>
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                    <img src="assets/artifact-logo-horizontal.png" alt="Artifact" style="height: 28px; filter: brightness(0) invert(1);">
+                    <span style="font-size: 1rem; font-weight: 800; background: linear-gradient(135deg, #60a5fa, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Intel Company</span>
+                </div>
                 <p>AI Strategy Dashboard providing comprehensive analysis of {{COMPANY_NAME}}'s artificial intelligence readiness, competitive positioning, market opportunities, and recommended engagement strategy.</p>
             </div>
             <div class="footer-column">
@@ -2287,19 +2648,26 @@
                         <strong>Generated:</strong> {{GENERATION_DATE}}
                     </div>
                     <div class="footer-meta-item">
-                        <strong>Token:</strong> {{REPORT_TOKEN}}
+                        <strong>Report ID:</strong> {{REPORT_TOKEN}}
                     </div>
                     <div class="footer-meta-item">
-                        <strong>Requestor:</strong> {{REQUESTOR_NAME}}
+                        <strong>Created by:</strong> {{REQUESTOR_NAME}}
                     </div>
                     <div class="footer-meta-item">
-                        <strong>Sources:</strong> {{SOURCE_COUNT}}
+                        <strong>Sources:</strong> {{SOURCE_COUNT}}+
                     </div>
                 </div>
             </div>
         </div>
+        <div style="margin-top: 20px; padding: 12px 20px; background: rgba(255,255,255,0.05); border-radius: 8px; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <div style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Original Request</div>
+            <div style="font-style: italic; color: rgba(255,255,255,0.7); font-size: 12px; line-height: 1.6; word-break: break-word;">"{{ORIGINAL_PROMPT}}"</div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px;">
+            <span style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, rgba(220,252,231,0.15), rgba(187,247,208,0.1)); border: 1px solid rgba(134,239,172,0.3); padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.8);">Responsible AI - Public data sources only</span>
+        </div>
         <div class="footer-disclaimer">
-            AI-Generated Analysis - Verify all findings independently. This analysis is based on publicly available information and proprietary research methods. All data should be independently verified before use in business decisions.
+            This report was generated by AI (Claude by Anthropic) and is based entirely on publicly available information. All findings, scores, and recommendations are algorithmically derived and should be independently verified before use in business decisions. This analysis does not constitute professional consulting advice.
         </div>
     </div>
 
