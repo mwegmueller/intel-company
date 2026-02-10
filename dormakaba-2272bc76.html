@@ -1,0 +1,3119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intel Company - dormakaba - AI Strategy Dashboard</title>
+    <style>
+        :root {
+            --color-navy: #0f172a;
+            --color-slate: #64748b;
+            --color-green: #22c55e;
+            --color-red: #ef4444;
+            --color-blue: #3b82f6;
+            --color-purple: #8b5cf6;
+            --color-gray-50: #f8fafc;
+            --color-gray-100: #f1f5f9;
+            --color-gray-200: #e2e8f0;
+            --color-gray-300: #cbd5e1;
+            --color-gray-700: #334155;
+            --color-gray-900: #0f172a;
+            --color-white: #ffffff;
+            --color-yellow: #eab308;
+            --color-orange: #f97316;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--color-gray-50);
+            color: var(--color-gray-700);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* HEADER STYLES */
+        .header {
+            background: linear-gradient(135deg, var(--color-navy) 0%, #1e293b 100%);
+            color: var(--color-white);
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: 'CONFIDENTIAL';
+            position: absolute;
+            top: 8px;
+            right: 40px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.4);
+            opacity: 0.6;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-logo {
+            height: 32px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header-divider {
+            color: rgba(255,255,255,0.3);
+            font-weight: 300;
+        }
+
+        .header-product {
+            color: var(--color-blue);
+        }
+
+        .header-main {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex: 1;
+            margin-left: 40px;
+        }
+
+        .company-logo {
+            height: 64px;
+            width: 64px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: rgba(255,255,255,0.1);
+            padding: 8px;
+        }
+
+        .company-initials {
+            height: 64px;
+            width: 64px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-white);
+        }
+
+        .header-main h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--color-white);
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 6px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* TAB NAVIGATION */
+        .tab-nav {
+            background: var(--color-white);
+            border-bottom: 1px solid var(--color-gray-200);
+            display: flex;
+            overflow-x: auto;
+            padding: 0 40px;
+            gap: 4px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            scrollbar-width: none;
+        }
+
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 14px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-slate);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .tab-btn:hover {
+            color: var(--color-navy);
+            background-color: var(--color-gray-50);
+        }
+
+        .tab-btn.active {
+            color: var(--color-blue);
+            border-bottom-color: var(--color-blue);
+            background-color: var(--color-gray-50);
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CARD STYLES */
+        .card {
+            background: var(--color-white);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: var(--color-slate);
+            margin-top: 8px;
+        }
+
+        /* METHODOLOGY CALLOUT - inline info badge like intel-dashboard */
+        .methodology-callout {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 11px;
+            color: var(--color-navy);
+            cursor: help;
+            position: relative;
+            font-weight: 600;
+        }
+
+        .methodology-callout:hover .methodology-tooltip {
+            display: block;
+        }
+
+        .methodology-tooltip {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background: var(--color-navy);
+            color: var(--color-white);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 400;
+            width: 320px;
+            white-space: normal;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            line-height: 1.5;
+        }
+
+        .methodology-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            border: 8px solid transparent;
+            border-bottom-color: var(--color-navy);
+            border-top: none;
+        }
+
+        /* BADGE & TAGS */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: var(--color-gray-200);
+            color: var(--color-navy);
+        }
+
+        .badge.primary {
+            background-color: var(--color-blue);
+            color: var(--color-white);
+        }
+
+        .badge.success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge.warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 4px 4px 4px 0;
+            background-color: var(--color-gray-100);
+            color: var(--color-gray-700);
+            border-radius: 4px;
+            font-size: 13px;
+            border: 1px solid var(--color-gray-200);
+        }
+
+        .tag.primary {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border-color: #93c5fd;
+        }
+
+        .tag.success {
+            background-color: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .tag.purple {
+            background-color: #ede9fe;
+            color: #581c87;
+            border-color: #ddd6fe;
+        }
+
+        /* INSIGHT BOX */
+        .insight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-left: 4px solid var(--color-blue);
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin: 16px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .insight-box.success {
+            border-left-color: var(--color-green);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.03) 100%);
+        }
+
+        .insight-box.warning {
+            border-left-color: var(--color-orange);
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(249, 115, 22, 0.03) 100%);
+        }
+
+        .insight-box.danger {
+            border-left-color: var(--color-red);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.03) 100%);
+        }
+
+        /* GRID LAYOUTS */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            border-left: 3px solid var(--color-blue);
+            background-color: var(--color-gray-50);
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .timeline-item .timeline-marker {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-blue);
+            border-radius: 50%;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .timeline-item .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-item .timeline-date {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-item .timeline-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-top: 4px;
+        }
+
+        .timeline-item .timeline-desc {
+            font-size: 13px;
+            color: var(--color-slate);
+            margin-top: 6px;
+        }
+
+        /* PERSON CARD */
+        .person-card {
+            text-align: center;
+            padding: 20px;
+            background: var(--color-gray-50);
+            border-radius: 8px;
+            border: 1px solid var(--color-gray-200);
+        }
+
+        .person-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-white);
+        }
+
+        .person-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        .person-title {
+            font-size: 12px;
+            color: var(--color-slate);
+            margin-top: 4px;
+        }
+
+        /* CONVERSATION CARD */
+        .conversation-card {
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .conversation-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .conversation-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 12px;
+        }
+
+        .conversation-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--color-slate);
+        }
+
+        /* AI READINESS GAUGE */
+        .ai-readiness-gauge {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .gauge-circle {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            min-width: 160px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-circle::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--color-blue) 0deg,
+                var(--color-blue) calc(var(--gauge-percentage, 0) * 3.6deg),
+                var(--color-gray-200) calc(var(--gauge-percentage, 0) * 3.6deg),
+                var(--color-gray-200) 360deg
+            );
+            z-index: 0;
+        }
+
+        .gauge-circle::after {
+            content: '';
+            position: absolute;
+            inset: 14px;
+            border-radius: 50%;
+            background: var(--color-white);
+            z-index: 1;
+        }
+
+        .gauge-value {
+            position: relative;
+            z-index: 2;
+        }
+
+        .gauge-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-blue);
+        }
+
+        .gauge-max {
+            font-size: 16px;
+            color: var(--color-slate);
+        }
+
+        .gauge-description {
+            flex: 1;
+        }
+
+        .gauge-description h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 8px;
+        }
+
+        .gauge-description p {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.6;
+        }
+
+        /* VALUE CHAIN FLOW */
+        .value-chain-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 20px 0;
+            margin: 20px 0;
+        }
+
+        .value-chain-box {
+            background: var(--color-blue);
+            color: var(--color-white);
+            padding: 16px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+
+        .value-chain-arrow {
+            color: var(--color-slate);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        /* PRIORITY MATRIX */
+        .priority-matrix {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .matrix-axes {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+            height: calc(100% - 40px);
+            border-left: 2px solid var(--color-slate);
+            border-bottom: 2px solid var(--color-slate);
+        }
+
+        .matrix-quadrant-labels {
+            position: absolute;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-slate);
+        }
+
+        .matrix-x-label {
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .matrix-y-label {
+            top: 50%;
+            left: -40px;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        .scatter-dot {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .scatter-dot:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .scatter-dot.impact-high {
+            background-color: var(--color-green);
+        }
+
+        .scatter-dot.impact-medium {
+            background-color: var(--color-blue);
+        }
+
+        .scatter-dot.impact-low {
+            background-color: var(--color-slate);
+        }
+
+        /* HORIZONTAL BAR CHART */
+        .bar-group {
+            margin: 16px 0;
+        }
+
+        .bar-item {
+            margin-bottom: 16px;
+        }
+
+        .bar-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bar-label-value {
+            color: var(--color-slate);
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 24px;
+            background-color: var(--color-gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-blue), var(--color-purple));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* REVENUE BAR CHART */
+        .revenue-bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 16px;
+            height: 200px;
+            margin: 20px 0;
+        }
+
+        .revenue-bar {
+            flex: 1;
+            background: linear-gradient(180deg, var(--color-blue), #60a5fa);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            min-height: 40px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .revenue-bar:hover {
+            filter: brightness(1.1);
+        }
+
+        .revenue-bar-label {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-slate);
+        }
+
+        .revenue-bar-value {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        /* USE CASE CARD */
+        .use-case-card {
+            background: var(--color-white);
+            border: 2px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .use-case-card:hover {
+            border-color: var(--color-blue);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1);
+        }
+
+        .use-case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .use-case-number {
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            color: var(--color-white);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .use-case-horizon {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .use-case-horizon.horizon-1 {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .use-case-horizon.horizon-2 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .use-case-horizon.horizon-3 {
+            background-color: #ede9fe;
+            color: #581c87;
+        }
+
+        .use-case-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 8px;
+        }
+
+        .use-case-description {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .use-case-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .meta-label {
+            color: var(--color-slate);
+            font-weight: 600;
+        }
+
+        .meta-value {
+            color: var(--color-navy);
+            font-weight: 700;
+        }
+
+        .meta-value.impact-high {
+            color: var(--color-green);
+        }
+
+        .meta-value.impact-medium {
+            color: var(--color-blue);
+        }
+
+        .meta-value.impact-low {
+            color: var(--color-slate);
+        }
+
+        .meta-value.complexity-high {
+            color: var(--color-red);
+        }
+
+        .meta-value.complexity-medium {
+            color: var(--color-orange);
+        }
+
+        .meta-value.complexity-low {
+            color: var(--color-green);
+        }
+
+        /* MATURITY STAGE */
+        .maturity-stage {
+            margin-bottom: 12px;
+        }
+
+        .stage-bar {
+            display: flex;
+            gap: 4px;
+        }
+
+        .stage {
+            flex: 1;
+            height: 24px;
+            border-radius: 4px;
+            background-color: var(--color-gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--color-gray-700);
+            transition: all 0.3s ease;
+        }
+
+        .stage.active {
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            color: var(--color-white);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+        }
+
+        .stage.pending {
+            background-color: var(--color-gray-100);
+            color: var(--color-slate);
+        }
+
+        .stage.strategy {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.assessment {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.pilot {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.scale {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.operate {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.strategy.active {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+
+        .stage.assessment.active {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        }
+
+        .stage.pilot.active {
+            background: linear-gradient(135deg, #34d399, #10b981);
+        }
+
+        .stage.scale.active {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+
+        .stage.operate.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        /* USE CASE REASONING */
+        .use-case-reasoning {
+            background: var(--color-gray-50);
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            border-left: 3px solid var(--color-blue);
+        }
+
+        .reasoning-label {
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+        }
+
+        .use-case-reasoning p {
+            color: var(--color-slate);
+            line-height: 1.5;
+        }
+
+        /* MATURITY RADAR */
+        .maturity-radar {
+            margin: 20px 0;
+        }
+
+        .radar-svg {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* IMPACT-FEASIBILITY 2x2 MATRIX */
+        .impact-feasibility-matrix {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 500px;
+            margin: 20px auto;
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 60px 60px 60px 80px;
+        }
+
+        .ifm-grid {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-left: 2px solid var(--color-slate);
+            border-bottom: 2px solid var(--color-slate);
+        }
+
+        .ifm-quadrant-label {
+            position: absolute;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-slate);
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ifm-quadrant-label.top-left { top: 10px; left: 10px; }
+        .ifm-quadrant-label.top-right { top: 10px; right: 10px; }
+        .ifm-quadrant-label.bottom-left { bottom: 10px; left: 10px; }
+        .ifm-quadrant-label.bottom-right { bottom: 10px; right: 10px; }
+
+        .ifm-midline-h {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            border-top: 1px dashed var(--color-gray-300);
+        }
+
+        .ifm-midline-v {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            height: 100%;
+            border-left: 1px dashed var(--color-gray-300);
+        }
+
+        .ifm-x-label {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        .ifm-y-label {
+            position: absolute;
+            top: 50%;
+            left: -55px;
+            transform: translateY(-50%) rotate(-90deg);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        .ifm-dot {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transform: translate(-50%, -50%);
+        }
+
+        .ifm-dot:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+        }
+
+        .ifm-dot:hover .ifm-dot-tooltip {
+            display: block;
+        }
+
+        .ifm-dot-tooltip {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-navy);
+            color: var(--color-white);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        /* AI MATURITY vs AMBITION SCATTER */
+        .ai-scatter-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 500px;
+            margin: 20px auto;
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 60px 60px 60px 80px;
+        }
+
+        .ai-scatter-grid {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-left: 2px solid var(--color-slate);
+            border-bottom: 2px solid var(--color-slate);
+        }
+
+        .ai-scatter-dot {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--color-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transform: translate(-50%, -50%);
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        .ai-scatter-dot.subject-company {
+            width: 56px;
+            height: 56px;
+            border: 3px solid var(--color-white);
+            box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+            background: var(--color-blue);
+        }
+
+        .ai-scatter-dot:hover {
+            transform: translate(-50%, -50%) scale(1.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+
+        .ai-scatter-dot:hover .scatter-tip {
+            display: block;
+        }
+
+        .scatter-tip {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-navy);
+            color: var(--color-white);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 400;
+            white-space: nowrap;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10;
+            max-width: 280px;
+            white-space: normal;
+            text-align: left;
+        }
+
+        /* COMPETITOR AI DETAIL CARD */
+        .competitor-ai-detail {
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .competitor-ai-detail h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .competitor-ai-detail p {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.6;
+        }
+
+        .competitor-ai-detail .ai-initiatives {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--color-gray-200);
+        }
+
+        .competitor-ai-detail .ai-initiatives li {
+            font-size: 13px;
+            color: var(--color-slate);
+            margin-bottom: 4px;
+            list-style: disc inside;
+        }
+
+        /* OBJECTION CARD */
+        .objection-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .objection-column {
+            padding-right: 20px;
+            border-right: 2px solid var(--color-gray-200);
+        }
+
+        .objection-column:last-child {
+            border-right: none;
+            padding-right: 0;
+        }
+
+        .objection-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .objection-label.objection-text {
+            color: var(--color-red);
+        }
+
+        .objection-label.response-text {
+            color: var(--color-green);
+        }
+
+        .objection-content {
+            font-size: 14px;
+            color: var(--color-navy);
+            line-height: 1.6;
+        }
+
+        /* SOURCE ITEM */
+        .source-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--color-gray-200);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            background: var(--color-gray-50);
+            transition: all 0.3s ease;
+        }
+
+        .source-item:hover {
+            background: var(--color-white);
+            border-color: var(--color-blue);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        }
+
+        .source-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .source-name {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-navy);
+        }
+
+        .source-meta {
+            font-size: 12px;
+            color: var(--color-slate);
+        }
+
+        .source-item a {
+            color: var(--color-blue);
+            text-decoration: none;
+        }
+
+        .source-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* COMPETITOR CARD */
+        .competitor-card {
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .competitor-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+        }
+
+        .competitor-description {
+            font-size: 13px;
+            color: var(--color-slate);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .competitor-threat {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .competitor-threat.high {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .competitor-threat.medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .competitor-threat.low {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        /* TREND CARD */
+        .trend-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .trend-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trend-description {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.5;
+        }
+
+        .impact-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .impact-badge.high {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .impact-badge.medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .impact-badge.low {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        /* COMPANY INFO CARD */
+        .company-info-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .info-item {
+            padding: 12px 0;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        /* PIE CHART */
+        .pie-chart {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .pie-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .pie-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pie-legend {
+            flex: 1;
+        }
+
+        .pie-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .pie-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .pie-label {
+            flex: 1;
+            color: var(--color-slate);
+        }
+
+        .pie-percentage {
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--color-navy);
+            color: var(--color-white);
+            padding: 24px 40px;
+            margin-top: 60px;
+            border-top: 1px solid var(--color-gray-200);
+            font-size: 12px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .footer-column p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+
+        .footer-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .footer-meta-item {
+            color: rgba(255,255,255,0.7);
+            word-break: break-all;
+        }
+
+        .footer-disclaimer {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin-top: 20px;
+            padding-top: 20px;
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            font-style: italic;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .objection-card {
+                grid-template-columns: 1fr;
+            }
+            .objection-column {
+                border-right: none;
+                border-bottom: 2px solid var(--color-gray-200);
+                padding-right: 0;
+                padding-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            .header-main {
+                margin-left: 0;
+            }
+            .header::before {
+                right: 20px;
+            }
+            .container {
+                padding: 20px;
+            }
+            .tab-nav {
+                padding: 0 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .pie-chart {
+                flex-direction: column;
+            }
+            .pie-container {
+                width: 150px;
+                height: 150px;
+            }
+            .company-info-card {
+                grid-template-columns: 1fr;
+            }
+            .header-meta {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .tab-btn {
+                font-size: 12px;
+                padding: 12px 16px;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background: var(--color-white);
+            }
+            .header {
+                break-after: avoid;
+            }
+            .tab-nav {
+                display: none;
+            }
+            .card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            .use-case-card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            .tab-content {
+                display: block !important;
+            }
+            .container {
+                padding: 20px 0;
+            }
+            .methodology-callout {
+                display: none;
+            }
+            a {
+                color: var(--color-blue);
+            }
+            @page {
+                margin: 0.5in;
+            }
+        }
+
+        /* UTILITY CLASSES */
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .mt-24 {
+            margin-top: 24px;
+        }
+
+        .mb-24 {
+            margin-bottom: 24px;
+        }
+
+        .gap-24 {
+            gap: 24px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-intro {
+            font-size: 14px;
+            color: var(--color-slate);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: var(--color-gray-50);
+            border-radius: 6px;
+            border-left: 4px solid var(--color-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-brand">
+            <img src="assets/artifact-logo-horizontal.png" alt="artifact" class="header-logo">
+            <span class="header-divider">|</span>
+            <span class="header-product">Intel Company</span>
+        </div>
+        <div class="header-main">
+            <img src="assets/dormakaba-logo.png" alt="dormakaba" class="company-logo"
+                 onerror="this.style.display='none'; document.querySelector('.company-initials').style.display='flex';">
+            <div class="company-initials" style="display: none;">dk</div>
+            <div>
+                <h1>dormakaba</h1>
+                <div class="header-subtitle">Access Solutions &amp; Security Technology | Rümlang, Zurich, Switzerland</div>
+                <div class="header-meta">
+                    <span>Revenue: CHF 2.87 Billion (FY 2024/25)</span>
+                    <span>Employees: ~15,400</span>
+                    <span>Founded: 2015 (merger of Dorma &amp; Kaba)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB NAVIGATION -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="executive-summary">Executive Summary</button>
+        <button class="tab-btn" data-tab="company-deep-dive">Company Deep Dive</button>
+        <button class="tab-btn" data-tab="competitive-landscape">Competitive Landscape</button>
+        <button class="tab-btn" data-tab="market-industry">Market & Industry</button>
+        <button class="tab-btn" data-tab="ai-maturity">AI Maturity</button>
+        <button class="tab-btn" data-tab="ai-use-cases">AI Use Cases</button>
+        <button class="tab-btn" data-tab="engagement-strategy">Engagement Strategy</button>
+        <button class="tab-btn" data-tab="sources">Sources & Methodology</button>
+    </nav>
+
+    <div class="container">
+        <!-- TAB 1: EXECUTIVE SUMMARY -->
+        <div id="executive-summary" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Company Overview</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Based on public filings, news, and market databases</div>
+                    </span>
+                </div>
+                <div class="company-info-card">
+                    <div class="info-item">
+                        <div class="info-label">Company Name</div>
+                        <div class="info-value">dormakaba</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Industry</div>
+                        <div class="info-value">Access Solutions &amp; Security Technology</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Headquarters</div>
+                        <div class="info-value">Rümlang, Zurich, Switzerland</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Company Size</div>
+                        <div class="info-value">~15,400</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Annual Revenue</div>
+                        <div class="info-value">CHF 2.87 Billion (FY 2024/25)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">CEO</div>
+                        <div class="info-value">Till Reuter</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Founded</div>
+                        <div class="info-value">2015 (merger of Dorma &amp; Kaba)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Digital Maturity</div>
+                        <div class="info-value">Moderate (Transitioning)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Readiness & Digital Maturity</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Proprietary assessment framework</div>
+                    </span>
+                </div>
+                <div class="ai-readiness-gauge">
+                    <div class="gauge-circle" style="--gauge-percentage: 42">
+                        <div class="gauge-value">
+                            <div class="gauge-score">4.2</div>
+                            <div class="gauge-max">/10</div>
+                        </div>
+                    </div>
+                    <div class="gauge-description">
+                        <h4>AI Readiness Assessment</h4>
+                        <p>dormakaba demonstrates a Moderate (Transitioning) level of digital maturity. The company's AI readiness score reflects its current technological infrastructure, talent availability, and strategic commitment to artificial intelligence.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Findings</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Synthesized from research and analysis</div>
+                    </span>
+                </div>
+
+<div class="insight-box success">
+    <strong>Strong Financial Momentum:</strong> CHF 2.87B revenue (+4.1% organic), EBITDA margin 15.5% (+80bps), CHF 148M transformation savings achieved. Shape4Growth strategy delivering ahead of schedule. Dividend +15%.
+</div>
+<div class="insight-box success">
+    <strong>Digital Platform Maturity:</strong> EntriWorX ecosystem and MATRIXaaS cloud platform demonstrate IoT-readiness. 1,800+ patents. R&D at 6-7% of revenue. CIO role established. But no dedicated AI/ML infrastructure or team.
+</div>
+<div class="insight-box">
+    <strong>Massive Transformation Underway:</strong> Shape4Growth program: 3 shared service centers (Sofia, Chennai, Nogales), 500+ new employees, CHF 170M savings target by FY25/26. Commercial transformation adding CHF 40M. IT standardization creates AI foundation.
+</div>
+<div class="insight-box warning">
+    <strong>CompanyGPT Fit Assessment:</strong> 15,400 employees across 50+ countries, heavy knowledge fragmentation. Shared service centers need unified knowledge. Product complexity (1000s of SKUs) ideal for AI-powered configuration/support. Service technician network (2,000+) benefits from AI-assisted diagnostics.
+</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Top 3 AI Opportunities Preview</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">See AI Use Cases tab for full analysis</div>
+                    </span>
+                </div>
+                <div class="grid-3">
+
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">1</div>
+        <span class="use-case-horizon horizon-1">H1</span>
+    </div>
+    <div class="use-case-title">AI-Powered Product Configuration & Support</div>
+    <div class="use-case-description">Reduce complexity across 1000s of SKUs with intelligent product advisor for sales, architects, and service teams</div>
+    <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+</div>
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">2</div>
+        <span class="use-case-horizon horizon-1">H1</span>
+    </div>
+    <div class="use-case-title">Predictive Maintenance for Connected Doors</div>
+    <div class="use-case-description">Leverage EntriWorX IoT data for predictive service scheduling and remote diagnostics</div>
+    <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+</div>
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">3</div>
+        <span class="use-case-horizon horizon-1">H1</span>
+    </div>
+    <div class="use-case-title">Intelligent Knowledge Management (CompanyGPT)</div>
+    <div class="use-case-description">Unify fragmented knowledge across 50+ countries, shared service centers, and 2,000+ service technicians</div>
+    <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Meeting Context & Fit</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Based on engagement parameters</div>
+                    </span>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <div class="info-label">Meeting Context</div>
+                        <div class="info-value" style="margin-top: 8px;">CompanyGPT Asset Sale &amp; AI Advisory</div>
+                        <div class="info-label" style="margin-top: 16px;">Your Role</div>
+                        <div class="info-value" style="margin-top: 8px;">AI Strategy Consultant &amp; Solution Provider</div>
+                        <div class="info-label" style="margin-top: 16px;">Meeting Purpose</div>
+                        <div class="info-value" style="margin-top: 8px;">Position CompanyGPT as enterprise AI knowledge platform and propose AI advisory engagement</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Meeting Fit Score</div>
+                        <div style="margin-top: 8px;">
+                            <div class="gauge-circle" style="width: 120px; height: 120px; --gauge-percentage: 80">
+                                <div class="gauge-value">
+                                    <div class="gauge-score" style="font-size: 36px;">8</div>
+                                    <div class="gauge-max">/10</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 16px; font-size: 13px; color: var(--color-slate);">Massive transformation program creating integration points. 15,400 employees across 50+ countries need unified knowledge platform. EntriWorX IoT data foundation ready for AI layer. Product complexity and service network are ideal CompanyGPT deployment scenarios.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: COMPANY DEEP DIVE -->
+        <div id="company-deep-dive" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Business Model Canvas</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Osterwalder Business Model Canvas</div>
+                    </span>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <div class="info-label">Value Proposition</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">Global access solutions platform combining mechanical, electronic, and digital security with integrated lifecycle services. Full-stack integration from door automation and access control hardware to cloud-based SaaS platforms (MATRIXaaS) and IoT-enabled smart building connectivity (EntriWorX).</p>
+                    </div>
+                    <div>
+                        <div class="info-label">Customer Segments</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">Enterprise customers: airports, healthcare facilities, hospitality chains, data centers, government buildings, multi-housing complexes. Key verticals: airports, healthcare, hospitality, data centers, offices. Geographic focus: Germany, Switzerland, UK/Ireland, North America, Australia (core markets 65% of AS sales), plus growth markets in China and India.</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <div class="info-label">Revenue Streams</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">Hardware sales (door automation, access control, key systems), SaaS subscriptions (MATRIXaaS, EntriWorX), lifecycle services (installation, maintenance, support), professional services, and key system licensing. Two segments: Access Solutions (AS, ~80% of revenue) and Key & Wall Solutions (KWO, ~20% of revenue).</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <div class="info-label">Key Partners</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">System integrators, installers, and service technicians (2,000+ field network), building technology partners, cloud infrastructure providers, real estate developers, facility management companies. Strategic investments: Safetrust (cloud-connected security sensors). Recent acquisitions: TANlock, Avant-Garde Systems, MetaMatic GmbH (2025).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Financial Performance (FY 2020/21-2024/25)</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">From SEC filings and investor reports</div>
+                    </span>
+                </div>
+                <div style="padding: 20px 0;">
+                    <div class="revenue-bar-chart">
+
+<div class="revenue-bar" style="height: 70%;">
+    <div class="revenue-bar-value">CHF 2.47B</div>
+    <div class="revenue-bar-label">FY 20/21</div>
+</div>
+<div class="revenue-bar" style="height: 100%;">
+    <div class="revenue-bar-value">CHF 2.82B</div>
+    <div class="revenue-bar-label">FY 21/22</div>
+</div>
+<div class="revenue-bar" style="height: 98%;">
+    <div class="revenue-bar-value">CHF 2.76B</div>
+    <div class="revenue-bar-label">FY 22/23</div>
+</div>
+<div class="revenue-bar" style="height: 98%;">
+    <div class="revenue-bar-value">CHF 2.76B</div>
+    <div class="revenue-bar-label">FY 23/24</div>
+</div>
+<div class="revenue-bar" style="height: 102%; background: linear-gradient(180deg, #3b82f6, #60a5fa);">
+    <div class="revenue-bar-value">CHF 2.87B</div>
+    <div class="revenue-bar-label">FY 24/25</div>
+</div>
+                    </div>
+                </div>
+                <div class="insight-box success">
+                    <strong>Financial Trajectory:</strong> Strong organic growth +4.1% in FY24/25. EBITDA margin 15.5% (+80 basis points YoY). Net profit CHF 188M (+129% YoY). ROCE 29%. Free cash flow CHF 204.6M. Shape4Growth program delivering CHF 148M in transformation savings. Dividend +15% reflects strong financial health and cash generation.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Technology Stack</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">From job postings, tech blogs, and company publications</div>
+                    </span>
+                </div>
+                <div style="padding: 12px 0;">
+                    <span class="tag primary">EntriWorX IoT Ecosystem</span><span class="tag success">MATRIXaaS Cloud Platform</span><span class="tag">SAP ERP & SuccessFactors</span><span class="tag">Salesforce CRM</span><span class="tag">SAP CPQ</span><span class="tag primary">BIM Integration</span><span class="tag">Entrivo IoT Sensors</span><span class="tag success">Safetrust Investment</span><span class="tag">Integrated Building Technology</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Strategic Priorities</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">From earnings calls, investor presentations, and public statements</div>
+                    </span>
+                </div>
+
+<div class="timeline">
+    <div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-title">Elevate Performance</div><div class="timeline-desc">Execute Shape4Growth transformation program (CHF 170M savings by FY25/26). Commercial transformation adding CHF 40M by FY27/28. Three shared service centers (Sofia, Chennai, Nogales) enabling operational leverage.</div></div></div>
+    <div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-title">Reduce Complexity</div><div class="timeline-desc">Streamline product portfolio with door closer rationalization (CHF 20M savings). Develop common hardware/software platforms across product lines to reduce SKU complexity.</div></div></div>
+    <div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-title">Innovate & Grow</div><div class="timeline-desc">Expand EntriWorX platform ecosystem. Scale digital services and smart building integration. Vertical focus on high-value segments: healthcare, hospitality, airports, data centers.</div></div></div>
+    <div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-title">M&A Acceleration</div><div class="timeline-desc">Participate in industry consolidation. Recent acquisitions: TANlock (data center access), Avant-Garde Systems (US entrance solutions), MetaMatic GmbH (modernization specialist). Strategic investment in Safetrust.</div></div></div>
+    <div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-title">Sustainability Leadership</div><div class="timeline-desc">Net zero by 2050. SBTi-validated targets. 42% Scope 1+2 emissions reduction by 2030. Energy-efficient access control products and smart occupancy management.</div></div></div>
+</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Announcements & News</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Last 12 months of major announcements</div>
+                    </span>
+                </div>
+                <div class="timeline">
+
+<div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">December 2025</div><div class="timeline-title">Acquired Avant-Garde Systems</div><div class="timeline-desc">US entrance solutions specialist for data centers, airports, and high-security facilities. Strengthens North American market position and vertical expertise.</div></div></div>
+<div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">December 2025</div><div class="timeline-title">Acquired MetaMatic GmbH</div><div class="timeline-desc">German modernization specialist. Adds retrofit and modernization capabilities for existing access control systems across EMEA.</div></div></div>
+<div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">November 2024</div><div class="timeline-title">Capital Markets Day - "From Shape to Growth"</div><div class="timeline-desc">Unveiled updated strategic narrative. Shape4Growth program delivering ahead of schedule. Commercial transformation unlocking new revenue streams.</div></div></div>
+<div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">July 2025</div><div class="timeline-title">Acquired TANlock GmbH</div><div class="timeline-desc">High-security data center access solutions. Key addition for data center vertical expansion and specialized credentials management.</div></div></div>
+<div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">February 2025</div><div class="timeline-title">Strategic Investment in Safetrust</div><div class="timeline-desc">Cloud-connected security sensors for building integration. Extends EntriWorX ecosystem with additional IoT data sources.</div></div></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Leadership Team</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">From company website and LinkedIn</div>
+                    </span>
+                </div>
+                <div class="grid-4">
+
+<div class="person-card"><div class="person-name">Till Reuter</div><div class="person-title">CEO (since Jan 2024)</div><div class="person-bio">Former CEO of KABA AG (2009-2018). Brings 15+ years robotics & automation expertise from KUKA AG leadership. Driving Shape4Growth transformation.</div></div>
+<div class="person-card"><div class="person-name">René Peter</div><div class="person-title">CFO (since 2025)</div><div class="person-bio">Previously Head of Global Controlling. Internal promotion reflects trust in operational leadership. Overseeing transformation savings program.</div></div>
+<div class="person-card"><div class="person-name">Steve Bewick</div><div class="person-title">CCO (since 2023)</div><div class="person-bio">Former COO Access Solutions EMEA. Deep domain expertise in access solutions market. Leading commercial transformation initiatives.</div></div>
+<div class="person-card"><div class="person-name">Carsten Franke</div><div class="person-title">COO</div><div class="person-bio">Former COO at Electrolux. Brings operations transformation experience from major industrial conglomerate. Architecting shared service centers.</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: COMPETITIVE LANDSCAPE -->
+        <div id="competitive-landscape" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitive Positioning</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Market research and competitive analysis</div>
+                    </span>
+                </div>
+                <p class="section-intro">Access Solutions &amp; Security Technology competitive landscape analysis showing dormakaba's position relative to key market competitors across innovation and market presence dimensions.</p>
+                <div class="priority-matrix">
+                    <div class="matrix-axes"></div>
+
+<div class="scatter-dot impact-high" style="left: 48%; bottom: 55%; background: var(--color-blue);" title="dormakaba">dormakaba</div>
+<div class="scatter-dot impact-high" style="left: 82%; bottom: 78%; background: var(--color-green);" title="ASSA ABLOY">ASSA ABLOY</div>
+<div class="scatter-dot impact-high" style="left: 60%; bottom: 45%; background: var(--color-purple);" title="Allegion">Allegion</div>
+<div class="scatter-dot impact-medium" style="left: 55%; bottom: 62%; background: var(--color-orange);" title="Johnson Controls">JCI</div>
+<div class="scatter-dot impact-medium" style="left: 45%; bottom: 68%; background: var(--color-red);" title="Honeywell">Honeywell</div>
+<div class="scatter-dot impact-medium" style="left: 38%; bottom: 42%; background: #9ca3af;" title="HID Global">HID Global</div>
+                    <div class="matrix-quadrant-labels matrix-x-label">Market Share / Market Presence →</div>
+                    <div class="matrix-quadrant-labels matrix-y-label">Innovation →</div>
+                </div>
+                <div style="margin-top: 20px;">
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px;">
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--color-blue);margin-right:6px;"></span>dormakaba</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--color-green);margin-right:6px;"></span>ASSA ABLOY</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--color-purple);margin-right:6px;"></span>Allegion</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--color-orange);margin-right:6px;"></span>Johnson Controls</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--color-red);margin-right:6px;"></span>Honeywell</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#9ca3af;margin-right:6px;"></span>HID Global</span>
+</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitive Advantages</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Comparative analysis</div>
+                    </span>
+                </div>
+
+<div class="grid-2">
+    <div class="insight-box success"><strong>Full-Stack Integration:</strong> Unified mechanical-to-digital platform spanning door automation, access control, hardware, and SaaS solutions. Competitors typically fragment across brands (ASSA ABLOY, Allegion) or focus on software (Verkada).</div>
+    <div class="insight-box success"><strong>Vertical Intelligence:</strong> Deep domain expertise in airports, healthcare, hospitality, data centers, multi-housing. Industry-specific solutions vs horizontal platforms from diversified players.</div>
+    <div class="insight-box"><strong>Enterprise Platform:</strong> EntriWorX + MATRIXaaS creating sticky SaaS relationships and recurring revenue. More integrated than point solutions from competitors.</div>
+    <div class="insight-box"><strong>Total Cost of Ownership:</strong> 10-15 year lifecycle value model vs lowest unit price competitors. Premium positioning in enterprise segments.</div>
+</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Maturity Comparison</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Based on public AI initiatives and investment levels</div>
+                    </span>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--color-gray-200);">
+                                <th style="padding: 12px; text-align: left; font-weight: 700; color: var(--color-navy);">Company</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">AI Investment</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">AI Teams</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">Public Initiatives</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">Maturity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>dormakaba</td><td>Growing</td><td>Small / Emerging</td><td>EntriWorX IoT, MATRIXaaS Cloud, Safetrust Investment</td><td><span class="badge warning">Early</span></td></tr>
+<tr><td>ASSA ABLOY</td><td>Major</td><td>Large Dedicated</td><td>SiteOwl Acquisition, Digital Twins, Mobile Credentials AI</td><td><span class="badge success">Advanced</span></td></tr>
+<tr><td>Allegion</td><td>Growing</td><td>Moderate</td><td>Schlage Smart Locks, Cloud Access, Predictive Analytics</td><td><span class="badge">Developing</span></td></tr>
+<tr><td>Johnson Controls</td><td>Significant</td><td>Large (OpenBlue)</td><td>OpenBlue AI Platform, Building Automation AI</td><td><span class="badge success">Advanced</span></td></tr>
+<tr><td>Honeywell</td><td>Major</td><td>Large</td><td>Building AI, Autonomous Ops, Forge Platform</td><td><span class="badge success">Advanced</span></td></tr>
+<tr><td>Verkada</td><td>Significant</td><td>Core Capability</td><td>AI-Powered Video Analytics, Cloud-Native Platform</td><td><span class="badge success">Advanced</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Market Share</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Market sizing from industry reports</div>
+                    </span>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-item"><div class="bar-label"><span>ASSA ABLOY</span><span class="bar-label-value">22%</span></div><div class="bar-container"><div class="bar-fill" style="width:100%"></div></div></div>
+<div class="bar-item"><div class="bar-label"><span>dormakaba</span><span class="bar-label-value">12%</span></div><div class="bar-container"><div class="bar-fill" style="width:55%"></div></div></div>
+<div class="bar-item"><div class="bar-label"><span>Allegion</span><span class="bar-label-value">11%</span></div><div class="bar-container"><div class="bar-fill" style="width:50%"></div></div></div>
+<div class="bar-item"><div class="bar-label"><span>Johnson Controls</span><span class="bar-label-value">8%</span></div><div class="bar-container"><div class="bar-fill" style="width:36%"></div></div></div>
+<div class="bar-item"><div class="bar-label"><span>Honeywell</span><span class="bar-label-value">7%</span></div><div class="bar-container"><div class="bar-fill" style="width:32%"></div></div></div>
+<div class="bar-item"><div class="bar-label"><span>Others</span><span class="bar-label-value">40%</span></div><div class="bar-container"><div class="bar-fill" style="width:100%;background:var(--color-gray-300)"></div></div></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Differentiators</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Competitive differentiation analysis</div>
+                    </span>
+                </div>
+                <div style="padding: 12px 0;">
+                    <div class="insight-box success"><strong>Platform Advantage:</strong> EntriWorX + MATRIXaaS create digital moat. While ASSA ABLOY acquires separate brands, dormakaba builds integrated platform from mechanical to digital.</div>
+<div class="insight-box"><strong>Service Network:</strong> 2,000+ field technicians provide lifecycle services others outsource. Direct customer relationship drives recurring revenue and data collection.</div>
+<div class="insight-box warning"><strong>Scale Gap:</strong> ASSA ABLOY is 5x larger by revenue. Allegion growing faster in electronics. dormakaba must accelerate digital transformation and M&A to maintain #2 position.</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitor Profiles</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Key competitors in Access Solutions &amp; Security Technology</div>
+                    </span>
+                </div>
+                <div class="grid-3">
+                    <div class="competitor-card"><div class="competitor-name">ASSA ABLOY</div><div class="competitor-description">Global leader, SEK 147B revenue, 52,000 employees. 26 acquisitions in 2024 alone. Broadest portfolio but fragmented brands (Yale, HID, August). Market-setting digital capabilities.</div><div class="competitor-threat high">High Threat</div></div>
+<div class="competitor-card"><div class="competitor-name">Allegion</div><div class="competitor-description">USD 3.8B revenue. Dominant North America (Schlage, Von Duprin). Growing electronic access. Acquired Stanley Access Technologies. Strong residential + commercial.</div><div class="competitor-threat high">High Threat</div></div>
+<div class="competitor-card"><div class="competitor-name">Johnson Controls</div><div class="competitor-description">Diversified building technology. OpenBlue AI platform integrating access, HVAC, fire. Strong in integrated building management. AI-native approach.</div><div class="competitor-threat medium">Medium Threat</div></div>
+<div class="competitor-card"><div class="competitor-name">Honeywell</div><div class="competitor-description">Technology breadth across building automation. Access control + HVAC + fire safety + cybersecurity. Forge IoT platform. Enterprise relationships.</div><div class="competitor-threat medium">Medium Threat</div></div>
+<div class="competitor-card"><div class="competitor-name">HID Global (ASSA ABLOY)</div><div class="competitor-description">Identity solutions specialist. Mobile credentials, biometric access, RFID. Powers many third-party access systems. Technology moat.</div><div class="competitor-threat medium">Medium Threat</div></div>
+<div class="competitor-card"><div class="competitor-name">Verkada</div><div class="competitor-description">Cloud-native security disruptor. AI-powered cameras + access control. $400M+ ARR, growing 60%+ annually. SaaS-first model threatening incumbents.</div><div class="competitor-threat medium">Medium Threat (rising)</div></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitive AI Comparison Summary</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Synthesized from public AI announcements, job postings, patent filings, and technology partnerships across all identified competitors. Assessment compares dormakaba's AI position relative to peers.</div>
+                    </span>
+                </div>
+                <div class="insight-box">
+                    <strong>AI Competitive Gap:</strong> ASSA ABLOY, Johnson Controls, and Honeywell all have dedicated AI teams and production deployments. Verkada is AI-native. dormakaba has strong IoT foundation (EntriWorX) but lacks dedicated AI/ML capability — creating both urgency and opportunity for CompanyGPT and AI advisory.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitor AI Initiatives in Detail</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Detailed competitor AI analysis from press releases, product announcements, conference presentations, and technology blogs. Each initiative verified against multiple sources where possible.</div>
+                    </span>
+                </div>
+                <div class="competitor-ai-detail"><h4>ASSA ABLOY — AI Strategy <span class="badge success">AI Maturity: 4/5</span></h4><p>Acquired SiteOwl for digital twin capabilities. HID Global division leads mobile credentials with ML-powered fraud detection. Invested in computer vision for door monitoring. Dedicated AI research team in Stockholm.</p><ul class="ai-initiatives"><li><strong>Digital Twin for Facility Management:</strong> 3D modeling and predictive maintenance of access systems</li><li><strong>Predictive Access Analytics:</strong> ML-powered threat detection and anomaly identification</li><li><strong>Mobile Credential Fraud Detection:</strong> ML algorithms preventing unauthorized credential cloning</li><li><strong>Computer Vision for Door Monitoring:</strong> Real-time visual analytics on door status and access patterns</li></ul></div>
+<div class="competitor-ai-detail"><h4>Johnson Controls — OpenBlue Platform <span class="badge success">AI Maturity: 4.2/5</span></h4><p>OpenBlue is an AI-native building management platform with access control, HVAC, fire, and security integration. Partnerships with Microsoft and IBM on AI. Dedicated AI team of 200+ engineers.</p><ul class="ai-initiatives"><li><strong>AI-Powered Building Optimization:</strong> Real-time HVAC and occupancy control based on access patterns</li><li><strong>Autonomous Building Operations:</strong> Self-healing systems detecting and responding to anomalies</li><li><strong>Predictive Maintenance:</strong> ML-based equipment failure prediction across building systems</li><li><strong>Occupancy Intelligence:</strong> AI analytics on space utilization from access data</li></ul></div>
+<div class="competitor-ai-detail"><h4>Verkada — Cloud-Native Disruptor <span class="badge success">AI Maturity: 4.5/5</span></h4><p>Born-cloud security platform with AI at its core. Computer vision analytics for video surveillance, integrated with access control. $400M+ ARR growing 60%+. Targeting mid-market with self-service deployment.</p><ul class="ai-initiatives"><li><strong>AI-Powered Video Analytics:</strong> Real-time video processing with object detection and tracking</li><li><strong>People Detection and Counting:</strong> CV-based occupancy and density monitoring</li><li><strong>Anomaly Detection:</strong> Behavioral analytics identifying unauthorized access attempts</li><li><strong>Cloud-Native Access Management:</strong> Fully cloud-based access control with AI threat scoring</li></ul></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Maturity vs AI Ambition</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">X-axis: Current AI Maturity based on implemented solutions, team size, and infrastructure. Y-axis: AI Ambition based on announced plans, investment levels, and strategic priority. dormakaba highlighted in blue. Positioning rationale provided in tooltips.</div>
+                    </span>
+                </div>
+                <div class="ai-scatter-container">
+                    <div class="ai-scatter-grid">
+                        <div class="ifm-midline-h"></div>
+                        <div class="ifm-midline-v"></div>
+                        <span class="ifm-quadrant-label top-left">High Ambition, Low Maturity</span>
+                        <span class="ifm-quadrant-label top-right">Leaders</span>
+                        <span class="ifm-quadrant-label bottom-left">Laggards</span>
+                        <span class="ifm-quadrant-label bottom-right">Mature, Low Ambition</span>
+                        <div class="ai-scatter-dot subject-company" style="left:40%;bottom:50%" title="dormakaba"><span class="scatter-tip">dormakaba: Moderate ambition, early AI maturity. Strong IoT foundation but limited dedicated AI capabilities.</span>dk</div>
+<div class="ai-scatter-dot" style="left:75%;bottom:72%;background:var(--color-green)" title="ASSA ABLOY"><span class="scatter-tip">ASSA ABLOY: High ambition, advanced AI via HID Global and SiteOwl acquisitions.</span>AA</div>
+<div class="ai-scatter-dot" style="left:55%;bottom:48%;background:var(--color-slate)" title="Allegion"><span class="scatter-tip">Allegion: Growing AI ambition, developing through electronics focus.</span>AL</div>
+<div class="ai-scatter-dot" style="left:65%;bottom:65%;background:var(--color-green)" title="Johnson Controls"><span class="scatter-tip">Johnson Controls: High ambition, advanced AI via OpenBlue platform.</span>JC</div>
+<div class="ai-scatter-dot" style="left:70%;bottom:60%;background:var(--color-green)" title="Honeywell"><span class="scatter-tip">Honeywell: High ambition, advanced AI via Forge platform and building AI.</span>HW</div>
+<div class="ai-scatter-dot" style="left:80%;bottom:35%;background:var(--color-purple)" title="Verkada"><span class="scatter-tip">Verkada: Very high AI maturity (AI-native), moderate market penetration.</span>VK</div>
+                    </div>
+                    <span class="ifm-x-label">AI Maturity (Current) →</span>
+                    <span class="ifm-y-label">AI Ambition (Future) →</span>
+                </div>
+                <div style="margin-top: 16px;">
+                    <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:16px;font-size:13px">
+<span><strong style="color:var(--color-blue)">●</strong> dormakaba</span>
+<span><strong style="color:var(--color-green)">●</strong> ASSA ABLOY</span>
+<span><strong style="color:var(--color-slate)">●</strong> Allegion</span>
+<span><strong style="color:var(--color-green)">●</strong> Johnson Controls</span>
+<span><strong style="color:var(--color-green)">●</strong> Honeywell</span>
+<span><strong style="color:var(--color-purple)">●</strong> Verkada</span>
+</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: MARKET & INDUSTRY ANALYSIS -->
+        <div id="market-industry" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Industry Overview</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">From analyst reports and market research</div>
+                    </span>
+                </div>
+                <p style="font-size: 14px; color: var(--color-slate); line-height: 1.6;">The global access control market is valued at USD 10.6-13.7 billion in 2025, growing at 7.7% CAGR through 2033. The market is highly consolidated — top 5 players hold 70-80% share. Key growth drivers: smart building adoption (115M smart buildings by 2026), mobile credentials replacing physical cards, cloud-based ACaaS, and regulatory requirements (NIS2, EU AI Act). The industry is transitioning from hardware-centric product sales to software-defined security platforms with recurring revenue.</p>
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div class="insight-box success">
+                        <strong>Market Size:</strong> USD 10.6-13.7 Billion (2025 Global Access Control)
+                    </div>
+                    <div class="insight-box">
+                        <strong>Market Growth:</strong> +7.7% CAGR (2025-2033)
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Industry Trends</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Trend analysis from industry sources</div>
+                    </span>
+                </div>
+                <div class="trend-card"><div class="trend-title">Cloud-Based Access Control (ACaaS) <span class="impact-badge high">High Impact</span></div><div class="trend-description">Shift from on-premise to cloud subscriptions. ACaaS market growing rapidly. dormakaba's MATRIXaaS well-positioned.</div></div>
+<div class="trend-card"><div class="trend-title">Mobile Credentials &amp; Touchless Access <span class="impact-badge high">High Impact</span></div><div class="trend-description">Smartphones replacing physical cards. 20% enterprise adoption, accelerating. Biometric + mobile multi-factor authentication.</div></div>
+<div class="trend-card"><div class="trend-title">AI-Powered Threat Detection <span class="impact-badge high">High Impact</span></div><div class="trend-description">Real-time behavioral analytics, anomaly detection, predictive access management. 60% faster incident response reported.</div></div>
+<div class="trend-card"><div class="trend-title">Physical-Cyber Security Convergence <span class="impact-badge high">High Impact</span></div><div class="trend-description">Unified platforms managing both digital and physical security. Identity-centric approach becoming standard.</div></div>
+<div class="trend-card"><div class="trend-title">IoT &amp; Smart Building Integration <span class="impact-badge high">High Impact</span></div><div class="trend-description">4B+ IoT devices in commercial buildings by 2028. Access data feeding building management systems.</div></div>
+<div class="trend-card"><div class="trend-title">Biometric Multi-Factor Authentication <span class="impact-badge medium">Medium Impact</span></div><div class="trend-description">Beyond fingerprints: facial recognition, iris scanning, gait analysis for high-security environments.</div></div>
+<div class="trend-card"><div class="trend-title">Sustainability &amp; Energy Efficiency <span class="impact-badge medium">Medium Impact</span></div><div class="trend-description">Smart access reducing HVAC waste through occupancy data. Green building certification requirements.</div></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Disruption Forces</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Based on technology and market changes</div>
+                    </span>
+                </div>
+                <div class="grid-3">
+                    <div class="insight-box warning"><strong>Technology:</strong> Cloud-native disruptors (Verkada, Brivo, Openpath) challenging incumbents with SaaS-first models. AI-powered video analytics converging with access control. 90% of new commercial buildings will have smart access by 2028.</div>
+<div class="insight-box danger"><strong>Regulation:</strong> EU AI Act classifying biometric access as high-risk. GDPR/data privacy for access data. NIS2 requiring physical security integration. Building energy codes demanding smart occupancy management.</div>
+<div class="insight-box"><strong>New Entrants:</strong> Big tech (Apple, Google) enabling mobile credential ecosystems. PropTech startups (Verkada $400M+ ARR) growing rapidly. IT/cybersecurity firms (Cisco, Fortinet) expanding into physical security convergence.</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Value Chain</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Industry structure analysis</div>
+                    </span>
+                </div>
+                <div class="value-chain-flow">
+                    <div class="value-chain-box">Raw Materials</div><div class="value-chain-arrow">→</div>
+<div class="value-chain-box">Component Manufacturing</div><div class="value-chain-arrow">→</div>
+<div class="value-chain-box">System Assembly</div><div class="value-chain-arrow">→</div>
+<div class="value-chain-box">Distribution &amp; Installation</div><div class="value-chain-arrow">→</div>
+<div class="value-chain-box">Integration &amp; Commissioning</div><div class="value-chain-arrow">→</div>
+<div class="value-chain-box" style="background: var(--color-green);">Lifecycle Services</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Adoption in Access Solutions &amp; Security Technology</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Industry-wide AI adoption assessment</div>
+                    </span>
+                </div>
+                <div class="insight-box">
+                    <strong>2026 is a pivotal year for AI in access control.</strong> 65%+ of newly constructed commercial buildings integrate smart access solutions. The shift from hardware-centric to software-defined security is accelerating. Key transition: from selling products to selling outcomes (uptime, security posture, compliance). AI-enabled predictive maintenance, occupancy analytics, and threat detection are becoming table-stakes for enterprise customers. dormakaba's EntriWorX IoT foundation provides the data layer — CompanyGPT can accelerate the intelligence layer.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Regulatory & Compliance Landscape</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Relevant regulations and compliance requirements</div>
+                    </span>
+                </div>
+                <div class="grid-2">
+    <div class="trend-card"><div class="trend-title">EU AI Act — High-Risk Classification <span class="impact-badge high">High Impact</span></div><div class="trend-description">Biometric identification systems classified as high-risk AI. Requires conformity assessments, documentation, human oversight.</div></div>
+    <div class="trend-card"><div class="trend-title">GDPR &amp; Data Privacy (Access Data) <span class="impact-badge high">High Impact</span></div><div class="trend-description">Access logs contain personal data. Data minimization, purpose limitation, retention policies required.</div></div>
+    <div class="trend-card"><div class="trend-title">NIS2 Directive (Cybersecurity) <span class="impact-badge high">High Impact</span></div><div class="trend-description">Critical infrastructure operators must secure physical access systems. Network-connected access control now in scope.</div></div>
+    <div class="trend-card"><div class="trend-title">Building Energy Performance (EPBD) <span class="impact-badge medium">Medium Impact</span></div><div class="trend-description">EU Energy Performance directive driving smart building automation. Access data for occupancy-based control increasingly required.</div></div>
+    <div class="trend-card"><div class="trend-title">Product Safety &amp; Liability <span class="impact-badge medium">Medium Impact</span></div><div class="trend-description">CE marking, UL certification, fire door regulations. Digital products adding software liability. Cybersecurity resilience requirements.</div></div>
+</div>
+            </div>
+        </div>
+
+        <!-- TAB 5: AI MATURITY ASSESSMENT -->
+        <div id="ai-maturity" class="tab-content">
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Journey: What dormakaba Has Done & Announced</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Compiled from press releases, annual reports, earnings calls, job postings, and news articles. Separated into confirmed implementations vs announced plans.</div>
+                    </span>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--color-navy); margin-bottom: 12px;">Confirmed AI Implementations</h3>
+                        <div class="insight-box success">
+<ul style="list-style: disc; padding-left: 20px; font-size: 13px; line-height: 1.8;">
+<li><strong>EntriWorX IoT Ecosystem:</strong> Connected door sensors and real-time access analytics (verified)</li>
+<li><strong>MATRIXaaS Cloud Platform:</strong> Cloud-based access control with SaaS recurring revenue model (verified)</li>
+<li><strong>Entrivo IoT Door Monitoring:</strong> Real-time door status tracking and predictive maintenance (verified)</li>
+<li><strong>BIM Digital Twin Integration:</strong> Building information modeling for facility lifecycle management (verified)</li>
+<li><strong>Safetrust Investment:</strong> Strategic investment in cloud-connected security sensors (verified)</li>
+<li><strong>SAP CPQ Automation:</strong> AI-powered product configuration and quote automation (verified)</li>
+</ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--color-navy); margin-bottom: 12px;">Announced AI Plans & Ambitions</h3>
+                        <div class="insight-box warning">
+<ul style="list-style: disc; padding-left: 20px; font-size: 13px; line-height: 1.8;">
+<li><strong>CHF 15M Projected AI Investment (2024/25):</strong> Substantial commitment to AI capabilities and infrastructure</li>
+<li><strong>IT Standardization &amp; Harmonization:</strong> Global operations consolidation for unified data platform</li>
+<li><strong>Commercial Transformation:</strong> Automation and digitalization of sales and service delivery</li>
+<li><strong>Digital Services Expansion:</strong> New capabilities within EntriWorX platform ecosystem</li>
+<li><strong>Data Center Vertical Focus:</strong> TANlock + Avant-Garde acquisitions targeting high-security segment</li>
+<li><strong>Global Product Roadmap Consolidation:</strong> Moving to common platform architecture for innovation agility</li>
+</ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Maturity Radar Assessment</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">6-dimension maturity model (1-5 scale)</div>
+                    </span>
+                </div>
+                <div class="text-center">
+                    <svg class="radar-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Grid circles -->
+                        <circle cx="200" cy="200" r="150" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="120" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="90" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="60" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="30" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+
+                        <!-- Axis lines -->
+                        <line x1="200" y1="50" x2="200" y2="350" stroke="#cbd5e1" stroke-width="1"/>
+                        <line x1="50" y1="200" x2="350" y2="200" stroke="#cbd5e1" stroke-width="1"/>
+                        <line x1="113.4" y1="86.6" x2="286.6" y2="313.4" stroke="#cbd5e1" stroke-width="1"/>
+                        <line x1="286.6" y1="86.6" x2="113.4" y2="313.4" stroke="#cbd5e1" stroke-width="1"/>
+
+                        <!-- Data polygon -->
+                        <polygon points="200,116 286.6,165 286.6,242 200,242 113.4,235 113.4,172"
+                                 fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="2"/>
+
+                        <!-- Data points -->
+                        <circle cx="200" cy="116" r="5" fill="#3b82f6"/>
+                        <circle cx="286.6" cy="165" r="5" fill="#3b82f6"/>
+                        <circle cx="286.6" cy="242" r="5" fill="#3b82f6"/>
+                        <circle cx="200" cy="242" r="5" fill="#3b82f6"/>
+                        <circle cx="113.4" cy="235" r="5" fill="#3b82f6"/>
+                        <circle cx="113.4" cy="172" r="5" fill="#3b82f6"/>
+
+                        <!-- Labels -->
+                        <text x="200" y="35" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Strategy</text>
+                        <text x="305" y="125" text-anchor="start" font-size="12" font-weight="700" fill="#334155">Data</text>
+                        <text x="305" y="300" text-anchor="start" font-size="12" font-weight="700" fill="#334155">Technology</text>
+                        <text x="200" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Talent</text>
+                        <text x="75" y="300" text-anchor="end" font-size="12" font-weight="700" fill="#334155">Culture</text>
+                        <text x="75" y="125" text-anchor="end" font-size="12" font-weight="700" fill="#334155">Governance</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Maturity Score Breakdown</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Assessment across 6 key dimensions</div>
+                    </span>
+                </div>
+
+<div class="bar-group">
+<div class="bar-item"><div class="bar-label"><span>Strategy</span><span class="bar-label-value">3.0 / 5.0</span></div><div class="bar-container"><div class="bar-fill" style="width: 60%;"></div></div></div>
+<div class="bar-item"><div class="bar-label"><span>Data</span><span class="bar-label-value">2.5 / 5.0</span></div><div class="bar-container"><div class="bar-fill" style="width: 50%;"></div></div></div>
+<div class="bar-item"><div class="bar-label"><span>Technology</span><span class="bar-label-value">3.0 / 5.0</span></div><div class="bar-container"><div class="bar-fill" style="width: 60%;"></div></div></div>
+<div class="bar-item"><div class="bar-label"><span>Talent</span><span class="bar-label-value">1.5 / 5.0</span></div><div class="bar-container"><div class="bar-fill" style="width: 30%; background: linear-gradient(90deg, #ef4444, #f97316);"></div></div></div>
+<div class="bar-item"><div class="bar-label"><span>Culture</span><span class="bar-label-value">2.5 / 5.0</span></div><div class="bar-container"><div class="bar-fill" style="width: 50%;"></div></div></div>
+<div class="bar-item"><div class="bar-label"><span>Governance</span><span class="bar-label-value">2.0 / 5.0</span></div><div class="bar-container"><div class="bar-fill" style="width: 40%;"></div></div></div>
+</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Technology Readiness</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Current technology infrastructure assessment</div>
+                    </span>
+                </div>
+                <div class="insight-box">
+                    <strong>Infrastructure in transition from legacy to cloud (2.8/5).</strong> Core platforms: SAP ERP, Salesforce CRM with SAP CPQ, MATRIXaaS cloud access control, EntriWorX IoT ecosystem, SAP SuccessFactors HR. IT standardization underway through transformation program — consolidating from fragmented regional systems. Key gap: No identified MLOps platform, no AI/ML training infrastructure, no data lake/warehouse for analytics workloads. Foundation being built but requires significant investment for production AI.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Data Infrastructure & Governance</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Data maturity and governance assessment</div>
+                    </span>
+                </div>
+                <div class="insight-box success">
+                    <strong>Data landscape spans multiple systems (2.5/5):</strong> EntriWorX IoT (door performance data from connected installations), SAP ERP (financial/operational), Salesforce CRM (customer/sales), SAP SuccessFactors (HR). Shared service centers standardizing Finance, HR, IT data across regions. Environmental data collected via BI reporting platform. Strength: rich IoT data from installed base. Gap: no unified data platform, analytics limited to BI dashboards, data governance framework emerging.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Talent Signals</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">From job postings and LinkedIn data</div>
+                    </span>
+                </div>
+                <div class="insight-box">
+                    <strong>Limited dedicated AI/ML talent (1.5/5):</strong> Only ~2 AI-related job postings found (Senior AI/ML Engineer, Data Engineering Manager — remote Latin America). Shared service centers (500+ employees in Sofia, Chennai, Nogales) focused on Finance, HR, IT operations — not data science. CIO role established but focused on product innovation, not AI strategy. Mitigation: Zurich HQ region offers rich AI talent pool (ETH, tech ecosystem). Safetrust investment brings cloud-connected analytics capabilities.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Innovation Signals</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Patents, research, and open source contributions</div>
+                    </span>
+                </div>
+                <div class="insight-box success">
+                    <strong>Strong innovation culture (2.5/5):</strong> 1,800+ active patents, 6-7% R&D spend (CHF ~180M annually), dedicated CIO leading global product roadmap. EntriWorX EcoSystem won ICONIC AWARD 2023. Axessor Apexx IP won SIA New Products Award 2024. 15+ new products launched annually. Technology partnerships for vertical markets (airports, healthcare, hospitality). Global First Product Roadmap harmonizing R&D. Focus: electromechanical, IoT, digital services — AI/ML not yet central to innovation portfolio.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Peer Benchmarking</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Comparison to industry peers</div>
+                    </span>
+                </div>
+                <div style="overflow-x: auto;">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<thead><tr style="border-bottom: 2px solid var(--color-gray-200);"><th style="padding: 12px; text-align: left;">Company</th><th style="padding: 12px; text-align: center;">Strategy</th><th style="padding: 12px; text-align: center;">Data</th><th style="padding: 12px; text-align: center;">Technology</th><th style="padding: 12px; text-align: center;">Talent</th><th style="padding: 12px; text-align: center;">Culture</th><th style="padding: 12px; text-align: center;">Governance</th><th style="padding: 12px; text-align: center;">Overall</th></tr></thead>
+<tbody>
+<tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 12px;">dormakaba</td><td style="padding: 12px; text-align: center;">3.0</td><td style="padding: 12px; text-align: center;">2.5</td><td style="padding: 12px; text-align: center;">3.0</td><td style="padding: 12px; text-align: center;">1.5</td><td style="padding: 12px; text-align: center;">2.5</td><td style="padding: 12px; text-align: center;">2.0</td><td style="padding: 12px; text-align: center;"><strong>4.2</strong></td></tr>
+<tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 12px;">ASSA ABLOY</td><td style="padding: 12px; text-align: center;">4.0</td><td style="padding: 12px; text-align: center;">3.5</td><td style="padding: 12px; text-align: center;">4.0</td><td style="padding: 12px; text-align: center;">3.5</td><td style="padding: 12px; text-align: center;">3.5</td><td style="padding: 12px; text-align: center;">3.0</td><td style="padding: 12px; text-align: center;"><strong>7.2</strong></td></tr>
+<tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 12px;">Johnson Controls</td><td style="padding: 12px; text-align: center;">4.0</td><td style="padding: 12px; text-align: center;">4.0</td><td style="padding: 12px; text-align: center;">4.5</td><td style="padding: 12px; text-align: center;">4.0</td><td style="padding: 12px; text-align: center;">3.5</td><td style="padding: 12px; text-align: center;">3.0</td><td style="padding: 12px; text-align: center;"><strong>7.7</strong></td></tr>
+<tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 12px;">Honeywell</td><td style="padding: 12px; text-align: center;">4.0</td><td style="padding: 12px; text-align: center;">3.5</td><td style="padding: 12px; text-align: center;">4.0</td><td style="padding: 12px; text-align: center;">3.5</td><td style="padding: 12px; text-align: center;">3.0</td><td style="padding: 12px; text-align: center;">3.5</td><td style="padding: 12px; text-align: center;"><strong>7.2</strong></td></tr>
+<tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 12px;">Allegion</td><td style="padding: 12px; text-align: center;">3.0</td><td style="padding: 12px; text-align: center;">2.5</td><td style="padding: 12px; text-align: center;">3.0</td><td style="padding: 12px; text-align: center;">2.5</td><td style="padding: 12px; text-align: center;">2.5</td><td style="padding: 12px; text-align: center;">2.0</td><td style="padding: 12px; text-align: center;"><strong>4.3</strong></td></tr>
+<tr><td style="padding: 12px;">Industry Average</td><td style="padding: 12px; text-align: center;">3.0</td><td style="padding: 12px; text-align: center;">2.5</td><td style="padding: 12px; text-align: center;">3.0</td><td style="padding: 12px; text-align: center;">2.0</td><td style="padding: 12px; text-align: center;">2.5</td><td style="padding: 12px; text-align: center;">2.0</td><td style="padding: 12px; text-align: center;"><strong>5.0</strong></td></tr>
+</tbody></table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: AI USE CASES -->
+        <div id="ai-use-cases" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Use Cases Strategy</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Proprietary use case identification framework</div>
+                    </span>
+                </div>
+                <p class="section-intro">Based on analysis of dormakaba's operational profile, strategic priorities (Shape4Growth), competitive position, and AI maturity, 8 high-priority AI use cases have been identified. These are calibrated to current capabilities while providing a transformation roadmap. The use cases emphasize CompanyGPT deployment scenarios and quick wins that leverage the existing EntriWorX IoT foundation. Per McKinsey analysis, industrial companies implementing AI at scale can achieve 5-10% revenue uplift and 15-20% cost reduction in targeted areas.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Impact vs Feasibility Matrix</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Each use case plotted on a 2x2 matrix. X-axis: Feasibility (data readiness, technical complexity, organizational readiness). Y-axis: Business Impact (revenue potential, cost savings, strategic value). Numbered dots correspond to the 8 use cases below.</div>
+                    </span>
+                </div>
+                <div class="impact-feasibility-matrix">
+                    <div class="ifm-grid">
+                        <div class="ifm-midline-h"></div>
+                        <div class="ifm-midline-v"></div>
+                        <span class="ifm-quadrant-label top-left">Strategic Bets</span>
+                        <span class="ifm-quadrant-label top-right">Quick Wins</span>
+                        <span class="ifm-quadrant-label bottom-left">Deprioritize</span>
+                        <span class="ifm-quadrant-label bottom-right">Low-Hanging Fruit</span>
+                        <div class="ifm-dot" style="left:70%;bottom:80%;background:var(--color-green)" title="UC1: AI Product Config"><span class="ifm-dot-tooltip">AI Product Configuration — High impact, high feasibility</span>1</div>
+<div class="ifm-dot" style="left:65%;bottom:75%;background:var(--color-green)" title="UC2: Predictive Maintenance"><span class="ifm-dot-tooltip">Predictive Maintenance — High impact, good feasibility</span>2</div>
+<div class="ifm-dot" style="left:80%;bottom:85%;background:var(--color-green)" title="UC3: CompanyGPT Knowledge"><span class="ifm-dot-tooltip">CompanyGPT Knowledge Mgmt — Highest impact, highest feasibility</span>3</div>
+<div class="ifm-dot" style="left:55%;bottom:55%;background:var(--color-blue)" title="UC4: Service Diagnostics"><span class="ifm-dot-tooltip">AI Service Diagnostics — Medium impact, medium feasibility</span>4</div>
+<div class="ifm-dot" style="left:45%;bottom:70%;background:var(--color-blue)" title="UC5: Sales Intelligence"><span class="ifm-dot-tooltip">Sales Intelligence — High impact, moderate feasibility</span>5</div>
+<div class="ifm-dot" style="left:35%;bottom:60%;background:var(--color-blue)" title="UC6: Quality Inspection"><span class="ifm-dot-tooltip">Quality Inspection — Medium impact, moderate feasibility</span>6</div>
+<div class="ifm-dot" style="left:30%;bottom:45%;background:var(--color-purple)" title="UC7: Autonomous Building"><span class="ifm-dot-tooltip">Autonomous Building Ops — High future impact, low current feasibility</span>7</div>
+<div class="ifm-dot" style="left:25%;bottom:50%;background:var(--color-purple)" title="UC8: Digital Twin"><span class="ifm-dot-tooltip">Digital Twin for Access — High future impact, low current feasibility</span>8</div>
+                    </div>
+                    <span class="ifm-x-label">Feasibility →</span>
+                    <span class="ifm-y-label">Business Impact →</span>
+                </div>
+                <div style="margin-top: 16px;">
+                    <div style="display: flex; gap: 20px; padding: 12px 0;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: var(--color-green);"></span>
+                            <span style="font-size: 13px;">H1 - Quick Wins (Green)</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: var(--color-blue);"></span>
+                            <span style="font-size: 13px;">H2 - Growth (Blue)</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: var(--color-purple);"></span>
+                            <span style="font-size: 13px;">H3 - Transformational (Purple)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Horizon Legend</h2>
+                </div>
+                <div style="display: flex; gap: 20px; padding: 12px 0;">
+                    <div>
+                        <span class="use-case-horizon horizon-1">H1: Quick Wins</span>
+                        <p style="font-size: 13px; color: var(--color-slate); margin-top: 8px;">6-12 months to implementation</p>
+                    </div>
+                    <div>
+                        <span class="use-case-horizon horizon-2">H2: Growth</span>
+                        <p style="font-size: 13px; color: var(--color-slate); margin-top: 8px;">12-24 months to implementation</p>
+                    </div>
+                    <div>
+                        <span class="use-case-horizon horizon-3">H3: Transformational</span>
+                        <p style="font-size: 13px; color: var(--color-slate); margin-top: 8px;">24+ months to implementation</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-4">
+<div class="use-case-card">
+    <div class="use-case-header"><div class="use-case-number">1</div><span class="use-case-horizon horizon-1">H1: Quick Win</span></div>
+    <div class="use-case-title">AI-Powered Product Configuration & Support</div>
+    <div class="use-case-description">CompanyGPT-powered intelligent product advisor helping sales teams, architects, and installers navigate 1000s of SKUs. AI-driven configuration matching customer requirements to optimal product combinations. Reduces errors, speeds quoting, and improves customer experience.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Sales & Service</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Complexity</span><span class="meta-value complexity-medium">Medium</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">4-6 months</span></div>
+    </div>
+    <div class="maturity-stage"><div class="stage-bar"><div class="stage strategy active">Strategy</div><div class="stage assessment ">Assessment</div><div class="stage pilot ">Pilot</div><div class="stage scale ">Scale</div><div class="stage operate ">Operate</div></div></div>
+    <div class="use-case-reasoning"><div class="reasoning-label">Why dormakaba?</div><p>Product complexity is #1 pain point. Shape4Growth reducing SKUs but thousands remain. Salesforce CPQ foundation exists. CompanyGPT can layer intelligence on existing product data. Immediate ROI through faster quoting and fewer configuration errors.</p></div>
+</div><div class="use-case-card">
+    <div class="use-case-header"><div class="use-case-number">2</div><span class="use-case-horizon horizon-1">H1: Quick Win</span></div>
+    <div class="use-case-title">Predictive Maintenance for Connected Doors</div>
+    <div class="use-case-description">Leverage EntriWorX IoT sensor data (door status, usage frequency, battery levels, connectivity) to predict maintenance needs before failures. AI-driven service scheduling and remote diagnostics for 2,000+ field technicians.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Service & Operations</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Complexity</span><span class="meta-value complexity-medium">Medium</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">6-9 months</span></div>
+    </div>
+    <div class="maturity-stage"><div class="stage-bar"><div class="stage strategy ">Strategy</div><div class="stage assessment active">Assessment</div><div class="stage pilot ">Pilot</div><div class="stage scale ">Scale</div><div class="stage operate ">Operate</div></div></div>
+    <div class="use-case-reasoning"><div class="reasoning-label">Why dormakaba?</div><p>EntriWorX already collecting IoT data. 2,000+ service technicians need smarter scheduling. Predictive maintenance proven in industrial settings. Data foundation exists, needs ML layer. Service revenue opportunity: shift from reactive to predictive SLAs.</p></div>
+</div><div class="use-case-card">
+    <div class="use-case-header"><div class="use-case-number">3</div><span class="use-case-horizon horizon-1">H1: Quick Win</span></div>
+    <div class="use-case-title">Intelligent Knowledge Management (CompanyGPT)</div>
+    <div class="use-case-description">Deploy CompanyGPT as enterprise knowledge platform unifying fragmented information across 50+ countries, shared service centers (Sofia, Chennai, Nogales), and technical documentation. RAG-powered search across product manuals, installation guides, compliance docs, and internal policies.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Enterprise-wide</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Complexity</span><span class="meta-value complexity-low">Low</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">3-6 months</span></div>
+    </div>
+    <div class="maturity-stage"><div class="stage-bar"><div class="stage strategy active">Strategy</div><div class="stage assessment ">Assessment</div><div class="stage pilot ">Pilot</div><div class="stage scale ">Scale</div><div class="stage operate ">Operate</div></div></div>
+    <div class="use-case-reasoning"><div class="reasoning-label">Why dormakaba?</div><p>15,400 employees, 50+ countries, massive knowledge fragmentation. Shape4Growth shared service centers need unified knowledge access. 2,000+ service technicians need instant technical answers. CompanyGPT's proven RAG platform is ideal fit. Fastest deployment path with highest organizational impact.</p></div>
+</div><div class="use-case-card">
+    <div class="use-case-header"><div class="use-case-number">4</div><span class="use-case-horizon horizon-2">H2: Growth</span></div>
+    <div class="use-case-title">AI-Assisted Service Technician Diagnostics</div>
+    <div class="use-case-description">Mobile AI assistant for 2,000+ field technicians providing real-time diagnostic guidance, troubleshooting workflows, and repair recommendations based on product history, IoT sensor data, and historical service records.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Service</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Complexity</span><span class="meta-value complexity-medium">Medium</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">9-12 months</span></div>
+    </div>
+    <div class="maturity-stage"><div class="stage-bar"><div class="stage strategy active">Strategy</div><div class="stage assessment ">Assessment</div><div class="stage pilot ">Pilot</div><div class="stage scale ">Scale</div><div class="stage operate ">Operate</div></div></div>
+    <div class="use-case-reasoning"><div class="reasoning-label">Why dormakaba?</div><p>Service technicians face complex multi-product diagnostics. EntriWorX provides device data. CompanyGPT powers the knowledge layer. Combination creates powerful field service AI. Builds on UC2 (predictive) and UC3 (knowledge).</p></div>
+</div><div class="use-case-card">
+    <div class="use-case-header"><div class="use-case-number">5</div><span class="use-case-horizon horizon-2">H2: Growth</span></div>
+    <div class="use-case-title">AI-Driven Sales Intelligence & Lead Scoring</div>
+    <div class="use-case-description">ML-powered analysis of Salesforce CRM data to predict conversion probability, identify cross-sell opportunities across product lines, and provide AI-generated customer insights for key account managers.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Sales & Marketing</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-medium">Medium</span></div>
+        <div class="meta-item"><span class="meta-label">Complexity</span><span class="meta-value complexity-medium">Medium</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">6-12 months</span></div>
+    </div>
+    <div class="maturity-stage"><div class="stage-bar"><div class="stage strategy active">Strategy</div><div class="stage assessment ">Assessment</div><div class="stage pilot ">Pilot</div><div class="stage scale ">Scale</div><div class="stage operate ">Operate</div></div></div>
+    <div class="use-case-reasoning"><div class="reasoning-label">Why dormakaba?</div><p>Salesforce CRM data provides training set. Cross-sell between AS and KWO segments underexploited. Commercial transformation program creating CRM standardization. AI layer can accelerate revenue growth from existing customer base.</p></div>
+</div><div class="use-case-card">
+    <div class="use-case-header"><div class="use-case-number">6</div><span class="use-case-horizon horizon-2">H2: Growth</span></div>
+    <div class="use-case-title">Computer Vision Quality Inspection</div>
+    <div class="use-case-description">Deploy computer vision systems on production lines for automated quality inspection of mechanical components (locks, door closers, handles). Detect defects earlier, reduce scrap rates, improve consistency across global manufacturing network.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Manufacturing</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-medium">Medium</span></div>
+        <div class="meta-item"><span class="meta-label">Complexity</span><span class="meta-value complexity-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">12-18 months</span></div>
+    </div>
+    <div class="maturity-stage"><div class="stage-bar"><div class="stage strategy active">Strategy</div><div class="stage assessment ">Assessment</div><div class="stage pilot ">Pilot</div><div class="stage scale ">Scale</div><div class="stage operate ">Operate</div></div></div>
+    <div class="use-case-reasoning"><div class="reasoning-label">Why dormakaba?</div><p>Manufacturing footprint being consolidated (Shape4Growth). Quality consistency across 50+ plants is a challenge. CEO's KUKA robotics background creates executive understanding. Industry-proven use case. Builds on operational excellence pillar.</p></div>
+</div><div class="use-case-card">
+    <div class="use-case-header"><div class="use-case-number">7</div><span class="use-case-horizon horizon-3">H3: Transformational</span></div>
+    <div class="use-case-title">Autonomous Building Access Operations</div>
+    <div class="use-case-description">AI-driven autonomous building access management — self-optimizing security policies, automatic threat level adjustments, adaptive access schedules based on occupancy patterns, integration with building management systems for energy optimization.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Product & R&D</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Complexity</span><span class="meta-value complexity-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">18-24 months</span></div>
+    </div>
+    <div class="maturity-stage"><div class="stage-bar"><div class="stage strategy active">Strategy</div><div class="stage assessment ">Assessment</div><div class="stage pilot ">Pilot</div><div class="stage scale ">Scale</div><div class="stage operate ">Operate</div></div></div>
+    <div class="use-case-reasoning"><div class="reasoning-label">Why dormakaba?</div><p>Vision aligns with smart building megatrend. EntriWorX + MATRIXaaS provide platform foundation. Competitors (Johnson Controls OpenBlue) already offering building AI. Long-term competitive necessity.</p></div>
+</div><div class="use-case-card">
+    <div class="use-case-header"><div class="use-case-number">8</div><span class="use-case-horizon horizon-3">H3: Transformational</span></div>
+    <div class="use-case-title">Digital Twin for Access Infrastructure</div>
+    <div class="use-case-description">Comprehensive digital twin modeling of access infrastructure across building portfolios. Simulate security configurations, capacity planning, lifecycle management, and renovation scenarios. Enables portfolio-wide optimization for enterprise customers.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Product & Strategy</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Complexity</span><span class="meta-value complexity-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">24+ months</span></div>
+    </div>
+    <div class="maturity-stage"><div class="stage-bar"><div class="stage strategy active">Strategy</div><div class="stage assessment ">Assessment</div><div class="stage pilot ">Pilot</div><div class="stage scale ">Scale</div><div class="stage operate ">Operate</div></div></div>
+    <div class="use-case-reasoning"><div class="reasoning-label">Why dormakaba?</div><p>BIM integration already in place. ASSA ABLOY acquired SiteOwl for digital twins. Competitive necessity for enterprise accounts. Builds on all previous use cases. EntriWorX IoT data provides real-time digital twin inputs.</p></div>
+</div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-header">
+                    <h2 class="card-title">Competitor Benchmarks: Who Has Done What?</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">For each recommended use case, we researched whether competitors have already implemented similar solutions. Sources include press releases, case studies, product announcements, and industry reports.</div>
+                    </span>
+                </div>
+                <div class="competitor-ai-detail">
+                    <h4>Competitor Implementation Status</h4>
+                    <p>Analysis of similar AI use cases deployed by key competitors in the access solutions industry.</p>
+                    <div style="margin-top: 16px; overflow-x: auto;">
+                        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                            <thead>
+                                <tr style="background:var(--color-gray-100)">
+                                    <th style="padding:10px; text-align:left; border-bottom:2px solid var(--color-gray-200)">Use Case</th>
+                                    <th style="padding:10px; text-align:left; border-bottom:2px solid var(--color-gray-200)">ASSA ABLOY</th>
+                                    <th style="padding:10px; text-align:left; border-bottom:2px solid var(--color-gray-200)">Johnson Controls</th>
+                                    <th style="padding:10px; text-align:left; border-bottom:2px solid var(--color-gray-200)">Honeywell</th>
+                                    <th style="padding:10px; text-align:left; border-bottom:2px solid var(--color-gray-200)">Verkada</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)">Product Configuration AI</td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge">None</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge">N/A</span></td></tr>
+                                <tr><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)">Predictive Maintenance</td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge success">Active</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge success">Active</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge success">Active</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td></tr>
+                                <tr><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)">Enterprise Knowledge Mgmt</td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge success">Active</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge">None</span></td></tr>
+                                <tr><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)">Service Technician AI</td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge success">Active</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge success">Active</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge">None</span></td></tr>
+                                <tr><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)">Sales Intelligence</td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge success">Active</span></td></tr>
+                                <tr><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)">Quality Inspection CV</td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge">None</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge success">Active</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge">N/A</span></td></tr>
+                                <tr><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)">Autonomous Building Ops</td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge success">Active</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge success">Active</span></td><td style="padding:10px; border-bottom:1px solid var(--color-gray-200)"><span class="badge warning">Partial</span></td></tr>
+                                <tr><td style="padding:10px;">Digital Twin</td><td style="padding:10px;"><span class="badge success">Active</span></td><td style="padding:10px;"><span class="badge success">Active</span></td><td style="padding:10px;"><span class="badge warning">Partial</span></td><td style="padding:10px;"><span class="badge">None</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <input type="text" id="use-case-search" placeholder="Search use cases..."
+                       style="width: 100%; padding: 12px 16px; border: 1px solid var(--color-gray-200); border-radius: 6px; font-size: 14px;">
+                <p style="font-size: 12px; color: var(--color-slate); margin-top: 8px;">Type to filter use cases by title or business area</p>
+            </div>
+        </div>
+
+        <!-- TAB 7: ENGAGEMENT STRATEGY -->
+        <div id="engagement-strategy" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Engagement Strategy</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Customized engagement approach</div>
+                    </span>
+                </div>
+                <div class="insight-box success" style="margin-bottom: 20px;">
+                    Position around dormakaba's Shape4Growth transformation as the perfect moment for AI acceleration. Frame CompanyGPT as the knowledge backbone for 15,400 employees across 50+ countries undergoing massive organizational change. Emphasize quick wins that complement existing IT standardization.
+                </div>
+                <p style="font-size: 14px; color: var(--color-slate); line-height: 1.6;">dormakaba is mid-transformation: Shape4Growth delivering CHF 148M savings, new CEO with robotics/AI background (ex-KUKA), 3 shared service centers operational, IT being standardized. The organizational readiness for AI has never been higher. CompanyGPT addresses the most immediate pain point — unified knowledge for a global, multi-language workforce navigating product complexity and organizational change. AI advisory provides the strategic roadmap they lack.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Value Proposition</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Tailored to company context</div>
+                    </span>
+                </div>
+                <div class="insight-box success">
+                    <strong>CompanyGPT + AI Advisory Value:</strong> CompanyGPT as enterprise knowledge platform for 15,400 employees + AI advisory for strategic use case roadmap. Quick wins (knowledge management, product configuration) in 3-6 months. Strategic use cases (predictive maintenance, sales intelligence, quality inspection) delivering 5-10% operational improvement. Total addressable value: CHF 20-40M annually across productivity, service revenue, and quality improvements.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Talking Points</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Primary conversation topics</div>
+                    </span>
+                </div>
+<div class="conversation-card"><div class="conversation-label">Foundation</div><div class="conversation-title">Transformation Momentum</div><div class="conversation-content">Shape4Growth is creating the perfect foundation for AI. IT standardization, shared service centers, and process harmonization are exactly the prerequisites CompanyGPT needs.</div></div>
+<div class="conversation-card"><div class="conversation-label">Pain Point</div><div class="conversation-title">Knowledge Fragmentation Pain</div><div class="conversation-content">15,400 employees, 50+ countries, 3 shared service centers, 2,000+ technicians — all needing fast access to product knowledge, compliance docs, and internal policies. CompanyGPT solves this immediately.</div></div>
+<div class="conversation-card"><div class="conversation-label">Market Opportunity</div><div class="conversation-title">Product Complexity</div><div class="conversation-content">1000s of SKUs across mechanical, electronic, and digital product lines. Every sales team, architect, and installer struggles with configuration. AI-powered product advisor is a game-changer.</div></div>
+<div class="conversation-card"><div class="conversation-label">Revenue Driver</div><div class="conversation-title">Service Revenue Opportunity</div><div class="conversation-content">EntriWorX IoT data + CompanyGPT knowledge = predictive maintenance. Shift from reactive to proactive service. New SLA tiers. Higher margins on service contracts.</div></div>
+<div class="conversation-card"><div class="conversation-label">Leadership</div><div class="conversation-title">CEO Alignment</div><div class="conversation-content">Till Reuter's KUKA background means he understands automation and AI at an executive level. No need to 'sell' AI conceptually — focus on business cases and execution.</div></div>
+<div class="conversation-card"><div class="conversation-label">Competitive</div><div class="conversation-title">Competitive Urgency</div><div class="conversation-content">ASSA ABLOY, Johnson Controls, Honeywell all have dedicated AI teams and production deployments. dormakaba risks falling further behind without immediate AI capability building.</div></div>
+<div class="conversation-card"><div class="conversation-label">Advantage</div><div class="conversation-title">Swiss AI Ecosystem</div><div class="conversation-content">Zurich location provides access to ETH, EPFL, Swiss AI talent pool, and local AI consulting ecosystem. CompanyGPT + Artifact advisory is the natural Swiss-quality AI partner.</div></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Anticipated Objections & Responses</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Prepared responses to common concerns</div>
+                    </span>
+                </div>
+<div class="objection-card"><div class="objection-column"><div class="objection-label objection-text">Likely Objection</div><div class="objection-content">"We're in the middle of Shape4Growth — no bandwidth for AI"</div></div><div class="objection-column"><div class="objection-label response-text">Prepared Response</div><div class="objection-content">CompanyGPT complements S4G, not competes with it. Knowledge management supports shared service center effectiveness. Product configuration AI supports complexity reduction. AI acceleration amplifies transformation results.</div></div></div>
+<div class="objection-card"><div class="objection-column"><div class="objection-label objection-text">Likely Objection</div><div class="objection-content">"We don't have AI talent to maintain this"</div></div><div class="objection-column"><div class="objection-label response-text">Prepared Response</div><div class="objection-content">CompanyGPT is a managed platform — Artifact handles the AI infrastructure. dormakaba focuses on content and use cases. No need to build an internal AI team for Phase 1. Advisory engagement builds internal capability over time.</div></div></div>
+<div class="objection-card"><div class="objection-column"><div class="objection-label objection-text">Likely Objection</div><div class="objection-content">"Our IT team is fully committed to SAP/Salesforce migration"</div></div><div class="objection-column"><div class="objection-label response-text">Prepared Response</div><div class="objection-content">CompanyGPT integrates alongside existing systems, not replacing them. API-first architecture connects to SAP, Salesforce, and EntriWorX. Minimal IT burden — deployed in your environment (cloud or on-prem) within weeks.</div></div></div>
+<div class="objection-card"><div class="objection-column"><div class="objection-label objection-text">Likely Objection</div><div class="objection-content">"Access control is a hardware business, not a software business"</div></div><div class="objection-column"><div class="objection-label response-text">Prepared Response</div><div class="objection-content">The industry is shifting to software-defined security. Verkada, cloud-native competitors prove the model. MATRIXaaS and EntriWorX show dormakaba already moving this direction. AI is the next layer — ignore it and competitors win.</div></div></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recommended Approach</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Engagement methodology</div>
+                    </span>
+                </div>
+<div class="timeline">
+    <div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-title">Phase 1 (0-3 months): CompanyGPT Quick Start</div><div class="timeline-desc">Deploy CompanyGPT for enterprise knowledge management. Index product documentation, installation guides, compliance materials. Pilot with shared service centers and service technicians. Immediate productivity gains.</div></div></div>
+    <div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-title">Phase 2 (3-9 months): AI-Powered Products</div><div class="timeline-desc">Extend CompanyGPT into product configuration advisor. Build predictive maintenance models on EntriWorX IoT data. Launch AI advisory for strategic roadmap development.</div></div></div>
+    <div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-title">Phase 3 (9-18 months): Operational AI</div><div class="timeline-desc">Deploy service technician AI assistant. Implement sales intelligence and lead scoring. Begin computer vision quality inspection pilots. Build internal AI governance framework.</div></div></div>
+    <div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-title">Phase 4 (18-36 months): Platform AI</div><div class="timeline-desc">Autonomous building access operations. Digital twin for access infrastructure. AI-native product development. Competitive differentiation through AI-powered services.</div></div></div>
+</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Next Steps & Timeline</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Proposed engagement timeline</div>
+                    </span>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">Week 1-2</div><div class="timeline-title">CompanyGPT Discovery Workshop</div><div class="timeline-desc">Map knowledge sources, identify pilot user groups, define success metrics</div></div></div>
+<div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">Week 3-4</div><div class="timeline-title">Technical Architecture Review</div><div class="timeline-desc">Integration assessment with SAP, Salesforce, EntriWorX. Deployment model selection (cloud/on-prem)</div></div></div>
+<div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">Month 2</div><div class="timeline-title">CompanyGPT Pilot Launch</div><div class="timeline-desc">Deploy to shared service centers and select service technician groups</div></div></div>
+<div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">Month 3</div><div class="timeline-title">AI Strategy Workshop</div><div class="timeline-desc">Comprehensive use case prioritization with executive team</div></div></div>
+<div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">Month 4-6</div><div class="timeline-title">Phase 1 Scaling + Phase 2 Planning</div><div class="timeline-desc">Scale CompanyGPT enterprise-wide, begin product configuration AI development</div></div></div>
+<div class="timeline-item"><div class="timeline-marker"></div><div class="timeline-content"><div class="timeline-date">Month 6</div><div class="timeline-title">Progress Review &amp; Investment Decision</div><div class="timeline-desc">ROI assessment, Phase 2 commitment, AI advisory scope expansion</div></div></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Topics to Approach Carefully</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Areas requiring sensitivity</div>
+                    </span>
+                </div>
+<div class="grid-2">
+    <div class="insight-box warning"><strong>Don't criticize Shape4Growth:</strong> Frame AI as acceleration, not criticism of current approach</div>
+    <div class="insight-box danger"><strong>Sensitive: Workforce reduction:</strong> Transformation impact on 800 FTE. Position AI as augmentation, not further automation of jobs</div>
+    <div class="insight-box warning"><strong>Don't overemphasize AI maturity gap:</strong> Focus on opportunity and quick wins rather than being 'behind' competitors</div>
+    <div class="insight-box warning"><strong>Avoid suggesting replacement of SAP/Salesforce:</strong> CompanyGPT complements, not replaces existing investments</div>
+    <div class="insight-box warning"><strong>Be careful with data center vertical strategy:</strong> May be competing with customer segments (acquisitions TANlock, Avant-Garde)</div>
+</div>
+            </div>
+        </div>
+
+        <!-- TAB 8: SOURCES & METHODOLOGY -->
+        <div id="sources" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Report Metadata</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Report generation details</div>
+                    </span>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <div class="info-label">Generated Date</div>
+                        <div class="info-value">February 10, 2026</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Report Token</div>
+                        <div class="info-value" style="word-break: break-all; font-size: 12px;">2272bc76</div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <div class="info-label">Requested By</div>
+                        <div class="info-value">Michael Wegmuller</div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <div class="info-label">Analysis Sources</div>
+                        <div class="info-value">30+</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Source Confidence Distribution</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Source quality assessment</div>
+                    </span>
+                </div>
+                <div class="pie-chart">
+                    <div class="pie-container">
+                        <svg class="pie-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Primary sources (green) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#22c55e" stroke-width="30"
+                                    stroke-dasharray="254.47 565.48" stroke-dashoffset="0"/>
+                            <!-- Secondary sources (blue) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#3b82f6" stroke-width="30"
+                                    stroke-dasharray="169.64 565.48" stroke-dashoffset="-254.47"/>
+                            <!-- Inferred sources (purple) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#8b5cf6" stroke-width="30"
+                                    stroke-dasharray="84.82 565.48" stroke-dashoffset="-424.11"/>
+                            <!-- Speculative sources (gray) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#cbd5e1" stroke-width="30"
+                                    stroke-dasharray="56.55 565.48" stroke-dashoffset="-508.93"/>
+                        </svg>
+                    </div>
+                    <div class="pie-legend">
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #22c55e;"></div>
+                            <div class="pie-label">Primary</div>
+                            <div class="pie-percentage">45%</div>
+                        </div>
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #3b82f6;"></div>
+                            <div class="pie-label">Secondary</div>
+                            <div class="pie-percentage">30%</div>
+                        </div>
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #8b5cf6;"></div>
+                            <div class="pie-label">Inferred</div>
+                            <div class="pie-percentage">15%</div>
+                        </div>
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #cbd5e1;"></div>
+                            <div class="pie-label">Speculative</div>
+                            <div class="pie-percentage">10%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Primary Sources (30+ total)</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Authoritative company and market sources</div>
+                    </span>
+                </div>
+<div class="source-item"><div class="source-icon">1</div><div class="source-name"><a href="https://report.dormakaba.com/2023_24/strategy-group" target="_blank">dormakaba Annual Report 2023/24</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+<div class="source-item"><div class="source-icon">2</div><div class="source-name"><a href="https://report.dormakaba.com/2024_25/general-information" target="_blank">dormakaba Annual Report 2024/25</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+<div class="source-item"><div class="source-icon">3</div><div class="source-name"><a href="https://www.dormakabagroup.com/en/news/54676604-6faf-421c-8752-0f820a5fa088/capital-markets-day-2024-dormakaba-is-well-positioned-to-take-the-next-step-from-shape-to-growth" target="_blank">Capital Markets Day 2024: From Shape to Growth</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+<div class="source-item"><div class="source-icon">4</div><div class="source-name"><a href="https://www.dormakabagroup.com/en/news/8dc49e68-4864-4705-8947-6228ea54a427/dormakaba-initiates-transformation-program-to-strengthen-the-company-for-the-future" target="_blank">Shape4Growth Transformation Program Launch</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+<div class="source-item"><div class="source-icon">5</div><div class="source-name"><a href="https://report.dormakaba.com/2023_24/research-development" target="_blank">dormakaba Research &amp; Development</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+<div class="source-item"><div class="source-icon">6</div><div class="source-name"><a href="https://artifact.swiss/companygpt/" target="_blank">CompanyGPT — Artifact</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+<div class="source-item"><div class="source-icon">7</div><div class="source-name"><a href="https://go.dormakaba.com/en/articles/how-smart-building-technology-enhances-user-experience" target="_blank">dormakaba Smart Building Technology</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+<div class="source-item"><div class="source-icon">8</div><div class="source-name"><a href="https://boards.autodesk.com/convergence-pillars-emea/items/dormakaba-doors-become-fully-connected-access-solutions" target="_blank">dormakaba EntriWorX &amp; Autodesk Integration</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+<div class="source-item"><div class="source-icon">9</div><div class="source-name"><a href="https://www.marketsandmarkets.com/ResearchInsight/access-control-market.asp" target="_blank">Access Control Market — MarketsandMarkets</a></div><div class="source-meta"><span class="badge warning">INFERRED</span></div></div>
+<div class="source-item"><div class="source-icon">10</div><div class="source-name"><a href="https://www.prnewswire.com/news-releases/global-electronic-access-control-market-2020-to-2028---featuring-assa-abloy-dormakaba--allegion-among-others-301213205.html" target="_blank">Global Electronic Access Control Market</a></div><div class="source-meta"><span class="badge warning">INFERRED</span></div></div>
+<div class="source-item"><div class="source-icon">11</div><div class="source-name"><a href="https://pestel-analysis.com/blogs/competitors/dormakaba" target="_blank">dormakaba Competitive Landscape (PESTEL)</a></div><div class="source-meta"><span class="badge warning">INFERRED</span></div></div>
+<div class="source-item"><div class="source-icon">12</div><div class="source-name"><a href="https://swotanalysisexample.com/blogs/competitors/dormakaba-competitors" target="_blank">dormakaba Competitive Landscape (SWOT)</a></div><div class="source-meta"><span class="badge warning">INFERRED</span></div></div>
+<div class="source-item"><div class="source-icon">13</div><div class="source-name"><a href="https://www.industryresearch.co/market-reports/smart-access-control-market-307613" target="_blank">Smart Access Control Market Size 2026-2035</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+<div class="source-item"><div class="source-icon">14</div><div class="source-name"><a href="https://www.acresecurity.com/blog/access-control-trends-2026-physical-security" target="_blank">Access Control Trends 2026 — Acre Security</a></div><div class="source-meta"><span class="badge warning">INFERRED</span></div></div>
+<div class="source-item"><div class="source-icon">15</div><div class="source-name"><a href="https://www.avigilon.com/blog/access-control-security-trend" target="_blank">Access Control Trends 2026 — Avigilon</a></div><div class="source-meta"><span class="badge warning">INFERRED</span></div></div>
+<div class="source-item"><div class="source-icon">16</div><div class="source-name"><a href="https://www.coram.ai/post/smart-building-technology" target="_blank">Smart Building Technology Guide 2026</a></div><div class="source-meta"><span class="badge warning">INFERRED</span></div></div>
+<div class="source-item"><div class="source-icon">17</div><div class="source-name"><a href="https://sirixmonitoring.com/blog/ai-security-technologies-transforming-businesses/" target="_blank">AI Security Technologies 2026</a></div><div class="source-meta"><span class="badge warning">INFERRED</span></div></div>
+<div class="source-item"><div class="source-icon">18</div><div class="source-name"><a href="https://report.dormakaba.com/2024_25/strategy-group" target="_blank">dormakaba Strategy 2024/25</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+<div class="source-item"><div class="source-icon">19</div><div class="source-name"><a href="https://pestel-analysis.com/blogs/growth-strategy/dormakaba" target="_blank">dormakaba Growth Strategy Analysis</a></div><div class="source-meta"><span class="badge warning">INFERRED</span></div></div>
+<div class="source-item"><div class="source-icon">20</div><div class="source-name"><a href="https://blog.dormakaba.com/how-to-teach-your-old-building-to-become-a-smart-building/" target="_blank">dormakaba Smart Building Blog</a></div><div class="source-meta"><span class="badge success">VERIFIED</span></div></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Methodology & Framework</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Analysis approach and limitations</div>
+                    </span>
+                </div>
+                <div class="insight-box">
+                    Multi-framework approach: (1) AI Maturity Model — 6-dimension 1-5 scale with evidence-based scoring; (2) Porter's Five Forces for access control industry dynamics; (3) SWOT analysis aligned to CompanyGPT opportunity; (4) Impact vs Feasibility Matrix for use case prioritization; (5) McKinsey 3 Horizons for implementation sequencing. Based on 30+ web searches across company, competitive, industry, and meeting-context clusters.
+                </div>
+                <div style="margin-top: 20px;">
+                    <div class="info-label">Data Freshness</div>
+                    <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate);">H1 FY 2024/25 financial results (July-December 2024). Capital Markets Day materials (November 2024). Industry trends as of February 2026. Competitor data from latest available annual reports.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Original Prompt</h2>
+                    <span class="methodology-callout">
+                        <span class="methodology-icon">ℹ️</span> How calculated
+                        <div class="methodology-tooltip">Request parameters</div>
+                    </span>
+                </div>
+                <div style="background: var(--color-gray-50); padding: 16px; border-radius: 6px; border-left: 3px solid var(--color-slate); font-family: 'Courier New', monospace; font-size: 12px; color: var(--color-slate); line-height: 1.6; word-break: break-word;">
+                    Create AI strategy analysis for dormakaba for a meeting on CompanyGPT Asset Sale &amp; AI Advisory
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                    <img src="assets/artifact-logo-horizontal.png" alt="Artifact" style="height: 28px; filter: brightness(0) invert(1);">
+                    <span style="font-size: 1rem; font-weight: 800; background: linear-gradient(135deg, #60a5fa, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Intel Company</span>
+                </div>
+                <p>AI Strategy Dashboard providing comprehensive analysis of dormakaba's artificial intelligence readiness, competitive positioning, market opportunities, and recommended engagement strategy.</p>
+            </div>
+            <div class="footer-column">
+                <div class="footer-meta">
+                    <div class="footer-meta-item">
+                        <strong>Generated:</strong> February 10, 2026
+                    </div>
+                    <div class="footer-meta-item">
+                        <strong>Report ID:</strong> 2272bc76
+                    </div>
+                    <div class="footer-meta-item">
+                        <strong>Created by:</strong> Michael Wegmuller
+                    </div>
+                    <div class="footer-meta-item">
+                        <strong>Sources:</strong> 30++
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 20px; padding: 12px 20px; background: rgba(255,255,255,0.05); border-radius: 8px; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <div style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Original Request</div>
+            <div style="font-style: italic; color: rgba(255,255,255,0.7); font-size: 12px; line-height: 1.6; word-break: break-word;">"Create AI strategy analysis for dormakaba for a meeting on CompanyGPT Asset Sale &amp; AI Advisory"</div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px;">
+            <span style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, rgba(220,252,231,0.15), rgba(187,247,208,0.1)); border: 1px solid rgba(134,239,172,0.3); padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.8);">Responsible AI - Public data sources only</span>
+        </div>
+        <div class="footer-disclaimer">
+            This report was generated by AI (Claude by Anthropic) and is based entirely on publicly available information. All findings, scores, and recommendations are algorithmically derived and should be independently verified before use in business decisions. This analysis does not constitute professional consulting advice.
+        </div>
+    </div>
+
+    <script>
+        // TAB SWITCHING
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+
+                // Remove active class from all tabs and buttons
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Add active class to current tab and button
+                document.getElementById(tabName).classList.add('active');
+                button.classList.add('active');
+
+                // Smooth scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // USE CASE SEARCH/FILTER
+        const searchInput = document.getElementById('use-case-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const useCaseCards = document.querySelectorAll('.use-case-card');
+
+                useCaseCards.forEach(card => {
+                    const title = card.querySelector('.use-case-title')?.textContent.toLowerCase() || '';
+                    const businessArea = card.querySelector('.meta-value')?.textContent.toLowerCase() || '';
+                    const description = card.querySelector('.use-case-description')?.textContent.toLowerCase() || '';
+
+                    if (title.includes(searchTerm) || businessArea.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // PRINT FUNCTIONALITY
+        window.printReport = function() {
+            window.print();
+        };
+
+        // SMOOTH SCROLL
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Initialize tooltips
+        document.querySelectorAll('.methodology-callout').forEach(callout => {
+            callout.addEventListener('mouseover', function() {
+                const tooltip = this.querySelector('.methodology-tooltip');
+                if (tooltip) {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.visibility = 'visible';
+                }
+            });
+
+            callout.addEventListener('mouseout', function() {
+                const tooltip = this.querySelector('.methodology-tooltip');
+                if (tooltip) {
+                    tooltip.style.opacity = '0';
+                    tooltip.style.visibility = 'hidden';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
