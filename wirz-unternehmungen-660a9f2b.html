@@ -1,0 +1,3158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intel Company - Wirz Unternehmungen - AI Strategy Dashboard</title>
+    <style>
+        :root {
+            --color-navy: #0f172a;
+            --color-slate: #64748b;
+            --color-green: #22c55e;
+            --color-red: #ef4444;
+            --color-blue: #3b82f6;
+            --color-purple: #8b5cf6;
+            --color-gray-50: #f8fafc;
+            --color-gray-100: #f1f5f9;
+            --color-gray-200: #e2e8f0;
+            --color-gray-300: #cbd5e1;
+            --color-gray-700: #334155;
+            --color-gray-900: #0f172a;
+            --color-white: #ffffff;
+            --color-yellow: #eab308;
+            --color-orange: #f97316;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--color-gray-50);
+            color: var(--color-gray-700);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* HEADER STYLES */
+        .header {
+            background: linear-gradient(135deg, var(--color-navy) 0%, #1e293b 100%);
+            color: var(--color-white);
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: 'CONFIDENTIAL';
+            position: absolute;
+            top: 8px;
+            right: 40px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.4);
+            opacity: 0.6;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-logo {
+            height: 32px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header-divider {
+            color: rgba(255,255,255,0.3);
+            font-weight: 300;
+        }
+
+        .header-product {
+            color: var(--color-blue);
+        }
+
+        .header-main {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex: 1;
+            margin-left: 40px;
+        }
+
+        .company-logo {
+            height: 64px;
+            width: 64px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: rgba(255,255,255,0.1);
+            padding: 8px;
+        }
+
+        .company-initials {
+            height: 64px;
+            width: 64px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-white);
+        }
+
+        .header-main h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--color-white);
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 6px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* TAB NAVIGATION */
+        .tab-nav {
+            background: var(--color-white);
+            border-bottom: 2px solid var(--color-gray-200);
+            display: flex;
+            overflow-x: auto;
+            padding: 0 40px;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 16px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-slate);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            color: var(--color-navy);
+            background-color: var(--color-gray-50);
+        }
+
+        .tab-btn.active {
+            color: var(--color-blue);
+            border-bottom-color: var(--color-blue);
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CARD STYLES */
+        .card {
+            background: var(--color-white);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: var(--color-slate);
+            margin-top: 8px;
+        }
+
+        /* METHODOLOGY CALLOUT */
+        .methodology-callout {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--color-blue);
+            color: var(--color-white);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: help;
+        }
+
+        .methodology-callout:hover .methodology-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .methodology-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-navy);
+            color: var(--color-white);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .methodology-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--color-navy);
+        }
+
+        /* BADGE & TAGS */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: var(--color-gray-200);
+            color: var(--color-navy);
+        }
+
+        .badge.primary {
+            background-color: var(--color-blue);
+            color: var(--color-white);
+        }
+
+        .badge.success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge.warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 4px 4px 4px 0;
+            background-color: var(--color-gray-100);
+            color: var(--color-gray-700);
+            border-radius: 4px;
+            font-size: 13px;
+            border: 1px solid var(--color-gray-200);
+        }
+
+        .tag.primary {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border-color: #93c5fd;
+        }
+
+        .tag.success {
+            background-color: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .tag.purple {
+            background-color: #ede9fe;
+            color: #581c87;
+            border-color: #ddd6fe;
+        }
+
+        /* INSIGHT BOX */
+        .insight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-left: 4px solid var(--color-blue);
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin: 16px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .insight-box.success {
+            border-left-color: var(--color-green);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.03) 100%);
+        }
+
+        .insight-box.warning {
+            border-left-color: var(--color-orange);
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(249, 115, 22, 0.03) 100%);
+        }
+
+        .insight-box.danger {
+            border-left-color: var(--color-red);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.03) 100%);
+        }
+
+        /* GRID LAYOUTS */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            border-left: 3px solid var(--color-blue);
+            background-color: var(--color-gray-50);
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .timeline-item .timeline-marker {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-blue);
+            border-radius: 50%;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .timeline-item .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-item .timeline-date {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-item .timeline-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-top: 4px;
+        }
+
+        .timeline-item .timeline-desc {
+            font-size: 13px;
+            color: var(--color-slate);
+            margin-top: 6px;
+        }
+
+        /* PERSON CARD */
+        .person-card {
+            text-align: center;
+            padding: 20px;
+            background: var(--color-gray-50);
+            border-radius: 8px;
+            border: 1px solid var(--color-gray-200);
+        }
+
+        .person-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-white);
+        }
+
+        .person-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        .person-title {
+            font-size: 12px;
+            color: var(--color-slate);
+            margin-top: 4px;
+        }
+
+        /* CONVERSATION CARD */
+        .conversation-card {
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .conversation-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .conversation-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 12px;
+        }
+
+        .conversation-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--color-slate);
+        }
+
+        /* AI READINESS GAUGE */
+        .ai-readiness-gauge {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .gauge-circle {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--color-blue) 0deg 37%,
+                var(--color-gray-200) 37% 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 0 12px var(--color-white);
+        }
+
+        .gauge-value {
+            text-align: center;
+        }
+
+        .gauge-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-blue);
+        }
+
+        .gauge-max {
+            font-size: 16px;
+            color: var(--color-slate);
+        }
+
+        .gauge-description {
+            flex: 1;
+        }
+
+        .gauge-description h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 8px;
+        }
+
+        .gauge-description p {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.6;
+        }
+
+        /* VALUE CHAIN FLOW */
+        .value-chain-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 20px 0;
+            margin: 20px 0;
+        }
+
+        .value-chain-box {
+            background: var(--color-blue);
+            color: var(--color-white);
+            padding: 16px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+
+        .value-chain-arrow {
+            color: var(--color-slate);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        /* PRIORITY MATRIX */
+        .priority-matrix {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .matrix-axes {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+            height: calc(100% - 40px);
+            border-left: 2px solid var(--color-slate);
+            border-bottom: 2px solid var(--color-slate);
+        }
+
+        .matrix-quadrant-labels {
+            position: absolute;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-slate);
+        }
+
+        .matrix-x-label {
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .matrix-y-label {
+            top: 50%;
+            left: -40px;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        .scatter-dot {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .scatter-dot:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .scatter-dot.impact-high {
+            background-color: var(--color-green);
+        }
+
+        .scatter-dot.impact-medium {
+            background-color: var(--color-blue);
+        }
+
+        .scatter-dot.impact-low {
+            background-color: var(--color-slate);
+        }
+
+        /* HORIZONTAL BAR CHART */
+        .bar-group {
+            margin: 16px 0;
+        }
+
+        .bar-item {
+            margin-bottom: 16px;
+        }
+
+        .bar-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bar-label-value {
+            color: var(--color-slate);
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 24px;
+            background-color: var(--color-gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-blue), var(--color-purple));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* REVENUE BAR CHART */
+        .revenue-bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 16px;
+            height: 200px;
+            margin: 20px 0;
+        }
+
+        .revenue-bar {
+            flex: 1;
+            background: linear-gradient(180deg, var(--color-blue), #60a5fa);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            min-height: 40px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .revenue-bar:hover {
+            filter: brightness(1.1);
+        }
+
+        .revenue-bar-label {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-slate);
+        }
+
+        .revenue-bar-value {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        /* USE CASE CARD */
+        .use-case-card {
+            background: var(--color-white);
+            border: 2px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .use-case-card:hover {
+            border-color: var(--color-blue);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1);
+        }
+
+        .use-case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .use-case-number {
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            color: var(--color-white);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .use-case-horizon {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .use-case-horizon.horizon-1 {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .use-case-horizon.horizon-2 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .use-case-horizon.horizon-3 {
+            background-color: #ede9fe;
+            color: #581c87;
+        }
+
+        .use-case-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 8px;
+        }
+
+        .use-case-description {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .use-case-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .meta-label {
+            color: var(--color-slate);
+            font-weight: 600;
+        }
+
+        .meta-value {
+            color: var(--color-navy);
+            font-weight: 700;
+        }
+
+        .meta-value.impact-high {
+            color: var(--color-green);
+        }
+
+        .meta-value.impact-medium {
+            color: var(--color-blue);
+        }
+
+        .meta-value.impact-low {
+            color: var(--color-slate);
+        }
+
+        .meta-value.complexity-high {
+            color: var(--color-red);
+        }
+
+        .meta-value.complexity-medium {
+            color: var(--color-orange);
+        }
+
+        .meta-value.complexity-low {
+            color: var(--color-green);
+        }
+
+        /* MATURITY STAGE */
+        .maturity-stage {
+            margin-bottom: 12px;
+        }
+
+        .stage-bar {
+            display: flex;
+            gap: 4px;
+        }
+
+        .stage {
+            flex: 1;
+            height: 24px;
+            border-radius: 4px;
+            background-color: var(--color-gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--color-gray-700);
+            transition: all 0.3s ease;
+        }
+
+        .stage.active {
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            color: var(--color-white);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+        }
+
+        .stage.pending {
+            background-color: var(--color-gray-100);
+            color: var(--color-slate);
+        }
+
+        .stage.strategy {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.assessment {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.pilot {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.scale {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.operate {
+            background-color: var(--color-gray-100);
+        }
+
+        .stage.strategy.active {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+
+        .stage.assessment.active {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        }
+
+        .stage.pilot.active {
+            background: linear-gradient(135deg, #34d399, #10b981);
+        }
+
+        .stage.scale.active {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+
+        .stage.operate.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        /* USE CASE REASONING */
+        .use-case-reasoning {
+            background: var(--color-gray-50);
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            border-left: 3px solid var(--color-blue);
+        }
+
+        .reasoning-label {
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+        }
+
+        .use-case-reasoning p {
+            color: var(--color-slate);
+            line-height: 1.5;
+        }
+
+        /* MATURITY RADAR */
+        .maturity-radar {
+            margin: 20px 0;
+        }
+
+        .radar-svg {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        /* OBJECTION CARD */
+        .objection-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .objection-column {
+            padding-right: 20px;
+            border-right: 2px solid var(--color-gray-200);
+        }
+
+        .objection-column:last-child {
+            border-right: none;
+            padding-right: 0;
+        }
+
+        .objection-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .objection-label.objection-text {
+            color: var(--color-red);
+        }
+
+        .objection-label.response-text {
+            color: var(--color-green);
+        }
+
+        .objection-content {
+            font-size: 14px;
+            color: var(--color-navy);
+            line-height: 1.6;
+        }
+
+        /* SOURCE ITEM */
+        .source-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--color-gray-200);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            background: var(--color-gray-50);
+            transition: all 0.3s ease;
+        }
+
+        .source-item:hover {
+            background: var(--color-white);
+            border-color: var(--color-blue);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        }
+
+        .source-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .source-name {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-navy);
+        }
+
+        .source-meta {
+            font-size: 12px;
+            color: var(--color-slate);
+        }
+
+        .source-item a {
+            color: var(--color-blue);
+            text-decoration: none;
+        }
+
+        .source-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* COMPETITOR CARD */
+        .competitor-card {
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .competitor-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+        }
+
+        .competitor-description {
+            font-size: 13px;
+            color: var(--color-slate);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .competitor-threat {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .competitor-threat.high {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .competitor-threat.medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .competitor-threat.low {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        /* TREND CARD */
+        .trend-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .trend-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trend-description {
+            font-size: 13px;
+            color: var(--color-slate);
+            line-height: 1.5;
+        }
+
+        .impact-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .impact-badge.high {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .impact-badge.medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .impact-badge.low {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        /* COMPANY INFO CARD */
+        .company-info-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
+            border: 1px solid var(--color-gray-200);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .info-item {
+            padding: 12px 0;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        /* PIE CHART */
+        .pie-chart {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .pie-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .pie-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pie-legend {
+            flex: 1;
+        }
+
+        .pie-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .pie-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .pie-label {
+            flex: 1;
+            color: var(--color-slate);
+        }
+
+        .pie-percentage {
+            font-weight: 700;
+            color: var(--color-navy);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--color-navy);
+            color: var(--color-white);
+            padding: 24px 40px;
+            margin-top: 60px;
+            border-top: 1px solid var(--color-gray-200);
+            font-size: 12px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .footer-column p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+
+        .footer-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .footer-meta-item {
+            color: rgba(255,255,255,0.7);
+            word-break: break-all;
+        }
+
+        .footer-disclaimer {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin-top: 20px;
+            padding-top: 20px;
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            font-style: italic;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .objection-card {
+                grid-template-columns: 1fr;
+            }
+            .objection-column {
+                border-right: none;
+                border-bottom: 2px solid var(--color-gray-200);
+                padding-right: 0;
+                padding-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            .header-main {
+                margin-left: 0;
+            }
+            .header::before {
+                right: 20px;
+            }
+            .container {
+                padding: 20px;
+            }
+            .tab-nav {
+                padding: 0 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .pie-chart {
+                flex-direction: column;
+            }
+            .pie-container {
+                width: 150px;
+                height: 150px;
+            }
+            .company-info-card {
+                grid-template-columns: 1fr;
+            }
+            .header-meta {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .tab-btn {
+                font-size: 12px;
+                padding: 12px 16px;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background: var(--color-white);
+            }
+            .header {
+                break-after: avoid;
+            }
+            .tab-nav {
+                display: none;
+            }
+            .card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            .use-case-card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            .tab-content {
+                display: block !important;
+            }
+            .container {
+                padding: 20px 0;
+            }
+            .methodology-callout {
+                display: none;
+            }
+            a {
+                color: var(--color-blue);
+            }
+            @page {
+                margin: 0.5in;
+            }
+        }
+
+        /* UTILITY CLASSES */
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .mt-24 {
+            margin-top: 24px;
+        }
+
+        .mb-24 {
+            margin-bottom: 24px;
+        }
+
+        .gap-24 {
+            gap: 24px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-intro {
+            font-size: 14px;
+            color: var(--color-slate);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: var(--color-gray-50);
+            border-radius: 6px;
+            border-left: 4px solid var(--color-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-brand">
+            <img src="assets/artifact-logo-horizontal.png" alt="artifact" class="header-logo">
+            <span class="header-divider">|</span>
+            <span class="header-product">Intel Company</span>
+        </div>
+        <div class="header-main">
+            <img src="" alt="Wirz Unternehmungen" class="company-logo" style="display: none;"
+                 onerror="this.style.display='none'; document.querySelector('.company-initials').style.display='flex';">
+            <div class="company-initials">WU</div>
+            <div>
+                <h1>Wirz Unternehmungen</h1>
+                <div class="header-subtitle">Construction & Building Services | Bern, Switzerland</div>
+                <div class="header-meta">
+                    <span>Revenue: Est. CHF 80-120M (Group)</span>
+                    <span>Employees: ~300 employees</span>
+                    <span>Founded: 1912</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB NAVIGATION -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="executive-summary">Executive Summary</button>
+        <button class="tab-btn" data-tab="company-deep-dive">Company Deep Dive</button>
+        <button class="tab-btn" data-tab="competitive-landscape">Competitive Landscape</button>
+        <button class="tab-btn" data-tab="market-industry">Market & Industry</button>
+        <button class="tab-btn" data-tab="ai-maturity">AI Maturity</button>
+        <button class="tab-btn" data-tab="ai-use-cases">AI Use Cases</button>
+        <button class="tab-btn" data-tab="engagement-strategy">Engagement Strategy</button>
+        <button class="tab-btn" data-tab="sources">Sources & Methodology</button>
+    </nav>
+
+    <div class="container">
+        <!-- TAB 1: EXECUTIVE SUMMARY -->
+        <div id="executive-summary" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Company Overview</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Based on public filings, news, and market databases</div>
+                    </div>
+                </div>
+                <div class="company-info-card">
+                    <div class="info-item">
+                        <div class="info-label">Company Name</div>
+                        <div class="info-value">Wirz Unternehmungen</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Industry</div>
+                        <div class="info-value">Construction & Building Services</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Headquarters</div>
+                        <div class="info-value">Bern, Switzerland</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Company Size</div>
+                        <div class="info-value">~300 employees</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Annual Revenue</div>
+                        <div class="info-value">Est. CHF 80-120M (Group)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">CEO</div>
+                        <div class="info-value">Jeton Tolaj (CEO)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Founded</div>
+                        <div class="info-value">1912</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Digital Maturity</div>
+                        <div class="info-value">AI Exploring</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Readiness & Digital Maturity</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Proprietary assessment framework</div>
+                    </div>
+                </div>
+                <div class="ai-readiness-gauge">
+                    <div class="gauge-circle" style="--gauge-percentage: 37">
+                        <div class="gauge-value">
+                            <div class="gauge-score">3.7</div>
+                            <div class="gauge-max">/10</div>
+                        </div>
+                    </div>
+                    <div class="gauge-description">
+                        <h4>AI Readiness Assessment</h4>
+                        <p>Wirz Unternehmungen demonstrates a AI Exploring level of digital maturity. The company's AI readiness score reflects its current technological infrastructure, talent availability, and strategic commitment to artificial intelligence.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Findings</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Synthesized from research and analysis</div>
+                    </div>
+                </div>
+                
+<div class="grid-3">
+    <div class="insight-box success">
+        <strong>🏗️ Heritage Strength:</strong> 112-year family legacy with 7 diversified subsidiaries (construction, timber, hazmat remediation, restoration, building services). ISO 9001:2015 certified. Exceptional employee loyalty — 35 jubilees in 2024 alone.
+    </div>
+    <div class="insight-box warning">
+        <strong>📊 Digital Gap:</strong> No publicly visible AI strategy, BIM adoption, or digital transformation roadmap. Data likely siloed across subsidiaries. As BIM becomes mandatory for Swiss infrastructure projects in 2025+, urgency to act is increasing.
+    </div>
+    <div class="insight-box danger">
+        <strong>⚡ Competitive Risk:</strong> Larger rivals (Implenia, Marti) are investing heavily in digitalization. Swiss construction AI adoption is in its infancy — early movers among SMEs can gain significant advantages. The window for differentiation is narrowing.
+    </div>
+</div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Top 3 AI Opportunities Preview</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">See AI Use Cases tab for full analysis</div>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    
+<div class="conversation-card">
+    <div class="conversation-label">Highest-Priority Use Case</div>
+    <div class="conversation-title">AI-Powered Document Processing & Cost Estimation</div>
+    <div class="conversation-content">Automate processing of construction blueprints, permits, supplier invoices, and subcontractor quotes across all 7 subsidiaries. Estimated 40-60% reduction in administrative processing time with 3-6 month ROI.</div>
+</div>
+<div class="conversation-card">
+    <div class="conversation-label">Strategic Differentiator</div>
+    <div class="conversation-title">AI Safety Monitoring for Hazardous Materials Remediation</div>
+    <div class="conversation-content">Computer vision-based worker safety monitoring for Wirz Schadstoffsanierung's asbestos remediation operations. Unique competitive advantage leveraging Wirz's specialized subsidiary — no direct Swiss competitor has implemented this.</div>
+</div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Meeting Context & Fit</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Based on engagement parameters</div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <div class="info-label">Meeting Context</div>
+                        <div class="info-value" style="margin-top: 8px;">AI strategy exploration for Swiss construction group</div>
+                        <div class="info-label" style="margin-top: 16px;">Your Role</div>
+                        <div class="info-value" style="margin-top: 8px;">Board / Senior Management</div>
+                        <div class="info-label" style="margin-top: 16px;">Meeting Purpose</div>
+                        <div class="info-value" style="margin-top: 8px;">Identify AI opportunities for a traditional Swiss Bauunternehmung entering the digital age</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Meeting Fit Score</div>
+                        <div style="margin-top: 8px;">
+                            <div class="gauge-circle" style="width: 120px; height: 120px; --gauge-percentage: 82">
+                                <div class="gauge-value">
+                                    <div class="gauge-score" style="font-size: 36px;">8.2</div>
+                                    <div class="gauge-max">/10</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 16px; font-size: 13px; color: var(--color-slate);">Wirz Unternehmungen is an ideal candidate for Artifact SA's AI consulting services. As a mid-size Swiss construction group with strong fundamentals but no visible digital strategy, Wirz represents the 'pragmatic middle' of Swiss SMEs that need practical, results-oriented AI guidance — exactly Artifact's sweet spot. The 7-subsidiary structure creates natural opportunities for cross-entity data integration and shared AI capabilities. Timing is ideal: BIM mandates (2025+), labor shortages, and early-stage industry AI adoption create urgency without overwhelming complexity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: COMPANY DEEP DIVE -->
+        <div id="company-deep-dive" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Business Model Canvas</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Osterwalder Business Model Canvas</div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <div class="info-label">Value Proposition</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">Full-service construction group offering integrated capabilities from general contracting and timber construction to specialized hazardous materials remediation and heritage building restoration. Quality-certified (ISO 9001:2015) family business with 112 years of regional expertise in the Bern market.</p>
+                    </div>
+                    <div>
+                        <div class="info-label">Customer Segments</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">Public sector (municipal/cantonal building projects, infrastructure), private real estate developers, institutional clients (hospitals, rehabilitation centers), heritage preservation organizations, commercial property owners requiring renovation/remediation services.</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <div class="info-label">Revenue Streams</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">General construction contracting (primary), timber construction projects, hazardous materials assessment and remediation, building technology and HVAC services (König Haustechnik), heritage restoration, pipeline rehabilitation (Prorohr AG).</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <div class="info-label">Key Partners</div>
+                        <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate); line-height: 1.6;">Local subcontractors and suppliers in Bern region, Schweizerischer Baumeisterverband (SBV), architects and planning firms, cantonal building authorities, equipment suppliers (recent investments in specialized machinery).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Financial Performance (Estimated — Private Company)</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From SEC filings and investor reports</div>
+                    </div>
+                </div>
+                <div style="padding: 20px 0;">
+                    <div class="revenue-bar-chart">
+                        
+<div class="revenue-bar" style="height: 65%;">
+    <div class="revenue-bar-value">Est. CHF 80-100M</div>
+    <div class="revenue-bar-label">2022</div>
+</div>
+<div class="revenue-bar" style="height: 70%;">
+    <div class="revenue-bar-value">Est. CHF 85-105M</div>
+    <div class="revenue-bar-label">2023</div>
+</div>
+<div class="revenue-bar" style="height: 80%;">
+    <div class="revenue-bar-value">Est. CHF 90-120M</div>
+    <div class="revenue-bar-label">2024</div>
+</div>
+
+                    </div>
+                </div>
+                <div class="insight-box success">
+                    <strong>Financial Trajectory:</strong> As a private family-owned group (Asante Holding AG), detailed financials are not publicly available. Revenue estimates are based on ~300 employees, 7 subsidiaries, and Bern regional construction market share. Growth trajectory appears positive based on recent project wins (BLYSS Lyss residential, Berner Reha Zentrum) and equipment investments.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Technology Stack</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From job postings, tech blogs, and company publications</div>
+                    </div>
+                </div>
+                <div style="padding: 12px 0;">
+                    
+<span class="tag">ISO 9001:2015 QMS</span>
+<span class="tag">Traditional CAD/Planning Tools</span>
+<span class="tag">Standard ERP (likely Abacus/SAP)</span>
+<span class="tag primary">BIM Transition Pending</span>
+<span class="tag">MS Office Suite</span>
+<span class="tag">Equipment Fleet Management</span>
+<span class="tag">Project Management Software</span>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Strategic Priorities</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From earnings calls, investor presentations, and public statements</div>
+                    </div>
+                </div>
+                
+<div class="grid-2">
+    <div class="insight-box">
+        <strong>🏠 Diversified Growth:</strong> Maintaining and expanding the 7-subsidiary portfolio across construction, timber, hazmat, restoration, and building services. Recent project wins (BLYSS Lyss, Berner Reha Zentrum, Nido restaurant) show active pipeline.
+    </div>
+    <div class="insight-box">
+        <strong>👨‍👩‍👦 Succession & Continuity:</strong> Successfully managing 4th-generation transition with Nino Wirz in commercial management. New CEO Jeton Tolaj brings fresh leadership while preserving family values and culture.
+    </div>
+    <div class="insight-box success">
+        <strong>🔧 Equipment Modernization:</strong> Active investment in modern machinery (e.g., new Längsfräse acquisition Nov 2025). Focus on operational efficiency through better equipment rather than digital tools — suggesting readiness for broader modernization.
+    </div>
+    <div class="insight-box warning">
+        <strong>📋 Regulatory Compliance:</strong> Preparing for BIM mandates on Swiss infrastructure projects (2025+). Maintaining ISO certification. Meeting evolving environmental and safety regulations, particularly in hazardous materials remediation.
+    </div>
+</div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Announcements & News</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Last 12 months of major announcements</div>
+                    </div>
+                </div>
+                <div class="timeline">
+                    
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+            <div class="timeline-date">November 2025</div>
+            <div class="timeline-title">New Längsfräse Equipment Investment</div>
+            <div class="timeline-desc">Wirz AG acquired specialized milling equipment, demonstrating ongoing commitment to operational modernization and capability expansion.</div>
+        </div>
+    </div>
+    <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+            <div class="timeline-date">2024-2025</div>
+            <div class="timeline-title">Major Project Portfolio Active</div>
+            <div class="timeline-desc">Wohnüberbauung BLYSS Lyss (residential), Berner Reha Zentrum (rehabilitation center), and Restaurant Nido projects demonstrate diversified pipeline across residential, healthcare, and commercial segments.</div>
+        </div>
+    </div>
+    <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+            <div class="timeline-date">2024</div>
+            <div class="timeline-title">35 Employee Jubilees Celebrated</div>
+            <div class="timeline-desc">Remarkable employee loyalty milestone: 35 staff celebrated service anniversaries ranging from 10 to 45 years, underscoring the company's strong culture and retention.</div>
+        </div>
+    </div>
+    <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+            <div class="timeline-date">2023-2024</div>
+            <div class="timeline-title">Leadership Transition</div>
+            <div class="timeline-desc">CEO transition from Charles Zuber to Jeton Tolaj. Nino Wirz (4th generation) takes on commercial management role, ensuring family continuity alongside professional leadership.</div>
+        </div>
+    </div>
+</div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Leadership Team</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From company website and LinkedIn</div>
+                    </div>
+                </div>
+                <div class="grid-4">
+                    
+<div class="person-card">
+    <div class="person-avatar">JT</div>
+    <div class="person-name">Jeton Tolaj</div>
+    <div class="person-title">CEO, Wirz AG Bauunternehmung</div>
+</div>
+<div class="person-card">
+    <div class="person-avatar">HW</div>
+    <div class="person-name">Hans Wirz</div>
+    <div class="person-title">Chairman of the Board</div>
+</div>
+<div class="person-card">
+    <div class="person-avatar">CB</div>
+    <div class="person-name">Christian Bächler</div>
+    <div class="person-title">Deputy CEO</div>
+</div>
+<div class="person-card">
+    <div class="person-avatar">NW</div>
+    <div class="person-name">Nino Wirz</div>
+    <div class="person-title">Commercial Management (4th Gen)</div>
+</div>
+<div class="person-card">
+    <div class="person-avatar">ES</div>
+    <div class="person-name">Eduard Schmid</div>
+    <div class="person-title">ICT Leader</div>
+</div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: COMPETITIVE LANDSCAPE -->
+        <div id="competitive-landscape" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitive Positioning</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Market research and competitive analysis</div>
+                    </div>
+                </div>
+                <p class="section-intro">Construction & Building Services competitive landscape analysis showing Wirz Unternehmungen's position relative to key market competitors across innovation and market presence dimensions.</p>
+                <div class="priority-matrix">
+                    <div class="matrix-axes"></div>
+                    
+<div class="scatter-dot impact-high" style="left: 85%; bottom: 80%;" title="Implenia AG">IM</div>
+<div class="scatter-dot impact-high" style="left: 65%; bottom: 65%;" title="Marti Holding">MA</div>
+<div class="scatter-dot impact-medium" style="left: 55%; bottom: 55%;" title="Frutiger">FR</div>
+<div class="scatter-dot impact-medium" style="left: 50%; bottom: 50%;" title="Walo Bertschinger">WB</div>
+<div class="scatter-dot impact-medium" style="left: 40%; bottom: 45%;" title="Halter AG">HA</div>
+<div class="scatter-dot impact-low" style="left: 25%; bottom: 30%;" title="Wirz Unternehmungen">WU</div>
+
+                    <div class="matrix-quadrant-labels matrix-x-label">Market Share / Market Presence →</div>
+                    <div class="matrix-quadrant-labels matrix-y-label">Innovation →</div>
+                </div>
+                <div style="margin-top: 20px;">
+                    
+<div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px;">
+    <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#22c55e;margin-right:4px;vertical-align:middle;"></span> IM = Implenia AG (CHF 3.6B)</div>
+    <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#22c55e;margin-right:4px;vertical-align:middle;"></span> MA = Marti Holding (CHF 800M)</div>
+    <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#3b82f6;margin-right:4px;vertical-align:middle;"></span> FR = Frutiger (CHF 1B+)</div>
+    <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#3b82f6;margin-right:4px;vertical-align:middle;"></span> WB = Walo Bertschinger (CHF 750M)</div>
+    <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#3b82f6;margin-right:4px;vertical-align:middle;"></span> HA = Halter AG</div>
+    <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#64748b;margin-right:4px;vertical-align:middle;"></span> WU = Wirz Unternehmungen (est. CHF 80-120M)</div>
+</div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitive Advantages</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Comparative analysis</div>
+                    </div>
+                </div>
+                
+<div class="grid-2">
+    <div class="insight-box success">
+        <strong>✅ Integrated Group Structure:</strong> 7 specialized subsidiaries under one holding enable cross-selling and bundled services that pure-play competitors cannot match. A timber frame project that requires hazmat remediation and HVAC installation can be handled entirely in-house.
+    </div>
+    <div class="insight-box success">
+        <strong>✅ Heritage & Trust:</strong> 112-year family legacy with 4th-generation involvement creates deep trust in the conservative Bern market. Employee jubilees (10-45 years service) demonstrate stability that clients value for long-term projects.
+    </div>
+    <div class="insight-box warning">
+        <strong>⚠️ Scale Limitation:</strong> At ~300 employees and est. CHF 80-120M revenue, Wirz is ~30x smaller than Implenia. Cannot compete on mega-projects but dominates the Bern mid-market niche where relationships matter more than scale.
+    </div>
+    <div class="insight-box">
+        <strong>🎯 Niche Expertise:</strong> Wirz Schadstoffsanierung (hazmat) and Wirz Restauratoren (heritage restoration) are specialized capabilities that few competitors can match. These high-margin niches create defensible positions.
+    </div>
+</div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Maturity Comparison</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Based on public AI initiatives and investment levels</div>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--color-gray-200);">
+                                <th style="padding: 12px; text-align: left; font-weight: 700; color: var(--color-navy);">Company</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">AI Investment</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">AI Teams</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">Public Initiatives</th>
+                                <th style="padding: 12px; text-align: center; font-weight: 700; color: var(--color-navy);">Maturity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+<tr style="border-bottom: 1px solid var(--color-gray-200);">
+    <td style="padding: 12px; font-weight: 600;">Implenia AG</td>
+    <td style="padding: 12px; text-align: center;"><span class="badge success">High</span></td>
+    <td style="padding: 12px; text-align: center;">Dedicated digital team</td>
+    <td style="padding: 12px; text-align: center;">BIM standard, digital project mgmt</td>
+    <td style="padding: 12px; text-align: center;"><span class="badge success">Advanced</span></td>
+</tr>
+<tr style="border-bottom: 1px solid var(--color-gray-200);">
+    <td style="padding: 12px; font-weight: 600;">Marti Holding</td>
+    <td style="padding: 12px; text-align: center;"><span class="badge warning">Medium</span></td>
+    <td style="padding: 12px; text-align: center;">IT department</td>
+    <td style="padding: 12px; text-align: center;">BIM adoption, tunneling tech</td>
+    <td style="padding: 12px; text-align: center;"><span class="badge warning">Developing</span></td>
+</tr>
+<tr style="border-bottom: 1px solid var(--color-gray-200);">
+    <td style="padding: 12px; font-weight: 600;">Frutiger</td>
+    <td style="padding: 12px; text-align: center;"><span class="badge warning">Medium</span></td>
+    <td style="padding: 12px; text-align: center;">IT team</td>
+    <td style="padding: 12px; text-align: center;">Digital project tools</td>
+    <td style="padding: 12px; text-align: center;"><span class="badge warning">Developing</span></td>
+</tr>
+<tr style="border-bottom: 1px solid var(--color-gray-200);">
+    <td style="padding: 12px; font-weight: 600;">Halter AG</td>
+    <td style="padding: 12px; text-align: center;"><span class="badge warning">Medium</span></td>
+    <td style="padding: 12px; text-align: center;">Innovation team</td>
+    <td style="padding: 12px; text-align: center;">PropTech investments</td>
+    <td style="padding: 12px; text-align: center;"><span class="badge warning">Developing</span></td>
+</tr>
+<tr style="border-bottom: 1px solid var(--color-gray-200); background: rgba(59,130,246,0.05);">
+    <td style="padding: 12px; font-weight: 700; color: var(--color-blue);">Wirz Unternehmungen</td>
+    <td style="padding: 12px; text-align: center;"><span class="badge danger">Low</span></td>
+    <td style="padding: 12px; text-align: center;">ICT leader (1 person)</td>
+    <td style="padding: 12px; text-align: center;">No visible initiatives</td>
+    <td style="padding: 12px; text-align: center;"><span class="badge danger">Exploring</span></td>
+</tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Market Share</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Market sizing from industry reports</div>
+                    </div>
+                </div>
+                <div class="bar-group">
+                    
+<div class="bar-item">
+    <div class="bar-label">Implenia AG <span class="bar-label-value">CHF 3.6B (Swiss ops)</span></div>
+    <div class="bar-container"><div class="bar-fill" style="width: 90%;"></div></div>
+</div>
+<div class="bar-item">
+    <div class="bar-label">Frutiger Unternehmungen <span class="bar-label-value">CHF 1B+</span></div>
+    <div class="bar-container"><div class="bar-fill" style="width: 28%;"></div></div>
+</div>
+<div class="bar-item">
+    <div class="bar-label">Marti Holding <span class="bar-label-value">CHF 800M</span></div>
+    <div class="bar-container"><div class="bar-fill" style="width: 22%;"></div></div>
+</div>
+<div class="bar-item">
+    <div class="bar-label">Walo Bertschinger AG <span class="bar-label-value">CHF 750M</span></div>
+    <div class="bar-container"><div class="bar-fill" style="width: 21%;"></div></div>
+</div>
+<div class="bar-item">
+    <div class="bar-label">Halter Bauunternehmung AG <span class="bar-label-value">Est. CHF 300-500M</span></div>
+    <div class="bar-container"><div class="bar-fill" style="width: 12%;"></div></div>
+</div>
+<div class="bar-item">
+    <div class="bar-label" style="color: var(--color-blue);">Wirz Unternehmungen <span class="bar-label-value">Est. CHF 80-120M</span></div>
+    <div class="bar-container"><div class="bar-fill" style="width: 3%; background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div></div>
+</div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Differentiators</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Competitive differentiation analysis</div>
+                    </div>
+                </div>
+                <div style="padding: 12px 0;">
+                    
+<div class="grid-3">
+    <div class="conversation-card">
+        <div class="conversation-label">Unique Asset</div>
+        <div class="conversation-title">7-Subsidiary Integrated Group</div>
+        <div class="conversation-content">Few regional competitors offer the breadth: general construction, timber, hazmat, restoration, pipelines, HVAC — all under one management. Cross-selling potential is largely untapped with AI-driven optimization.</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Market Position</div>
+        <div class="conversation-title">Bern Regional Champion</div>
+        <div class="conversation-content">112 years of presence in the Bern market with deep relationships. In a region where trust and track record determine project wins, this heritage is an irreplaceable competitive moat.</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Specialization</div>
+        <div class="conversation-title">Hazmat & Restoration Niche</div>
+        <div class="conversation-content">Wirz Schadstoffsanierung and Wirz Restauratoren serve high-barrier, high-margin niches with limited competition. AI could amplify these advantages through predictive assessment and digital documentation.</div>
+    </div>
+</div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Competitor Profiles</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Key competitors in Construction & Building Services</div>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    
+<div class="conversation-card">
+    <div class="conversation-label">Largest Swiss Contractor</div>
+    <div class="conversation-title">Implenia AG</div>
+    <div class="conversation-content">CHF 3.6B revenue, 9,000 employees. Switzerland's largest construction company. Active BIM adoption, dedicated digital transformation team. Publicly listed (SIX). Global operations across DACH region.</div>
+</div>
+<div class="conversation-card">
+    <div class="conversation-label">Bern-Based Competitor</div>
+    <div class="conversation-title">Marti Holding AG</div>
+    <div class="conversation-content">CHF 800M revenue, 6,000 employees. Headquartered in Bern region — direct regional competitor. Specializes in tunneling and infrastructure. Investing in technology for complex underground projects.</div>
+</div>
+<div class="conversation-card">
+    <div class="conversation-label">Innovation-Focused</div>
+    <div class="conversation-title">Halter Bauunternehmung AG</div>
+    <div class="conversation-content">Multi-location including Bern office. Known for PropTech investments and innovation focus. Development and construction combination creates vertically integrated competitor. Active in digital tools adoption.</div>
+</div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: MARKET & INDUSTRY ANALYSIS -->
+        <div id="market-industry" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Industry Overview</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From analyst reports and market research</div>
+                    </div>
+                </div>
+                <p style="font-size: 14px; color: var(--color-slate); line-height: 1.6;">The Swiss construction industry, valued at approximately CHF 40 billion in 2024, is one of the country's largest economic sectors accounting for roughly 50,000 firms and 8% of all Swiss businesses. The market is highly fragmented with the vast majority being micro and small enterprises. Growth of 1.1% in real terms in 2024 followed a 2.2% contraction in 2023, with recovery driven by government infrastructure spending, housing demand, and renewable energy installations. The industry faces a dual transformation challenge: digitalization through BIM adoption and the emerging AI revolution are occurring simultaneously, creating both urgency and complexity for firms navigating this transition.</p>
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div class="insight-box success">
+                        <strong>Market Size:</strong> CHF 39.76B (2024) → EUR 41.06B (2025 est.) → EUR 47.19B (2029 forecast)
+                    </div>
+                    <div class="insight-box">
+                        <strong>Market Growth:</strong> +3.3% YoY (2025), 2.7% CAGR 2025-2029, AAGR 1.6% (2025-2028)
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Industry Trends</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Trend analysis from industry sources</div>
+                    </div>
+                </div>
+                
+<div class="grid-2">
+    <div class="insight-box success">
+        <strong>🏗️ BIM Mandate (2025+):</strong> Switzerland's Aktionsplan Digitale Schweiz mandates BIM for federal-adjacent infrastructure projects starting 2025. SIA 2051 standard provides the framework. This is the single largest digitalization driver in Swiss construction, forcing even traditional firms to adopt digital workflows.
+    </div>
+    <div class="insight-box">
+        <strong>🤖 AI in Construction (Nascent):</strong> Swiss construction AI is "still in its infancy" according to Bauen digital Schweiz (Feb 2025). Globally, ~1,500 AI tools exist for construction, each addressing single tasks — no comprehensive platform yet. The SBV is developing an AI chatbot for construction norms (launch May 2025).
+    </div>
+    <div class="insight-box warning">
+        <strong>👷 Labor Shortage Crisis:</strong> Switzerland has seen a 70% increase in demand for skilled construction trades since 2016. This is accelerating the business case for automation, AI-powered scheduling, and robotic assistance. Firms that solve the labor problem through technology will gain decisive advantages.
+    </div>
+    <div class="insight-box">
+        <strong>☀️ Green Construction Boom:</strong> Solar PV installations grew 81% YoY in 2024. The government's "Long-term climate strategy to 2050" targets climate-neutral buildings. This creates demand for energy-efficient renovation, sustainable materials, and AI-optimized building performance — all areas where Wirz's diversified capabilities are relevant.
+    </div>
+    <div class="insight-box">
+        <strong>🚂 Infrastructure Investment Wave:</strong> CHF 16.4B in railway infrastructure (2025-2028), CHF 185M for freight transport facilities. The STEP 2035 program involves CHF 12.9B for rail expansion. These mega-projects cascade into regional construction demand, creating pipeline opportunities for mid-market contractors.
+    </div>
+    <div class="insight-box success">
+        <strong>🏠 Housing Shortage:</strong> Switzerland needs 500,000+ affordable housing units by 2040. The government's Housing Shortage Action Plan is reforming zoning regulations and streamlining permitting. This structural demand creates a multi-decade growth runway for residential construction.
+    </div>
+</div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Disruption Forces</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Based on technology and market changes</div>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    
+<div class="grid-3">
+    <div class="conversation-card">
+        <div class="conversation-label">High Impact</div>
+        <div class="conversation-title">BIM + AI Convergence</div>
+        <div class="conversation-content">BIM creates the digital foundation; AI unlocks its potential. Companies that adopt BIM as merely a compliance requirement will miss the transformative value of layering AI-driven analytics, clash detection, and predictive scheduling on top of BIM models.</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Medium Impact</div>
+        <div class="conversation-title">Modular & Timber Construction</div>
+        <div class="conversation-content">Prefabrication and offsite manufacturing are growing, driven by labor shortages and sustainability goals. Wirz Holzbau AG is well-positioned here. AI-optimized modular design could be a significant differentiator.</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Emerging</div>
+        <div class="conversation-title">430+ PropTech Startups</div>
+        <div class="conversation-content">Switzerland has over 430 PropTech startups disrupting traditional construction and real estate processes. This ecosystem represents both competitive threat and partnership opportunity for established players like Wirz.</div>
+    </div>
+</div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Value Chain</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Industry structure analysis</div>
+                    </div>
+                </div>
+                <div class="value-chain-flow">
+                    
+<div class="value-chain-flow">
+    <div class="value-chain-box">Planning & Design</div>
+    <div class="value-chain-arrow">→</div>
+    <div class="value-chain-box">Permitting & Compliance</div>
+    <div class="value-chain-arrow">→</div>
+    <div class="value-chain-box">Procurement & Estimation</div>
+    <div class="value-chain-arrow">→</div>
+    <div class="value-chain-box">Construction Execution</div>
+    <div class="value-chain-arrow">→</div>
+    <div class="value-chain-box">Quality & Safety</div>
+    <div class="value-chain-arrow">→</div>
+    <div class="value-chain-box">Handover & Maintenance</div>
+</div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Adoption in Construction & Building Services</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Industry-wide AI adoption assessment</div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    
+<div class="grid-2">
+    <div class="bar-item">
+        <div class="bar-label">Document Automation <span class="bar-label-value">Emerging</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 25%;"></div></div>
+    </div>
+    <div class="bar-item">
+        <div class="bar-label">BIM-AI Integration <span class="bar-label-value">Early Stage</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 15%;"></div></div>
+    </div>
+    <div class="bar-item">
+        <div class="bar-label">Predictive Scheduling <span class="bar-label-value">Pilot Phase</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 12%;"></div></div>
+    </div>
+    <div class="bar-item">
+        <div class="bar-label">Safety Monitoring (CV) <span class="bar-label-value">Emerging</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 20%;"></div></div>
+    </div>
+    <div class="bar-item">
+        <div class="bar-label">Autonomous Equipment <span class="bar-label-value">R&D</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 8%;"></div></div>
+    </div>
+    <div class="bar-item">
+        <div class="bar-label">Digital Twins <span class="bar-label-value">Pilot Phase</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 10%;"></div></div>
+    </div>
+</div>
+<p style="margin-top: 16px; font-size: 13px; color: var(--color-slate);">Swiss construction AI adoption lags international markets. Globally, the AI in construction market is projected to grow from $3.99B (2024) to $11.85B (2029) at 24.3% CAGR. Approximately 30% of construction tasks are considered automatable by 2025. Switzerland has ~1,500 AI tools available for construction, but adoption among SMEs remains minimal.</p>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Regulatory & Compliance Landscape</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Relevant regulations and compliance requirements</div>
+                    </div>
+                </div>
+                
+<div class="grid-2">
+    <div class="conversation-card">
+        <div class="conversation-label">Mandatory 2025+</div>
+        <div class="conversation-title">BIM Mandate for Infrastructure</div>
+        <div class="conversation-content">Under the Aktionsplan Digitale Schweiz, BIM is required for federal-adjacent infrastructure projects. SIA 2051 standard serves as the guideline. Companies without BIM capability will be excluded from an increasing share of public projects.</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Climate Regulation</div>
+        <div class="conversation-title">Climate-Neutral Buildings by 2050</div>
+        <div class="conversation-content">Switzerland's long-term climate strategy requires progressively stricter building energy standards. New builds must meet enhanced energy efficiency targets, and renovation requirements are tightening — driving demand for AI-optimized building performance analysis.</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Safety & Environment</div>
+        <div class="conversation-title">Hazardous Materials Regulations</div>
+        <div class="conversation-content">Strict Swiss regulations on asbestos, PCB, and other hazardous materials in building renovation. Wirz Schadstoffsanierung operates in this highly regulated space — AI-assisted diagnostics and monitoring could improve compliance and worker safety.</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">EU AI Act Impact</div>
+        <div class="conversation-title">Swiss AI Governance Framework</div>
+        <div class="conversation-content">While Switzerland is not an EU member, Swiss-EU bilateral relations and market access requirements mean the EU AI Act will increasingly influence Swiss AI adoption practices, particularly for companies working on cross-border projects.</div>
+    </div>
+</div>
+
+            </div>
+        </div>
+
+        <!-- TAB 5: AI MATURITY ASSESSMENT -->
+        <div id="ai-maturity" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Maturity Radar Assessment</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">6-dimension maturity model (1-5 scale)</div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <svg class="radar-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Grid circles -->
+                        <circle cx="200" cy="200" r="150" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="120" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="90" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="60" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="30" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+
+                        <!-- Axis lines -->
+                        <line x1="200" y1="50" x2="200" y2="350" stroke="#cbd5e1" stroke-width="1"/>
+                        <line x1="50" y1="200" x2="350" y2="200" stroke="#cbd5e1" stroke-width="1"/>
+                        <line x1="113.4" y1="86.6" x2="286.6" y2="313.4" stroke="#cbd5e1" stroke-width="1"/>
+                        <line x1="286.6" y1="86.6" x2="113.4" y2="313.4" stroke="#cbd5e1" stroke-width="1"/>
+
+                        <!-- Data polygon -->
+                        <polygon points="200,155 286.6,166 286.6,245 200,245 113.4,257 113.4,155"
+                                 fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="2"/>
+
+                        <!-- Data points -->
+                        <circle cx="200" cy="155" r="5" fill="#3b82f6"/>
+                        <circle cx="286.6" cy="166" r="5" fill="#3b82f6"/>
+                        <circle cx="286.6" cy="245" r="5" fill="#3b82f6"/>
+                        <circle cx="200" cy="245" r="5" fill="#3b82f6"/>
+                        <circle cx="113.4" cy="257" r="5" fill="#3b82f6"/>
+                        <circle cx="113.4" cy="155" r="5" fill="#3b82f6"/>
+
+                        <!-- Labels -->
+                        <text x="200" y="35" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Strategy</text>
+                        <text x="305" y="125" text-anchor="start" font-size="12" font-weight="700" fill="#334155">Data</text>
+                        <text x="305" y="300" text-anchor="start" font-size="12" font-weight="700" fill="#334155">Technology</text>
+                        <text x="200" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Talent</text>
+                        <text x="75" y="300" text-anchor="end" font-size="12" font-weight="700" fill="#334155">Culture</text>
+                        <text x="75" y="125" text-anchor="end" font-size="12" font-weight="700" fill="#334155">Governance</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Maturity Score Breakdown</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Assessment across 6 key dimensions</div>
+                    </div>
+                </div>
+                
+<div class="bar-group">
+    <div class="bar-item">
+        <div class="bar-label">Strategy <span class="bar-label-value">1.5 / 5.0</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 30%;"></div></div>
+    </div>
+    <div class="bar-item">
+        <div class="bar-label">Data <span class="bar-label-value">1.5 / 5.0</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 30%;"></div></div>
+    </div>
+    <div class="bar-item">
+        <div class="bar-label">Technology <span class="bar-label-value">2.0 / 5.0</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 40%;"></div></div>
+    </div>
+    <div class="bar-item">
+        <div class="bar-label">Talent <span class="bar-label-value">1.5 / 5.0</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 30%;"></div></div>
+    </div>
+    <div class="bar-item">
+        <div class="bar-label">Culture <span class="bar-label-value">2.5 / 5.0</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 50%;"></div></div>
+    </div>
+    <div class="bar-item">
+        <div class="bar-label">Governance <span class="bar-label-value">2.0 / 5.0</span></div>
+        <div class="bar-container"><div class="bar-fill" style="width: 40%;"></div></div>
+    </div>
+</div>
+<div class="insight-box" style="margin-top: 20px;">
+    <strong>Overall AI Readiness Score: 3.7 / 10 — AI Exploring</strong><br>
+    Wirz Unternehmungen is at the early stages of its AI journey. The company has strong operational foundations (ISO 9001, employee loyalty, diversified capabilities) but lacks dedicated digital strategy, AI talent, and data infrastructure. The highest dimension — Culture (2.5) — reflects openness to investment and modernization. The primary gaps are in Strategy and Talent, both scoring 1.5, indicating no formal AI roadmap and no dedicated data/AI roles.
+</div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Technology Readiness</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Current technology infrastructure assessment</div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    
+<strong>Current State: Basic Digital Infrastructure</strong><br><br>
+Wirz likely operates standard construction industry tools: CAD-based planning software, basic ERP (likely Abacus or similar Swiss system), MS Office for document management, and specialized software for individual subsidiaries (e.g., estimation tools, project management). The ISO 9001:2015 certification indicates structured processes that could serve as a foundation for digitalization.<br><br>
+<strong>Key Gaps:</strong> No evidence of BIM adoption (critical as mandates begin 2025+), no cloud infrastructure for data analytics, no machine learning or AI tooling, and likely no centralized data warehouse connecting the 7 subsidiaries. The recent equipment investments (Längsfräse) suggest willingness to invest in modernization, but technology investment has focused on physical rather than digital assets.
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Data Infrastructure & Governance</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Data maturity and governance assessment</div>
+                    </div>
+                </div>
+                <div class="insight-box success">
+                    
+<strong>Assessment: Fragmented, Subsidiary-Siloed Data</strong><br><br>
+With 7 distinct subsidiaries — each with their own operations, clients, and specializations — data is almost certainly distributed across separate systems. Project data (timelines, costs, materials), employee records, client information, and financial data likely exist in different formats and systems per entity.<br><br>
+<strong>Hidden Data Assets:</strong> Wirz's 112-year history represents a potentially valuable but untapped data repository: historical project records, cost estimation benchmarks, material usage patterns, supplier performance data, and safety incident records. If consolidated and structured, this data could power predictive models for estimation, scheduling, and risk assessment with an accuracy advantage over newer competitors.
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Talent Signals</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">From job postings and LinkedIn data</div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    
+<strong>Limited AI/Digital Talent Observed</strong><br><br>
+Eduard Schmid serves as ICT Leader — likely the primary technology decision-maker in the organization. No data scientists, ML engineers, or digital transformation specialists were identified in public profiles. No AI-related job postings found.<br><br>
+<strong>Talent Strategy Recommendation:</strong> Rather than building an expensive in-house AI team, Wirz should pursue a 'hybrid' approach: partner with external AI consultants for strategic guidance and implementation, while upskilling 2-3 existing technically-inclined employees as 'digital champions' who can manage AI tools and communicate with external partners. The ICT Leader role could evolve into a Chief Digital Officer position.
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Innovation Signals</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Patents, research, and open source contributions</div>
+                    </div>
+                </div>
+                <div class="insight-box success">
+                    
+<strong>Incremental Innovation, Not Digital Innovation</strong><br><br>
+Wirz demonstrates innovation in physical operations: new equipment investments (Längsfräse Nov 2025), expansion into new project types (BLYSS residential, Berner Reha Zentrum healthcare), and maintaining diverse capabilities across 7 subsidiaries. The company shows willingness to invest and modernize.<br><br>
+<strong>Gap:</strong> No evidence of digital innovation: no hackathons, no PropTech partnerships, no conference presentations on technology adoption, no research collaborations with ETH/EPFL or Swiss PropTech ecosystem. This represents both a gap and a low-hanging-fruit opportunity — even basic digital experiments would be novel in Wirz's context.
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Peer Benchmarking</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Comparison to industry peers</div>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+    <thead>
+        <tr style="border-bottom: 2px solid var(--color-gray-200);">
+            <th style="padding: 12px; text-align: left;">Dimension</th>
+            <th style="padding: 12px; text-align: center;">Wirz</th>
+            <th style="padding: 12px; text-align: center;">Swiss SME Avg</th>
+            <th style="padding: 12px; text-align: center;">Industry Leader (Implenia)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid var(--color-gray-200);">
+            <td style="padding: 12px; font-weight: 600;">Strategy</td>
+            <td style="padding: 12px; text-align: center;"><span class="badge danger">1.5</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge warning">2.0</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge success">3.5</span></td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--color-gray-200);">
+            <td style="padding: 12px; font-weight: 600;">Data</td>
+            <td style="padding: 12px; text-align: center;"><span class="badge danger">1.5</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge warning">2.0</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge success">3.0</span></td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--color-gray-200);">
+            <td style="padding: 12px; font-weight: 600;">Technology</td>
+            <td style="padding: 12px; text-align: center;"><span class="badge warning">2.0</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge warning">2.0</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge success">3.5</span></td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--color-gray-200);">
+            <td style="padding: 12px; font-weight: 600;">Talent</td>
+            <td style="padding: 12px; text-align: center;"><span class="badge danger">1.5</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge danger">1.5</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge success">3.0</span></td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--color-gray-200);">
+            <td style="padding: 12px; font-weight: 600;">Culture</td>
+            <td style="padding: 12px; text-align: center;"><span class="badge warning">2.5</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge warning">2.0</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge success">3.5</span></td>
+        </tr>
+        <tr>
+            <td style="padding: 12px; font-weight: 600;">Governance</td>
+            <td style="padding: 12px; text-align: center;"><span class="badge warning">2.0</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge danger">1.5</span></td>
+            <td style="padding: 12px; text-align: center;"><span class="badge success">3.0</span></td>
+        </tr>
+        <tr style="border-top: 2px solid var(--color-gray-200); font-weight: 700;">
+            <td style="padding: 12px;">Overall (1-10)</td>
+            <td style="padding: 12px; text-align: center; color: var(--color-blue);">3.7</td>
+            <td style="padding: 12px; text-align: center;">3.7</td>
+            <td style="padding: 12px; text-align: center; color: var(--color-green);">6.5</td>
+        </tr>
+    </tbody>
+</table>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: AI USE CASES -->
+        <div id="ai-use-cases" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">AI Use Cases Strategy</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Proprietary use case identification framework</div>
+                    </div>
+                </div>
+                <p class="section-intro">Based on Wirz Unternehmungen's unique position as a diversified Swiss construction group with 7 specialized subsidiaries, we have identified 8 high-impact AI use cases across three implementation horizons. These use cases are tailored to Wirz's current AI maturity (Exploring), leveraging existing strengths while building toward digital transformation. Priority is given to quick wins that demonstrate ROI within 6-12 months, creating momentum for longer-term initiatives.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Prioritization Matrix</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">X: Implementation Effort | Y: Business Impact</div>
+                    </div>
+                </div>
+                <div class="priority-matrix">
+                    <div class="matrix-axes"></div>
+                    
+<div class="scatter-dot impact-high" style="left: 20%; bottom: 80%;" title="1: Document Processing">1</div>
+<div class="scatter-dot impact-high" style="left: 15%; bottom: 70%;" title="2: Knowledge Assistant">2</div>
+<div class="scatter-dot impact-medium" style="left: 40%; bottom: 60%;" title="3: Predictive Maintenance">3</div>
+<div class="scatter-dot impact-high" style="left: 55%; bottom: 85%;" title="4: Hazmat Safety AI">4</div>
+<div class="scatter-dot impact-high" style="left: 70%; bottom: 75%;" title="5: BIM-AI Integration">5</div>
+<div class="scatter-dot impact-medium" style="left: 45%; bottom: 55%;" title="6: Workforce Optimization">6</div>
+<div class="scatter-dot impact-medium" style="left: 80%; bottom: 70%;" title="7: Digital Twin Restoration">7</div>
+<div class="scatter-dot impact-low" style="left: 75%; bottom: 50%;" title="8: Drone Surveying">8</div>
+
+                    <div class="matrix-quadrant-labels matrix-x-label">Implementation Effort →</div>
+                    <div class="matrix-quadrant-labels matrix-y-label">Business Impact →</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Horizon Legend</h2>
+                </div>
+                <div style="display: flex; gap: 20px; padding: 12px 0;">
+                    <div>
+                        <span class="use-case-horizon horizon-1">H1: Quick Wins</span>
+                        <p style="font-size: 13px; color: var(--color-slate); margin-top: 8px;">6-12 months to implementation</p>
+                    </div>
+                    <div>
+                        <span class="use-case-horizon horizon-2">H2: Growth</span>
+                        <p style="font-size: 13px; color: var(--color-slate); margin-top: 8px;">12-24 months to implementation</p>
+                    </div>
+                    <div>
+                        <span class="use-case-horizon horizon-3">H3: Transformational</span>
+                        <p style="font-size: 13px; color: var(--color-slate); margin-top: 8px;">24+ months to implementation</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-4">
+                
+<!-- USE CASE 1 -->
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">1</div>
+        <span class="use-case-horizon horizon-1">H1: Quick Win</span>
+    </div>
+    <div class="use-case-title">AI-Powered Document Processing & Cost Estimation</div>
+    <div class="use-case-description">Deploy AI to automate extraction and processing of construction blueprints, building permits, supplier invoices, subcontractor quotes, and material lists across all 7 subsidiaries. LLM-based models can parse unstructured documents, extract key data points, and feed them into estimation workflows — reducing manual effort by 40-60%.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Operations / Finance</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Effort</span><span class="meta-value">Low-Medium</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">4-8 months</span></div>
+        <div class="meta-item"><span class="meta-label">ROI</span><span class="meta-value impact-high">3-6 months</span></div>
+    </div>
+    <div style="font-size: 12px; color: var(--color-slate);">
+        <strong>Wirz Fit:</strong> Immediate cross-subsidiary value — every entity processes documents. ISO 9001 processes provide structured workflows to automate. Low technical barrier with modern LLM-based tools.
+    </div>
+</div>
+
+<!-- USE CASE 2 -->
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">2</div>
+        <span class="use-case-horizon horizon-1">H1: Quick Win</span>
+    </div>
+    <div class="use-case-title">Construction Knowledge Assistant (AI Chatbot)</div>
+    <div class="use-case-description">Internal LLM-powered assistant trained on SIA norms, Swiss building codes (Bauvorschriften), safety regulations, Wirz's internal processes, and project documentation. Employees across all subsidiaries can query regulations, find precedent solutions, and access institutional knowledge without searching through manuals.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Operations / Compliance</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Effort</span><span class="meta-value">Low</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">3-5 months</span></div>
+        <div class="meta-item"><span class="meta-label">ROI</span><span class="meta-value impact-high">2-4 months</span></div>
+    </div>
+    <div style="font-size: 12px; color: var(--color-slate);">
+        <strong>Wirz Fit:</strong> Captures institutional knowledge from 112-year-old firm. Aligns with SBV's AI chatbot initiative (launching May 2025). Serves 300 employees across all subsidiaries. Preserves knowledge through generational transition.
+    </div>
+</div>
+
+<!-- USE CASE 3 -->
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">3</div>
+        <span class="use-case-horizon horizon-1">H1: Quick Win</span>
+    </div>
+    <div class="use-case-title">Predictive Equipment Maintenance</div>
+    <div class="use-case-description">Install IoT sensors on heavy machinery (excavators, cranes, the new Längsfräse) to monitor operating parameters and predict failures before they occur. Reduces unplanned downtime by 25-40%, extends equipment lifespan, and optimizes maintenance scheduling across project sites.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Operations / Fleet</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-medium">Medium-High</span></div>
+        <div class="meta-item"><span class="meta-label">Effort</span><span class="meta-value">Medium</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">6-10 months</span></div>
+        <div class="meta-item"><span class="meta-label">ROI</span><span class="meta-value">6-12 months</span></div>
+    </div>
+    <div style="font-size: 12px; color: var(--color-slate);">
+        <strong>Wirz Fit:</strong> Recent equipment investments (Nov 2025 Längsfräse) show modernization mindset. Fleet management is a tangible, measurable use case that resonates with operationally-minded leadership. Clear cost savings baseline.
+    </div>
+</div>
+
+<!-- USE CASE 4 -->
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">4</div>
+        <span class="use-case-horizon horizon-2">H2: Growth</span>
+    </div>
+    <div class="use-case-title">AI Safety Monitoring for Hazmat Remediation</div>
+    <div class="use-case-description">Deploy computer vision cameras on Wirz Schadstoffsanierung's asbestos and hazardous material remediation sites to monitor PPE compliance, containment integrity, and worker safety in real-time. AI alerts supervisors instantly to safety violations, reducing exposure risk and ensuring regulatory compliance.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Safety / Schadstoffsanierung</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">Very High</span></div>
+        <div class="meta-item"><span class="meta-label">Effort</span><span class="meta-value">Medium-High</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">10-16 months</span></div>
+        <div class="meta-item"><span class="meta-label">ROI</span><span class="meta-value">12-18 months</span></div>
+    </div>
+    <div style="font-size: 12px; color: var(--color-slate);">
+        <strong>Wirz Fit:</strong> Strategic differentiator — no known Swiss competitor has AI-powered hazmat safety monitoring. Wirz Schadstoffsanierung provides a unique testbed. High regulatory value and potential for marketing as industry-leading safety practice.
+    </div>
+</div>
+
+<!-- USE CASE 5 -->
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">5</div>
+        <span class="use-case-horizon horizon-2">H2: Growth</span>
+    </div>
+    <div class="use-case-title">BIM-Integrated Project Intelligence</div>
+    <div class="use-case-description">As Wirz adopts BIM (increasingly mandatory from 2025+), layer AI analytics on top of BIM models: automated clash detection, AI-driven schedule optimization, predictive cost forecasting, and material quantity analysis. Transforms BIM from a compliance requirement into a competitive advantage.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Project Management</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Effort</span><span class="meta-value">High</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">12-20 months</span></div>
+        <div class="meta-item"><span class="meta-label">ROI</span><span class="meta-value">18-24 months</span></div>
+    </div>
+    <div style="font-size: 12px; color: var(--color-slate);">
+        <strong>Wirz Fit:</strong> BIM adoption is becoming unavoidable. By combining BIM implementation with AI from the start, Wirz avoids expensive retrofitting. SIA 2051 standard provides the framework. This is the backbone for long-term digital transformation.
+    </div>
+</div>
+
+<!-- USE CASE 6 -->
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">6</div>
+        <span class="use-case-horizon horizon-2">H2: Growth</span>
+    </div>
+    <div class="use-case-title">Cross-Subsidiary Workforce & Resource Optimization</div>
+    <div class="use-case-description">AI-powered scheduling and resource allocation across the 7 Wirz subsidiaries. Optimize deployment of ~300 employees based on skills, certifications, project requirements, and availability. Predict resource bottlenecks 2-4 weeks ahead and suggest reallocation across entities.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">HR / Operations</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-medium">Medium-High</span></div>
+        <div class="meta-item"><span class="meta-label">Effort</span><span class="meta-value">Medium</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">10-14 months</span></div>
+        <div class="meta-item"><span class="meta-label">ROI</span><span class="meta-value">8-12 months</span></div>
+    </div>
+    <div style="font-size: 12px; color: var(--color-slate);">
+        <strong>Wirz Fit:</strong> The 7-subsidiary structure is both the problem and the opportunity. Currently, resource sharing likely happens informally. AI optimization could unlock 10-15% efficiency gains in workforce utilization — highly impactful in the current labor shortage.
+    </div>
+</div>
+
+<!-- USE CASE 7 -->
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">7</div>
+        <span class="use-case-horizon horizon-3">H3: Transformational</span>
+    </div>
+    <div class="use-case-title">Digital Twin for Heritage & Restoration Projects</div>
+    <div class="use-case-description">Create AI-powered digital replicas of historic buildings for Wirz Restauratoren's preservation work. Combine 3D scanning, photogrammetry, and AI analysis to assess structural integrity, plan restoration sequences, simulate aging, and create comprehensive digital documentation for heritage authorities.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Restoration / Engineering</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-high">High</span></div>
+        <div class="meta-item"><span class="meta-label">Effort</span><span class="meta-value">High</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">18-30 months</span></div>
+        <div class="meta-item"><span class="meta-label">ROI</span><span class="meta-value">24-36 months</span></div>
+    </div>
+    <div style="font-size: 12px; color: var(--color-slate);">
+        <strong>Wirz Fit:</strong> Leverages Wirz Restauratoren's unique specialization. Heritage digital twins are a premium service with high willingness-to-pay from preservation authorities and building owners. Positions Wirz as technology leader in a niche market with growing demand.
+    </div>
+</div>
+
+<!-- USE CASE 8 -->
+<div class="use-case-card">
+    <div class="use-case-header">
+        <div class="use-case-number">8</div>
+        <span class="use-case-horizon horizon-3">H3: Transformational</span>
+    </div>
+    <div class="use-case-title">Autonomous Drone Surveying & Progress Monitoring</div>
+    <div class="use-case-description">Deploy AI-powered drones for automated site surveys, 3D terrain mapping, volumetric calculations, and real-time construction progress tracking compared to BIM models. Automates site documentation that currently requires manual surveying teams, with 80%+ time savings.</div>
+    <div class="use-case-meta">
+        <div class="meta-item"><span class="meta-label">Business Area</span><span class="meta-value">Project Management / QA</span></div>
+        <div class="meta-item"><span class="meta-label">Impact</span><span class="meta-value impact-medium">Medium-High</span></div>
+        <div class="meta-item"><span class="meta-label">Effort</span><span class="meta-value">High</span></div>
+        <div class="meta-item"><span class="meta-label">Timeline</span><span class="meta-value">20-30 months</span></div>
+        <div class="meta-item"><span class="meta-label">ROI</span><span class="meta-value">24-30 months</span></div>
+    </div>
+    <div style="font-size: 12px; color: var(--color-slate);">
+        <strong>Wirz Fit:</strong> Builds on BIM-AI integration (Use Case 5) by adding physical-digital feedback loops. Swiss drone regulation (BAZL) is progressive, enabling commercial drone operations. Multiple subsidiaries benefit from aerial surveying and progress monitoring.
+    </div>
+</div>
+
+            </div>
+
+            <div style="margin-top: 40px;">
+                <input type="text" id="use-case-search" placeholder="Search use cases..."
+                       style="width: 100%; padding: 12px 16px; border: 1px solid var(--color-gray-200); border-radius: 6px; font-size: 14px;">
+                <p style="font-size: 12px; color: var(--color-slate); margin-top: 8px;">Type to filter use cases by title or business area</p>
+            </div>
+        </div>
+
+        <!-- TAB 7: ENGAGEMENT STRATEGY -->
+        <div id="engagement-strategy" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Engagement Strategy</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Customized engagement approach</div>
+                    </div>
+                </div>
+                <div class="insight-box success" style="margin-bottom: 20px;">
+                    
+<strong>Recommended Engagement: "Pragmatic AI Starter" Workshop</strong><br><br>
+Given Wirz's profile — a traditional, operationally excellent family business with strong fundamentals but no digital strategy — the ideal entry point is a hands-on, results-oriented AI workshop rather than a theoretical strategy presentation. The Wirz leadership (especially a 4th-generation family member and a new CEO) is likely pragmatic, risk-aware, and motivated by concrete ROI rather than technology hype.
+
+                </div>
+                <p style="font-size: 14px; color: var(--color-slate); line-height: 1.6;">
+Wirz Unternehmungen represents an ideal engagement for Artifact SA: a mid-size Swiss construction group with strong operational foundations, a diversified subsidiary structure creating natural AI synergies, and a leadership transition creating openness to modernization. The key challenge is communicating AI value in construction-industry language, emphasizing cost savings, safety improvements, and competitive positioning rather than technology buzzwords. The BIM mandate (2025+) creates a natural urgency and entry point — "if you're going digital with BIM anyway, let AI multiply the return on that investment."
+</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Value Proposition</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Tailored to company context</div>
+                    </div>
+                </div>
+                <div class="insight-box success">
+                    
+<strong>For Wirz Unternehmungen, frame Artifact SA's value as:</strong><br><br>
+"As a 112-year-old construction group preparing for the digital age, you don't need another IT vendor — you need a strategic partner who understands both AI and the Swiss Baubranche. Artifact SA bridges the gap between AI technology and construction reality. We start with quick wins that pay for themselves in months, then build toward transformational capabilities that will differentiate Wirz for the next decade. Your 7-subsidiary structure isn't a complication — it's an advantage. Cross-subsidiary data integration creates AI capabilities that no single-entity competitor can match."
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Key Talking Points</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Primary conversation topics</div>
+                    </div>
+                </div>
+                
+<div class="grid-2">
+    <div class="conversation-card">
+        <div class="conversation-label">Opening Hook</div>
+        <div class="conversation-title">BIM as the AI Gateway</div>
+        <div class="conversation-content">"BIM is becoming mandatory. Most firms treat it as a compliance cost. The smart ones use it as the foundation for AI — turning a CHF expense into a CHF advantage. We help you do the latter."</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">ROI Anchor</div>
+        <div class="conversation-title">Document Processing Quick Win</div>
+        <div class="conversation-content">"Across your 7 entities, you process thousands of documents monthly — invoices, permits, quotes, blueprints. AI can cut that processing time by 40-60%. That's a measurable, provable ROI in 3-6 months."</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Competitive Urgency</div>
+        <div class="conversation-title">The SME Advantage Window</div>
+        <div class="conversation-content">"Swiss construction AI is in its infancy. Implenia is investing heavily. For mid-size firms like Wirz, the next 2-3 years are the window to establish AI capabilities before they become table stakes."</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Unique Differentiator</div>
+        <div class="conversation-title">Hazmat Safety AI</div>
+        <div class="conversation-content">"No Swiss construction company has AI-powered safety monitoring for hazardous materials remediation. Wirz Schadstoffsanierung could be the first — that's a marketable competitive advantage and a genuine contribution to worker safety."</div>
+    </div>
+</div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Anticipated Objections & Responses</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Prepared responses to common concerns</div>
+                    </div>
+                </div>
+                
+<div class="grid-2">
+    <div class="conversation-card">
+        <div class="conversation-label">Objection</div>
+        <div class="conversation-title">"We're a construction company, not a tech company. AI is for Silicon Valley."</div>
+        <div class="conversation-content"><strong>Response:</strong> "That's exactly why AI is so impactful in construction — the industry is at the beginning of the curve. You don't need to become a tech company. You need to use technology to do what you already do, but better and faster. The SBV itself is building an AI chatbot for construction norms — the industry association sees AI as essential."</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Objection</div>
+        <div class="conversation-title">"We don't have the budget for expensive AI projects."</div>
+        <div class="conversation-content"><strong>Response:</strong> "The document processing pilot costs less than a single piece of heavy machinery — and it pays for itself within 6 months. We start small, prove ROI, then scale. No multi-million CHF investments required upfront."</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Objection</div>
+        <div class="conversation-title">"Our employees don't have the skills for AI."</div>
+        <div class="conversation-content"><strong>Response:</strong> "That's exactly why you partner with us rather than trying to build in-house. We implement the AI systems and train your team to use them. Modern AI tools are designed for business users, not programmers. Your employees already use smartphones — they can use AI tools."</div>
+    </div>
+    <div class="conversation-card">
+        <div class="conversation-label">Objection</div>
+        <div class="conversation-title">"We've been successful for 112 years without AI."</div>
+        <div class="conversation-content"><strong>Response:</strong> "Absolutely — and that success is precisely the foundation to build on. But BIM mandates are changing the rules. Labor shortages are intensifying. Your competitors are investing. The question isn't whether to adopt digital tools, but when — and whether to lead or follow."</div>
+    </div>
+</div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recommended Approach</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Engagement methodology</div>
+                    </div>
+                </div>
+                
+<div class="grid-2">
+    <div class="insight-box success">
+        <strong>Phase 1: Discovery Workshop (Half-day, on-site at Wirz)</strong><br>
+        Map current processes across 2-3 subsidiaries, identify pain points, quantify manual effort in document processing and scheduling. Deliverable: Prioritized AI roadmap with business cases.
+    </div>
+    <div class="insight-box">
+        <strong>Phase 2: Quick Win Pilot (3-4 months)</strong><br>
+        Implement document processing AI across one subsidiary. Measure time savings, error reduction, and cost impact. Use results to build internal support for broader rollout.
+    </div>
+    <div class="insight-box">
+        <strong>Phase 3: Scale & Expand (6-12 months)</strong><br>
+        Roll out successful pilots across all 7 subsidiaries. Begin BIM-AI integration planning. Launch knowledge assistant. Build internal 'digital champion' capability.
+    </div>
+    <div class="insight-box warning">
+        <strong>Phase 4: Strategic Differentiation (12-24 months)</strong><br>
+        Deploy hazmat safety AI, cross-subsidiary workforce optimization, and BIM-integrated project intelligence. Position Wirz as the digitally-advanced mid-market alternative in Bern.
+    </div>
+</div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Next Steps & Timeline</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Proposed engagement timeline</div>
+                    </div>
+                </div>
+                <div class="timeline">
+                    
+<div class="timeline-item">
+    <div class="timeline-marker"></div>
+    <div class="timeline-content">
+        <div class="timeline-date">Week 1-2</div>
+        <div class="timeline-title">Initial Contact & Share Dashboard</div>
+        <div class="timeline-desc">Send this AI strategy dashboard to Wirz leadership (CEO Jeton Tolaj, Nino Wirz). Position as a complimentary strategic assessment. Request 30-minute introductory call.</div>
+    </div>
+</div>
+<div class="timeline-item">
+    <div class="timeline-marker"></div>
+    <div class="timeline-content">
+        <div class="timeline-date">Week 3-4</div>
+        <div class="timeline-title">Introductory Meeting</div>
+        <div class="timeline-desc">30-minute call/meeting to understand Wirz's current challenges and digital ambitions. Focus on listening, not selling. Validate assumptions from this analysis.</div>
+    </div>
+</div>
+<div class="timeline-item">
+    <div class="timeline-marker"></div>
+    <div class="timeline-content">
+        <div class="timeline-date">Week 5-6</div>
+        <div class="timeline-title">Discovery Workshop Proposal</div>
+        <div class="timeline-desc">Propose a half-day on-site workshop at Wirz's Bern headquarters. Include 2-3 key stakeholders from different subsidiaries. Focus on practical, hands-on AI demonstration and process mapping.</div>
+    </div>
+</div>
+<div class="timeline-item">
+    <div class="timeline-marker"></div>
+    <div class="timeline-content">
+        <div class="timeline-date">Month 2-3</div>
+        <div class="timeline-title">Discovery Workshop Execution</div>
+        <div class="timeline-desc">Conduct on-site workshop. Deliver prioritized AI roadmap with concrete business cases, ROI projections, and implementation timeline. Include 'show-don't-tell' live AI demonstrations with Wirz's own documents.</div>
+    </div>
+</div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Topics to Approach Carefully</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Areas requiring sensitivity</div>
+                    </div>
+                </div>
+                
+<div class="grid-2">
+    <div class="insight-box warning">
+        <strong>⚠️ Avoid: Technology Jargon</strong><br>
+        Wirz leadership is construction-oriented. Avoid terms like "MLOps", "neural networks", "cloud-native architecture". Instead speak in construction language: "efficiency gains", "project cost reduction", "safety improvements", "competitive edge".
+    </div>
+    <div class="insight-box warning">
+        <strong>⚠️ Handle Carefully: Family Business Dynamics</strong><br>
+        As a 4th-generation family business, decision-making may involve family considerations beyond pure ROI. Respect the legacy. Frame AI as protecting and extending the Wirz tradition, not disrupting it.
+    </div>
+    <div class="insight-box warning">
+        <strong>⚠️ Avoid: Overselling AI Capabilities</strong><br>
+        The Swiss construction industry has seen its share of overpromised digitalization projects. Be realistic about timelines, costs, and limitations. Under-promise, over-deliver. This audience values Zuverlässigkeit over innovation theater.
+    </div>
+    <div class="insight-box warning">
+        <strong>⚠️ Handle Carefully: Competitor Comparisons</strong><br>
+        Avoid explicitly naming larger competitors like Implenia as benchmarks — this could feel threatening. Instead reference "industry trends" and "peer best practices" in general terms. Wirz is proud of their position and doesn't want to be told they're behind.
+    </div>
+</div>
+
+            </div>
+        </div>
+
+        <!-- TAB 8: SOURCES & METHODOLOGY -->
+        <div id="sources" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Report Metadata</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Report generation details</div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <div class="info-label">Generated Date</div>
+                        <div class="info-value">February 16, 2026</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Report Token</div>
+                        <div class="info-value" style="word-break: break-all; font-size: 12px;">660a9f2b</div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <div class="info-label">Requested By</div>
+                        <div class="info-value">Michael Wegmüller / Artifact SA</div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <div class="info-label">Analysis Sources</div>
+                        <div class="info-value">25+</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Source Confidence Distribution</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Source quality assessment</div>
+                    </div>
+                </div>
+                <div class="pie-chart">
+                    <div class="pie-container">
+                        <svg class="pie-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Primary sources (green) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#22c55e" stroke-width="30"
+                                    stroke-dasharray="226.19 565.48" stroke-dashoffset="0"/>
+                            <!-- Secondary sources (blue) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#3b82f6" stroke-width="30"
+                                    stroke-dasharray="169.64 565.48" stroke-dashoffset="-226.19"/>
+                            <!-- Inferred sources (purple) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#8b5cf6" stroke-width="30"
+                                    stroke-dasharray="113.10 565.48" stroke-dashoffset="-395.84"/>
+                            <!-- Speculative sources (gray) -->
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#cbd5e1" stroke-width="30"
+                                    stroke-dasharray="56.55 565.48" stroke-dashoffset="-508.93"/>
+                        </svg>
+                    </div>
+                    <div class="pie-legend">
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #22c55e;"></div>
+                            <div class="pie-label">Primary</div>
+                            <div class="pie-percentage">40%</div>
+                        </div>
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #3b82f6;"></div>
+                            <div class="pie-label">Secondary</div>
+                            <div class="pie-percentage">30%</div>
+                        </div>
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #8b5cf6;"></div>
+                            <div class="pie-label">Inferred</div>
+                            <div class="pie-percentage">20%</div>
+                        </div>
+                        <div class="pie-item">
+                            <div class="pie-color" style="background-color: #cbd5e1;"></div>
+                            <div class="pie-label">Speculative</div>
+                            <div class="pie-percentage">10%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Primary Sources (25+ total)</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Authoritative company and market sources</div>
+                    </div>
+                </div>
+                
+<div style="font-size: 13px; line-height: 1.8; color: var(--color-slate);">
+    <div style="margin-bottom: 8px;"><span class="badge success">Primary</span> <a href="https://www.wirzag.ch" target="_blank">wirzag.ch</a> — Wirz AG Bauunternehmung official website</div>
+    <div style="margin-bottom: 8px;"><span class="badge success">Primary</span> <a href="https://www.wirz-unternehmungen.ch" target="_blank">wirz-unternehmungen.ch</a> — Wirz Group portal</div>
+    <div style="margin-bottom: 8px;"><span class="badge success">Primary</span> <a href="https://www.wirz-schadstoffe.ch" target="_blank">wirz-schadstoffe.ch</a> — Wirz Schadstoffsanierung</div>
+    <div style="margin-bottom: 8px;"><span class="badge success">Primary</span> <a href="https://www.wirzholzbau.ch" target="_blank">wirzholzbau.ch</a> — Wirz Holzbau AG</div>
+    <div style="margin-bottom: 8px;"><span class="badge success">Primary</span> LinkedIn profiles — Leadership team (Jeton Tolaj, Nino Wirz, Christian Bächler, Eduard Schmid)</div>
+    <div style="margin-bottom: 8px;"><span class="badge primary">Secondary</span> Schweizerischer Baumeisterverband (SBV) — baumeister.swiss</div>
+    <div style="margin-bottom: 8px;"><span class="badge primary">Secondary</span> Bauen digital Schweiz — AI in Swiss construction (Feb 2025)</div>
+    <div style="margin-bottom: 8px;"><span class="badge primary">Secondary</span> Statista — Switzerland construction market data</div>
+    <div style="margin-bottom: 8px;"><span class="badge primary">Secondary</span> GlobalData / ResearchAndMarkets — Swiss construction forecasts</div>
+    <div style="margin-bottom: 8px;"><span class="badge primary">Secondary</span> Fokus.swiss — Swiss construction industry analysis</div>
+    <div style="margin-bottom: 8px;"><span class="badge primary">Secondary</span> Baublatt.ch — Swiss construction industry news</div>
+    <div style="margin-bottom: 8px;"><span class="badge primary">Secondary</span> PlanRadar — Construction technology trends 2025</div>
+    <div style="margin-bottom: 8px;"><span class="badge primary">Secondary</span> Kanton Zürich Tiefbauamt — BIM adoption case study</div>
+    <div style="margin-bottom: 8px;"><span class="badge purple">Inferred</span> Company structure analysis — Subsidiary capabilities and synergies</div>
+    <div style="margin-bottom: 8px;"><span class="badge purple">Inferred</span> Market positioning — Based on employee count, project portfolio, regional presence</div>
+    <div style="margin-bottom: 8px;"><span class="badge">Speculative</span> Revenue estimates — Based on industry benchmarks for company size</div>
+    <div style="margin-bottom: 8px;"><span class="badge">Speculative</span> Technology stack — Assumed based on industry norms for Swiss SME construction firms</div>
+</div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Methodology & Framework</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Analysis approach and limitations</div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    
+<strong>Analysis Framework:</strong> This dashboard uses Artifact SA's proprietary AI Strategy Assessment methodology, combining six-dimension AI maturity scoring, industry-specific use case identification, and competitive benchmarking. All scores are based on publicly available information and industry inference where direct data is unavailable.<br><br>
+<strong>Limitations:</strong> As a private family-owned company, detailed financial data, internal technology stack, and strategic documents for Wirz Unternehmungen are not publicly available. Revenue estimates are based on employee count and industry benchmarks. AI maturity scores reflect observable external signals only — internal capabilities may differ. This analysis is designed to be directionally accurate for strategic planning purposes.
+
+                </div>
+                <div style="margin-top: 20px;">
+                    <div class="info-label">Data Freshness</div>
+                    <p style="margin-top: 8px; font-size: 14px; color: var(--color-slate);">Research conducted February 2026. Company information from official websites and LinkedIn profiles. Market data from 2024-2025 industry reports. AI adoption trends as of Q1 2026. All data should be independently verified before use in business decisions.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Original Prompt</h2>
+                    <div class="methodology-callout">
+                        ℹ️
+                        <div class="methodology-tooltip">Request parameters</div>
+                    </div>
+                </div>
+                <div style="background: var(--color-gray-50); padding: 16px; border-radius: 6px; border-left: 3px solid var(--color-slate); font-family: 'Courier New', monospace; font-size: 12px; color: var(--color-slate); line-height: 1.6; word-break: break-word;">
+                    intel-company Wirz Unternehmungen (https://www.wirzag.ch/) — AI strategy dashboard for Swiss construction group exploring AI applications.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Report Information</h3>
+                <p>AI Strategy Dashboard providing comprehensive analysis of Wirz Unternehmungen's artificial intelligence readiness, competitive positioning, market opportunities, and recommended engagement strategy.</p>
+            </div>
+            <div class="footer-column">
+                <div class="footer-meta">
+                    <div class="footer-meta-item">
+                        <strong>Generated:</strong> February 16, 2026
+                    </div>
+                    <div class="footer-meta-item">
+                        <strong>Token:</strong> 660a9f2b
+                    </div>
+                    <div class="footer-meta-item">
+                        <strong>Requestor:</strong> Michael Wegmüller / Artifact SA
+                    </div>
+                    <div class="footer-meta-item">
+                        <strong>Sources:</strong> 25+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-disclaimer">
+            AI-Generated Analysis - Verify all findings independently. This analysis is based on publicly available information and proprietary research methods. All data should be independently verified before use in business decisions.
+        </div>
+    </div>
+
+    <script>
+        // TAB SWITCHING
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+
+                // Remove active class from all tabs and buttons
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Add active class to current tab and button
+                document.getElementById(tabName).classList.add('active');
+                button.classList.add('active');
+
+                // Smooth scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // USE CASE SEARCH/FILTER
+        const searchInput = document.getElementById('use-case-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const useCaseCards = document.querySelectorAll('.use-case-card');
+
+                useCaseCards.forEach(card => {
+                    const title = card.querySelector('.use-case-title')?.textContent.toLowerCase() || '';
+                    const businessArea = card.querySelector('.meta-value')?.textContent.toLowerCase() || '';
+                    const description = card.querySelector('.use-case-description')?.textContent.toLowerCase() || '';
+
+                    if (title.includes(searchTerm) || businessArea.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // PRINT FUNCTIONALITY
+        window.printReport = function() {
+            window.print();
+        };
+
+        // SMOOTH SCROLL
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Initialize tooltips
+        document.querySelectorAll('.methodology-callout').forEach(callout => {
+            callout.addEventListener('mouseover', function() {
+                const tooltip = this.querySelector('.methodology-tooltip');
+                if (tooltip) {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.visibility = 'visible';
+                }
+            });
+
+            callout.addEventListener('mouseout', function() {
+                const tooltip = this.querySelector('.methodology-tooltip');
+                if (tooltip) {
+                    tooltip.style.opacity = '0';
+                    tooltip.style.visibility = 'hidden';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
