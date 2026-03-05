@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Impact Summit — Strategic Analysis</title>
+<style>
+  :root {
+    --primary: #1a2744;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --success: #059669;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, var(--primary) 0%, #1e3a5f 50%, var(--accent) 100%); color: white; padding: 3rem 2rem 2rem; }
+  .header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .header .subtitle { font-size: 1.1rem; opacity: 0.85; margin-bottom: 1.5rem; }
+  .header-meta { display: flex; gap: 2rem; flex-wrap: wrap; font-size: 0.85rem; opacity: 0.7; }
+
+  /* Navigation */
+  .tabs { display: flex; background: var(--card); border-bottom: 2px solid var(--border); overflow-x: auto; position: sticky; top: 0; z-index: 100; }
+  .tab { padding: 1rem 1.5rem; cursor: pointer; white-space: nowrap; font-size: 0.9rem; font-weight: 500; color: var(--muted); border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .tab:hover { color: var(--accent); background: var(--accent-light); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  /* Content */
+  .content { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Cards */
+  .card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .card h3 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--primary); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+
+  /* Stats */
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .stat { background: var(--card); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border); text-align: center; }
+  .stat .num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .stat .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+
+  /* Tags */
+  .tag { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin: 0.15rem; }
+  .tag-blue { background: #dbeafe; color: #1e40af; }
+  .tag-green { background: #d1fae5; color: #065f46; }
+  .tag-amber { background: #fef3c7; color: #92400e; }
+  .tag-red { background: #fee2e2; color: #991b1b; }
+  .tag-purple { background: #ede9fe; color: #5b21b6; }
+
+  /* SWOT */
+  .swot { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .swot-box { border-radius: 10px; padding: 1.25rem; }
+  .swot-box h4 { margin-bottom: 0.75rem; font-size: 1rem; }
+  .swot-box ul { list-style: none; padding: 0; }
+  .swot-box li { padding: 0.4rem 0; font-size: 0.9rem; padding-left: 1.2rem; position: relative; }
+  .swot-box li::before { content: '→'; position: absolute; left: 0; }
+  .swot-s { background: #d1fae5; }
+  .swot-w { background: #fee2e2; }
+  .swot-o { background: #dbeafe; }
+  .swot-t { background: #fef3c7; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before { content: ''; position: absolute; left: 0.5rem; top: 0; bottom: 0; width: 2px; background: var(--accent); }
+  .timeline-item { position: relative; margin-bottom: 1.5rem; }
+  .timeline-item::before { content: ''; position: absolute; left: -1.65rem; top: 0.5rem; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid white; }
+  .timeline-item .date { font-size: 0.8rem; color: var(--accent); font-weight: 600; }
+  .timeline-item .desc { font-size: 0.9rem; margin-top: 0.25rem; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg); font-weight: 600; color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  tr:hover { background: #f1f5f9; }
+
+  /* Meter */
+  .meter { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-top: 0.5rem; }
+  .meter-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+
+  /* Section headers */
+  h2 { font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--primary); }
+  .section-desc { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; margin-top: -1rem; }
+
+  /* Positioning map */
+  .pos-map { position: relative; width: 100%; height: 400px; background: linear-gradient(135deg, #f0f9ff 0%, #fefce8 100%); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+  .pos-map .axis-x, .pos-map .axis-y { position: absolute; color: var(--muted); font-size: 0.75rem; font-weight: 600; }
+  .pos-map .axis-x { bottom: 8px; left: 50%; transform: translateX(-50%); }
+  .pos-map .axis-y { left: 8px; top: 50%; transform: rotate(-90deg) translateX(-50%); transform-origin: left center; }
+  .pos-dot { position: absolute; width: 90px; height: 90px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.65rem; font-weight: 600; color: white; cursor: default; transition: transform 0.2s; border: 2px solid rgba(255,255,255,0.5); }
+  .pos-dot:hover { transform: scale(1.15); z-index: 10; }
+  .label-left { position: absolute; bottom: 8px; left: 12px; font-size: 0.7rem; color: var(--muted); }
+  .label-right { position: absolute; bottom: 8px; right: 12px; font-size: 0.7rem; color: var(--muted); }
+  .label-top { position: absolute; top: 8px; left: 12px; font-size: 0.7rem; color: var(--muted); }
+  .label-bottom { position: absolute; top: 8px; right: 12px; font-size: 0.7rem; color: var(--muted); }
+
+  /* Recommendation box */
+  .rec-box { background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 2px solid var(--accent); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+  .rec-box h4 { color: var(--accent); margin-bottom: 0.5rem; }
+  .rec-priority { font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 10px; font-weight: 700; }
+  .priority-high { background: #fee2e2; color: #991b1b; }
+  .priority-medium { background: #fef3c7; color: #92400e; }
+
+  /* Sponsor tiers */
+  .tier { border-left: 4px solid; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; background: var(--card); }
+  .tier-platinum { border-color: #6366f1; }
+  .tier-gold { border-color: #eab308; }
+  .tier-silver { border-color: #94a3b8; }
+  .tier-partner { border-color: #06b6d4; }
+  .tier h4 { margin-bottom: 0.5rem; }
+  .tier .price { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .swot { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .tab { padding: 0.75rem 1rem; font-size: 0.8rem; }
+    .content { padding: 1rem; }
+    .header { padding: 2rem 1rem 1.5rem; }
+    .header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Digital Impact Summit — Strategic Analysis</h1>
+  <div class="subtitle">Comprehensive positioning, landscape & sponsoring analysis for the Digital Impact Network (DIN)</div>
+  <div class="header-meta">
+    <span>Prepared: March 2026</span>
+    <span>For: DIN / Artifact.swiss</span>
+    <span>Scope: Swiss Data & Digital Ecosystem</span>
+  </div>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab active" data-tab="overview">Overview</div>
+  <div class="tab" data-tab="din-profile">DIN Profile</div>
+  <div class="tab" data-tab="landscape">Event Landscape</div>
+  <div class="tab" data-tab="positioning">Positioning</div>
+  <div class="tab" data-tab="swot">SWOT</div>
+  <div class="tab" data-tab="sponsors">Sponsor Strategy</div>
+  <div class="tab" data-tab="audience">Target Audience</div>
+  <div class="tab" data-tab="recommendations">Recommendations</div>
+</div>
+
+<div class="content">
+
+  <!-- TAB: Overview -->
+  <div class="tab-panel active" id="overview">
+    <h2>Executive Summary</h2>
+    <p class="section-desc">Key findings and strategic context for the Digital Impact Summit</p>
+
+    <div class="stat-row">
+      <div class="stat"><div class="num">240+</div><div class="label">DIN Members</div></div>
+      <div class="stat"><div class="num">5</div><div class="label">Cantons Covered</div></div>
+      <div class="stat"><div class="num">30</div><div class="label">Years of History (since 1996)</div></div>
+      <div class="stat"><div class="num">5+</div><div class="label">Active Fachgruppen</div></div>
+    </div>
+
+    <div class="card">
+      <h3>Situation Assessment</h3>
+      <p>The Digital Impact Network (DIN), formerly tcbe.ch / ICT Cluster Bern, is one of Switzerland's longest-running ICT associations with deep roots in the Hauptstadtregion. With 240+ members spanning enterprises, public sector, academia, and associations across five cantons (Bern, Freiburg, Neuchâtel, Solothurn, Wallis), DIN holds a unique position at the intersection of government, education, and industry.</p>
+      <br>
+      <p>The planned <strong>Digital Impact Summit</strong> — focusing on data spaces, data governance, and secondary data use — enters a growing but fragmented landscape. The <strong>Swiss Data Space Forum</strong> (organized by Swiss Data Alliance & digitalswitzerland) is the current reference event in this space, with its 2026 edition on October 28 in Prilly. The Swiss Conference on Data Science (SDS) covers the technical/academic angle. A strategic gap exists for a <strong>practitioner-oriented, capital-region-anchored</strong> event that bridges policy, implementation, and regional networks.</p>
+    </div>
+
+    <div class="card">
+      <h3>Strategic Opportunity</h3>
+      <p>DIN's strength lies in its <strong>regional embeddedness</strong> and proximity to federal institutions in Bern. A summit that combines DIN's convening power with the current national momentum around data spaces (Federal Council mandate, Swiss Data Ecosystem project) could fill a distinct niche: practical, hands-on, close to policymakers, and rooted in real implementation challenges — rather than the more strategic/visionary approach of existing forums.</p>
+    </div>
+  </div>
+
+  <!-- TAB: DIN Profile -->
+  <div class="tab-panel" id="din-profile">
+    <h2>Digital Impact Network — Organizational Profile</h2>
+    <p class="section-desc">Founded 1996 as ICT Cluster Bern (tcbe.ch), rebranded to Digital Impact Network</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Mission & Activities</h3>
+        <p>Promotes digitalization in Switzerland's capital region through networking, knowledge transfer, and continuing education. Connects ICT providers and users from the Hauptstadtregion.</p>
+        <br>
+        <p><strong>Core pillars:</strong></p>
+        <p>• Digital Transformation<br>• Knowledge Transfer (Wissenstransfer)<br>• Education (Aus- und Weiterbildung)<br>• Regional ICT Promotion</p>
+      </div>
+      <div class="card">
+        <h3>Geographic Coverage</h3>
+        <p><strong>5 Chapters (Regionalgruppen):</strong></p>
+        <p>• Bern (headquarters at BFH, Brückenstrasse 73)<br>• Solothurn<br>• Biel/Bienne<br>• Oberwallis<br>• Thun</p>
+        <br>
+        <p><strong>Cantons:</strong> Bern, Freiburg, Neuchâtel, Solothurn, Wallis</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Specialist Groups (Fachgruppen)</h3>
+      <table>
+        <tr><th>Fachgruppe</th><th>Focus</th><th>Relevance to Summit</th></tr>
+        <tr><td><strong>Cybersecurity</strong></td><td>Knowledge exchange, awareness raising, Bern Cybertalks</td><td><span class="tag tag-amber">Medium</span> Data security angle</td></tr>
+        <tr><td><strong>Artificial Intelligence</strong></td><td>AI applications, ChatGPT agents, practical AI use</td><td><span class="tag tag-green">High</span> AI + Data spaces</td></tr>
+        <tr><td><strong>Education</strong></td><td>Digital skills, Aus-/Weiterbildung programs</td><td><span class="tag tag-blue">Medium</span> Data literacy</td></tr>
+        <tr><td><strong>Cloud Native & DevOps</strong></td><td>Cloud infrastructure, modern development practices</td><td><span class="tag tag-green">High</span> Infrastructure for data spaces</td></tr>
+        <tr><td><strong>Sustainable IT</strong></td><td>Green IT, sustainable digital practices</td><td><span class="tag tag-amber">Medium</span> Responsible data use</td></tr>
+        <tr><td><strong>Legal</strong></td><td>Legal aspects of digitalization, Promptathon (Jun 2026)</td><td><span class="tag tag-green">High</span> Data governance & regulation</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Event Formats (Current)</h3>
+      <table>
+        <tr><th>Format</th><th>Description</th><th>Frequency</th></tr>
+        <tr><td>DIN-Bier</td><td>Informal networking evenings with keynotes</td><td>Regular</td></tr>
+        <tr><td>DIN-Mittagstisch</td><td>Networking lunch events across chapters</td><td>Regular</td></tr>
+        <tr><td>Bern Cybertalks</td><td>Cybersecurity speaker series</td><td>~Quarterly</td></tr>
+        <tr><td>Promptathon</td><td>Legal Fachgruppe hands-on event (Jun 2026)</td><td>Ad-hoc</td></tr>
+        <tr><td>Summer IT Grill</td><td>Annual social/networking event</td><td>Annual</td></tr>
+      </table>
+      <br>
+      <p style="color: var(--muted); font-size: 0.9rem;">⚡ <strong>Key insight:</strong> DIN currently lacks a flagship, large-scale summit event. The Digital Impact Summit would fill this gap and significantly raise DIN's profile beyond the capital region.</p>
+    </div>
+  </div>
+
+  <!-- TAB: Event Landscape -->
+  <div class="tab-panel" id="landscape">
+    <h2>Competitive Event Landscape</h2>
+    <p class="section-desc">Swiss events in the data, AI, and digital transformation space (2025–2026)</p>
+
+    <div class="card">
+      <h3>Key Competing / Adjacent Events</h3>
+      <table>
+        <tr><th>Event</th><th>Organizer</th><th>Date (2026)</th><th>Location</th><th>Focus</th><th>Overlap</th></tr>
+        <tr>
+          <td><strong>Swiss Data Space Forum</strong></td>
+          <td>Swiss Data Alliance / digitalswitzerland</td>
+          <td>Oct 28</td>
+          <td>Prilly (Lausanne)</td>
+          <td>Data spaces, data governance, policy</td>
+          <td>
+            <div class="meter"><div class="meter-fill" style="width:80%; background: var(--danger);"></div></div>
+            <span style="font-size:0.75rem;">High overlap</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Swiss Conference on Data Science (SDS)</strong></td>
+          <td>Swiss Congress / data innovation alliance</td>
+          <td>May 6–7</td>
+          <td>TBD</td>
+          <td>Data science, ML, analytics</td>
+          <td>
+            <div class="meter"><div class="meter-fill" style="width:40%; background: var(--warning);"></div></div>
+            <span style="font-size:0.75rem;">Medium overlap</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Digitaltage (Digital Days)</strong></td>
+          <td>digitalswitzerland</td>
+          <td>Various</td>
+          <td>National</td>
+          <td>Public awareness, digital literacy</td>
+          <td>
+            <div class="meter"><div class="meter-fill" style="width:20%; background: var(--success);"></div></div>
+            <span style="font-size:0.75rem;">Low overlap</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Digital Investigations Conference</strong></td>
+          <td>DIC</td>
+          <td>Feb 25–26</td>
+          <td>Zürich</td>
+          <td>Digital forensics, investigations</td>
+          <td>
+            <div class="meter"><div class="meter-fill" style="width:15%; background: var(--success);"></div></div>
+            <span style="font-size:0.75rem;">Low overlap</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>SCION / Cybersecurity Events</strong></td>
+          <td>Various</td>
+          <td>Various</td>
+          <td>Various</td>
+          <td>Network security, infrastructure</td>
+          <td>
+            <div class="meter"><div class="meter-fill" style="width:30%; background: var(--warning);"></div></div>
+            <span style="font-size:0.75rem;">Low-Medium</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Swiss Data Space Forum 2026 — Key Competitor Deep Dive</h3>
+      <div class="card-grid">
+        <div>
+          <p><strong>Theme:</strong> "Building innovation and resilience through trustworthy data spaces"</p>
+          <br>
+          <p><strong>Format:</strong> Keynotes, breakout sessions, interactive workshops</p>
+          <br>
+          <p><strong>Topics:</strong> Data stewardship, data literacy, ethical & legal frameworks, standards & interoperability, AI data access</p>
+          <br>
+          <p><strong>Audience:</strong> Policymakers, researchers, industry leaders, innovators</p>
+        </div>
+        <div>
+          <p><strong>Strengths of SDSF:</strong></p>
+          <p>• National brand recognition via digitalswitzerland<br>• Think-tank credibility (Swiss Data Alliance since 2017)<br>• Federal/policy-level connections<br>• Gaia-X European integration</p>
+          <br>
+          <p><strong>Potential gaps DIN can fill:</strong></p>
+          <p>• Regional practitioner focus (German-speaking)<br>• Stronger implementation/use-case orientation<br>• Public sector / cantonal administration angle<br>• Proximity to federal IT decision-makers in Bern</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Event Calendar Timeline 2026</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="date">Feb 25–26</div><div class="desc">Digital Investigations Conference — Zürich</div></div>
+        <div class="timeline-item"><div class="date">May 6–7</div><div class="desc">Swiss Conference on Data Science (SDS) — TBD</div></div>
+        <div class="timeline-item"><div class="date">Jun 18</div><div class="desc">DIN Promptathon (Legal Fachgruppe)</div></div>
+        <div class="timeline-item" style="background: #dbeafe; padding: 0.75rem; border-radius: 8px;">
+          <div class="date" style="font-size: 1rem;">🎯 Q3/Q4 2026 — DIGITAL IMPACT SUMMIT</div>
+          <div class="desc"><strong>Recommended window: September or early October</strong> — before Swiss Data Space Forum (Oct 28) to capture audience first</div>
+        </div>
+        <div class="timeline-item"><div class="date">Oct 28</div><div class="desc">Swiss Data Space Forum — Prilly (Lausanne)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Positioning -->
+  <div class="tab-panel" id="positioning">
+    <h2>Strategic Positioning</h2>
+    <p class="section-desc">Where the Digital Impact Summit should position itself in the Swiss ecosystem</p>
+
+    <div class="card">
+      <h3>Positioning Map: Audience Focus × Content Depth</h3>
+      <div class="pos-map">
+        <div class="label-left">← Policy / Strategic</div>
+        <div class="label-right">Practitioner / Technical →</div>
+        <div class="label-top">Specialist ↑</div>
+        <div class="label-bottom">↓ Generalist</div>
+
+        <!-- Swiss Data Space Forum -->
+        <div class="pos-dot" style="background: #6366f1; left: 20%; top: 25%; opacity: 0.85;" title="Swiss Data Space Forum">Swiss Data Space Forum</div>
+
+        <!-- SDS -->
+        <div class="pos-dot" style="background: #059669; left: 65%; top: 15%; opacity: 0.85;" title="SDS Conference">SDS Conference</div>
+
+        <!-- Digitaltage -->
+        <div class="pos-dot" style="background: #d97706; left: 35%; top: 70%; opacity: 0.85;" title="Digitaltage">Digital-tage</div>
+
+        <!-- DIN current events -->
+        <div class="pos-dot" style="background: #94a3b8; left: 55%; top: 60%; opacity: 0.7;" title="DIN Current Events">DIN Events (current)</div>
+
+        <!-- DIGITAL IMPACT SUMMIT (target) -->
+        <div class="pos-dot" style="background: var(--accent); left: 48%; top: 32%; border: 3px solid #1e40af; box-shadow: 0 0 20px rgba(37,99,235,0.4); width: 110px; height: 110px; font-size: 0.75rem;" title="Digital Impact Summit (Target Position)">🎯 Digital Impact Summit</div>
+      </div>
+      <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--muted);">The Digital Impact Summit should occupy the sweet spot between strategic vision and practical implementation, targeting specialist practitioners rather than the general public.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Differentiation vs. Swiss Data Space Forum</h3>
+        <table>
+          <tr><th>Dimension</th><th>SDSF</th><th>DI Summit</th></tr>
+          <tr><td>Geography</td><td>National / Romandie</td><td><strong>Capital Region / Deutschschweiz</strong></td></tr>
+          <tr><td>Language</td><td>Mixed / English</td><td><strong>Deutsch + English</strong></td></tr>
+          <tr><td>Tone</td><td>Think-tank / Policy</td><td><strong>Practitioner / Hands-on</strong></td></tr>
+          <tr><td>Audience core</td><td>Policy + Research</td><td><strong>Admin + Enterprise + Tech</strong></td></tr>
+          <tr><td>Workshops</td><td>Strategic breakouts</td><td><strong>Technical deep-dives</strong></td></tr>
+          <tr><td>Network effect</td><td>digitalswitzerland ecosystem</td><td><strong>DIN 240+ member base</strong></td></tr>
+          <tr><td>Fed. proximity</td><td>Indirect</td><td><strong>Direct (Bern location)</strong></td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Unique Value Propositions</h3>
+        <p><strong>1. "From Bern, for Switzerland"</strong><br>Leveraging proximity to federal institutions, BFH, and cantonal administrations for unmatched policy-practice crossover.</p>
+        <br>
+        <p><strong>2. Implementation over Vision</strong><br>Where other events discuss concepts, the DI Summit showcases running implementations, concrete use cases, and lessons learned.</p>
+        <br>
+        <p><strong>3. Cross-Fachgruppen Synergy</strong><br>Uniquely combining AI, Cybersecurity, Legal, Cloud, and Sustainability perspectives on data spaces — reflecting real-world complexity.</p>
+        <br>
+        <p><strong>4. Capital Region Network Effect</strong><br>Direct access to Switzerland's densest cluster of federal IT decision-makers, cantonal CIOs, and public-sector tech leaders.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Proposed Positioning Statement</h3>
+      <div class="rec-box">
+        <p style="font-size: 1.1rem; font-style: italic;">"The Digital Impact Summit is Switzerland's premier practitioner conference for data spaces and data governance — where federal policy meets real-world implementation in the heart of the capital region."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: SWOT -->
+  <div class="tab-panel" id="swot">
+    <h2>SWOT Analysis</h2>
+    <p class="section-desc">Strategic assessment of the Digital Impact Summit opportunity</p>
+
+    <div class="swot">
+      <div class="swot-box swot-s">
+        <h4>✅ Strengths</h4>
+        <ul>
+          <li>30-year track record and brand trust (since 1996)</li>
+          <li>240+ established member base across 5 cantons</li>
+          <li>Direct proximity to federal institutions in Bern</li>
+          <li>BFH partnership provides academic credibility</li>
+          <li>6 active Fachgruppen covering relevant domains (AI, Legal, Cybersecurity, Cloud)</li>
+          <li>Existing chapter structure enables regional mobilization</li>
+          <li>Strong public sector / cantonal administration connections</li>
+        </ul>
+      </div>
+      <div class="swot-box swot-w">
+        <h4>⚠️ Weaknesses</h4>
+        <ul>
+          <li>Regional perception — may struggle for national/international draw</li>
+          <li>No prior experience with large-scale summit events</li>
+          <li>Relatively modest LinkedIn following (~950) vs. national players</li>
+          <li>Brand recognition outside capital region is limited</li>
+          <li>Sponsoring brochure text still lacks defined target audience ("TBD")</li>
+          <li>Potential resource constraints for first-edition event</li>
+        </ul>
+      </div>
+      <div class="swot-box swot-o">
+        <h4>🚀 Opportunities</h4>
+        <ul>
+          <li>Federal Council mandate for Swiss Data Ecosystem creates urgency</li>
+          <li>Swiss Data Space Forum is Romandie-based — Deutschschweiz gap exists</li>
+          <li>Growing enterprise demand for practical data governance guidance</li>
+          <li>AI boom creates appetite for "data for AI" events</li>
+          <li>Gaia-X and EU data spaces create international context</li>
+          <li>FAIR principles gaining traction in Swiss research and admin</li>
+          <li>Could become the "capital region complement" to national forums</li>
+        </ul>
+      </div>
+      <div class="swot-box swot-t">
+        <h4>🔴 Threats</h4>
+        <ul>
+          <li>Swiss Data Space Forum (Oct 2026) as direct competitor for audience and sponsors</li>
+          <li>digitalswitzerland's dominance in Swiss digital event space</li>
+          <li>Market fatigue from overlapping digital/data events</li>
+          <li>Economic pressure may limit sponsor budgets</li>
+          <li>Risk of being perceived as "another data event" without clear differentiation</li>
+          <li>Potential speaker overlap with established events</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 1.5rem;">
+      <h3>Strategic Implication</h3>
+      <p>The SWOT analysis suggests a <strong>"differentiate or die"</strong> approach. The summit must avoid becoming a generic data conference and instead lean hard into DIN's unique assets: Bern location, public sector network, practitioner orientation, and the cross-disciplinary Fachgruppen model. The Federal Council's data ecosystem mandate (Dec 2023) provides perfect timing and political tailwind.</p>
+    </div>
+  </div>
+
+  <!-- TAB: Sponsors -->
+  <div class="tab-panel" id="sponsors">
+    <h2>Sponsor Strategy & Packaging</h2>
+    <p class="section-desc">Recommended sponsoring structure and target sponsor categories</p>
+
+    <div class="card">
+      <h3>Recommended Tier Structure</h3>
+      <div class="tier tier-platinum">
+        <div style="display:flex; justify-content: space-between; align-items: center;">
+          <h4>💎 Platinum Partner (1–2 slots)</h4>
+          <div class="price">CHF 15'000–25'000</div>
+        </div>
+        <p>Exclusive keynote slot, logo on all materials, dedicated exhibition space, VIP dinner access, featured in press releases, 10 free tickets</p>
+      </div>
+      <div class="tier tier-gold">
+        <div style="display:flex; justify-content: space-between; align-items: center;">
+          <h4>🥇 Gold Partner (3–5 slots)</h4>
+          <div class="price">CHF 8'000–12'000</div>
+        </div>
+        <p>Workshop hosting opportunity, exhibition booth, logo on website & program, social media features, 5 free tickets</p>
+      </div>
+      <div class="tier tier-silver">
+        <div style="display:flex; justify-content: space-between; align-items: center;">
+          <h4>🥈 Silver Partner (5–8 slots)</h4>
+          <div class="price">CHF 3'000–5'000</div>
+        </div>
+        <p>Logo on website & program, networking area presence, social media mention, 3 free tickets</p>
+      </div>
+      <div class="tier tier-partner">
+        <div style="display:flex; justify-content: space-between; align-items: center;">
+          <h4>🤝 Community & Media Partner</h4>
+          <div class="price">In-kind / exchange</div>
+        </div>
+        <p>Logo placement, cross-promotion, audience access. Ideal for associations, media, academic institutions.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Target Sponsor Categories & Examples</h3>
+      <table>
+        <tr><th>Category</th><th>Why they'd sponsor</th><th>Potential Targets</th></tr>
+        <tr>
+          <td><span class="tag tag-blue">Telco / Cloud</span></td>
+          <td>Data infrastructure, cloud platforms, Swiss sovereign cloud</td>
+          <td>Swisscom, T-Systems, AWS, Microsoft Azure, Google Cloud</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">Public Sector IT</span></td>
+          <td>E-Government, digital administration solutions</td>
+          <td>Abraxas, Bedag, Elca, ELCA Informatik</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-purple">Data & AI Platforms</span></td>
+          <td>Data governance, data mesh, AI/ML platforms</td>
+          <td>Informatica, Collibra, Snowflake, Databricks</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-amber">Consulting / Advisory</span></td>
+          <td>Data strategy, digital transformation services</td>
+          <td>Deloitte, EY, PwC, Accenture, local specialists</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">Cybersecurity</span></td>
+          <td>Data protection, privacy, compliance tools</td>
+          <td>Acronis, InfoGuard, Kudelski, Xorlab</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">Legal / Compliance</span></td>
+          <td>Data regulation, GDPR, Swiss DPA expertise</td>
+          <td>Law firms, compliance tech companies</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">Federal / Cantonal</span></td>
+          <td>Promote own data initiatives, convene stakeholders</td>
+          <td>BFS, BIT, Kantone, Swiss Federal Chancellery</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-purple">Research / Academic</span></td>
+          <td>Showcase research, recruit talent, community</td>
+          <td>BFH, UniBe, SDSC, SPHN, ETH</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Key Selling Points for Sponsors</h3>
+      <div class="card-grid">
+        <div>
+          <p><strong>🏛 Access to Federal Decision-Makers</strong><br>Bern is the seat of government and home to key federal IT offices. The summit provides direct access to decision-makers typically hard to reach at national events.</p>
+          <br>
+          <p><strong>🎯 Qualified, Senior Audience</strong><br>Unlike broad digital events, the summit attracts data practitioners, CIOs, and governance specialists — high-value contacts for solution providers.</p>
+        </div>
+        <div>
+          <p><strong>🤝 240+ Member Pre-Audience</strong><br>DIN's existing member base provides a guaranteed baseline audience and warm outreach channel for sponsors.</p>
+          <br>
+          <p><strong>📐 Workshop Format = Deep Engagement</strong><br>Sponsor-hosted workshops provide 60–90 minutes of direct, high-quality interaction with prospects — far more valuable than expo booth foot traffic.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Target Audience -->
+  <div class="tab-panel" id="audience">
+    <h2>Target Audience Definition</h2>
+    <p class="section-desc">Proposed audience segments to replace the current "TBD" in the sponsoring brochure</p>
+
+    <div class="card">
+      <h3>Primary Audience Segments</h3>
+      <table>
+        <tr><th>Segment</th><th>Roles</th><th>Est. %</th><th>Why they attend</th></tr>
+        <tr>
+          <td><span class="tag tag-blue">Public Administration</span></td>
+          <td>CIOs, Data Officers, IT Leads (Federal, Cantonal, Municipal)</td>
+          <td>25–30%</td>
+          <td>Learn about data space implementations, regulatory updates, peer exchange</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">Enterprise / Industry</span></td>
+          <td>CDOs, Data Engineers, IT Architects, CTOs</td>
+          <td>25–30%</td>
+          <td>Data governance best practices, use cases, vendor landscape</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-purple">Research & Academia</span></td>
+          <td>Professors, Researchers, PhD students (data science, law, CS)</td>
+          <td>15–20%</td>
+          <td>FAIR data, open science, data sharing frameworks, network</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-amber">IT Service Providers</span></td>
+          <td>Solution architects, consultants, product managers</td>
+          <td>15–20%</td>
+          <td>Market intelligence, client proximity, showcase solutions</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">Legal / Compliance</span></td>
+          <td>Data protection officers, legal counsel, compliance managers</td>
+          <td>5–10%</td>
+          <td>Regulatory landscape, practical compliance approaches</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Suggested "Zielpublikum" Text for Sponsoring Brochure</h3>
+      <div class="rec-box">
+        <p><strong>Deutsch:</strong></p>
+        <p style="font-style: italic;">Das Digital Impact Summit richtet sich an Datenexpert:innen und Entscheidungsträger:innen aus Verwaltung, Wirtschaft, Forschung und Zivilgesellschaft. Insbesondere ansprechen möchten wir:</p>
+        <p style="font-style: italic; margin-top: 0.5rem;">
+        • CIOs, CDOs und IT-Verantwortliche aus Bundes-, Kantons- und Gemeindeverwaltungen<br>
+        • Datenarchitekt:innen, Data Engineers und Data Governance-Verantwortliche aus Unternehmen<br>
+        • Forschende und Dozierende an Hochschulen mit Fokus auf Data Science, Recht und Informatik<br>
+        • IT-Dienstleister und Berater:innen im Bereich Datenmanagement und digitale Transformation<br>
+        • Datenschutzbeauftragte und Compliance-Verantwortliche<br>
+        • Vertreter:innen von NGOs und Verbänden mit Bezug zu Datenpolitik
+        </p>
+        <p style="margin-top: 0.75rem;"><strong>Erwartete Teilnehmerzahl:</strong> 200–350 Fachpersonen</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Audience Acquisition Strategy</h3>
+      <div class="card-grid">
+        <div>
+          <p><strong>Tier 1 — Guaranteed Base (DIN Network)</strong></p>
+          <p>Direct outreach to 240+ DIN members, chapter events, Fachgruppen mailing lists. Target: 80–120 registrations.</p>
+          <br>
+          <p><strong>Tier 2 — Extended Ecosystem</strong></p>
+          <p>Partner associations, BFH networks, federal IT community (BIT, BFS), cantonal IT organizations. Target: 60–100 registrations.</p>
+        </div>
+        <div>
+          <p><strong>Tier 3 — Broader Reach</strong></p>
+          <p>LinkedIn campaigns, Swiss Data Alliance cross-promotion, digitalswitzerland network, academic channels. Target: 60–130 registrations.</p>
+          <br>
+          <p><strong>Total Target: 200–350 attendees</strong></p>
+          <p style="color: var(--muted); font-size: 0.85rem;">First edition should aim conservatively at 200–250, with room to grow in subsequent years.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Recommendations -->
+  <div class="tab-panel" id="recommendations">
+    <h2>Strategic Recommendations</h2>
+    <p class="section-desc">Actionable next steps for the Digital Impact Summit</p>
+
+    <div class="rec-box">
+      <div style="display:flex; gap:1rem; align-items:center; margin-bottom:0.5rem;">
+        <h4>1. Secure a Date in September 2026</h4>
+        <span class="rec-priority priority-high">HIGH PRIORITY</span>
+      </div>
+      <p>Position the summit <strong>before</strong> the Swiss Data Space Forum (Oct 28). Early-to-mid September avoids summer holidays and Christmas season. The summit can then reference SDSF as a complementary event rather than competing directly.</p>
+    </div>
+
+    <div class="rec-box">
+      <div style="display:flex; gap:1rem; align-items:center; margin-bottom:0.5rem;">
+        <h4>2. Define and Lock the Unique Positioning</h4>
+        <span class="rec-priority priority-high">HIGH PRIORITY</span>
+      </div>
+      <p>Sharpen the narrative: this is NOT "another Swiss Data Space Forum." It's the <strong>practitioner summit where implementation meets policy</strong>. Use DIN's Fachgruppen structure as the backbone — each Fachgruppe curates one workshop track (AI + Data, Legal + Governance, Cyber + Security, Cloud + Infrastructure).</p>
+    </div>
+
+    <div class="rec-box">
+      <div style="display:flex; gap:1rem; align-items:center; margin-bottom:0.5rem;">
+        <h4>3. Seek Strategic Partnership (Not Competition) with Swiss Data Alliance</h4>
+        <span class="rec-priority priority-high">HIGH PRIORITY</span>
+      </div>
+      <p>Approach Swiss Data Alliance and/or digitalswitzerland as <strong>knowledge partners or co-promoters</strong>, not competitors. Position the DI Summit as the "Deutschschweiz implementation day" that feeds into the national SDSF. This avoids market cannibalization and strengthens both events.</p>
+    </div>
+
+    <div class="rec-box">
+      <div style="display:flex; gap:1rem; align-items:center; margin-bottom:0.5rem;">
+        <h4>4. Anchor Federal Partners Early</h4>
+        <span class="rec-priority priority-medium">MEDIUM PRIORITY</span>
+      </div>
+      <p>Leverage DIN's Bern base to secure early commitments from the <strong>Swiss Federal Chancellery Data Ecosystem team</strong>, BIT, and cantonal IT bodies. A federal patron or co-organizer would instantly elevate credibility and attract sponsors.</p>
+    </div>
+
+    <div class="rec-box">
+      <div style="display:flex; gap:1rem; align-items:center; margin-bottom:0.5rem;">
+        <h4>5. Complete the Sponsoring Brochure</h4>
+        <span class="rec-priority priority-medium">MEDIUM PRIORITY</span>
+      </div>
+      <p>Fill the "TBD" gaps urgently: target audience (use the segments defined in this analysis), expected attendance numbers (200–350), venue (BFH Campus or Kursaal Bern recommended), and a clear agenda outline. Sponsors need these details to approve budgets.</p>
+    </div>
+
+    <div class="rec-box">
+      <div style="display:flex; gap:1rem; align-items:center; margin-bottom:0.5rem;">
+        <h4>6. Build a Compelling Speaker Lineup</h4>
+        <span class="rec-priority priority-medium">MEDIUM PRIORITY</span>
+      </div>
+      <p>Aim for a mix of: 2–3 headline international speakers (Gaia-X, EU Data Spaces), 3–5 Swiss federal/cantonal leaders (e.g., from BFS, DTI, SPHN), 5–8 practitioner speakers from DIN member organizations. A bilingual (DE/EN) program reinforces the Deutschschweiz positioning while maintaining international credibility.</p>
+    </div>
+
+    <div class="card" style="margin-top: 1.5rem;">
+      <h3>Suggested Next Steps — 90-Day Roadmap</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="date">Weeks 1–2</div><div class="desc">Lock positioning statement and event date; brief DIN board</div></div>
+        <div class="timeline-item"><div class="date">Weeks 3–4</div><div class="desc">Complete sponsoring brochure with audience definition, venue, and tier structure</div></div>
+        <div class="timeline-item"><div class="date">Weeks 4–6</div><div class="desc">Outreach to 3–5 Platinum/Gold sponsor candidates; approach Swiss Data Alliance for partnership</div></div>
+        <div class="timeline-item"><div class="date">Weeks 6–8</div><div class="desc">Secure headline speakers; build program committee from Fachgruppen leads</div></div>
+        <div class="timeline-item"><div class="date">Weeks 8–10</div><div class="desc">Launch website, open early-bird registration, begin DIN member communication</div></div>
+        <div class="timeline-item"><div class="date">Weeks 10–12</div><div class="desc">Broader marketing push (LinkedIn, partner networks), finalize full speaker lineup</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
